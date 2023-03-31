@@ -1,6 +1,10 @@
 import "./Register.css"
 import { useState } from 'react'
 import { Link } from 'react-router-dom';
+import { InputText } from 'primereact/inputtext';
+import { Password } from 'primereact/password';
+import { Button } from 'primereact/button';
+
 
 function Register() {
 
@@ -21,31 +25,33 @@ function Register() {
     return (
 
         <div className="container">
+            <div className="fitting" />
 
-            <div className="login">
+            <div className="reg">
+                <div className="pull-everybody">
 
-                <label>Usuário</label>
-                <input type="text" value={user}
-                    onChange={(e) => setUser(e.target.value)} />
+                    <label>Usuário</label>
+                    <InputText value={user} onChange={(e) => setUser(e.target.value)} />
 
-                <label>Email</label>
-                <input value={email}
-                    onChange={(e) => setEmail(e.target.value)} />
 
-                <label>Primeiro Nome</label>
-                <input type='text' value={firstName}
-                    onChange={(e) => setFirstName(e.target.value)} />
+                    <label>Email</label>
+                    <InputText value={email} onChange={(e) => setEmail(e.target.value)} />
 
-                <label>Segundo Nome</label>
-                <input type='text' value={lastName}
-                    onChange={(e) => setLastName(e.target.value)} />
+                    <label>Primeiro Nome</label>
+                    <InputText value={firstName} onChange={(e) => setFirstName(e.target.value)} />
 
-                <button onClick={novoUsuario}>Registrar</button>
+                    <label>Segundo Nome</label>
+                    <InputText value={lastName} onChange={(e) => setLastName(e.target.value)} />
 
-                <Link to={`/`}>Já possuo conta</Link>
+                    <Button label="Registrar" style={{ marginTop: "10%" }} />
+
+                    <div className="go-to-login" style={{ marginTop: "5%" }}>
+                    <Link to={`/`}>Já possuo conta</Link>
+                    </div>
+                </div>
             </div>
         </div>
-    )
+    );
 }
 
-export default Register
+export default Register;
