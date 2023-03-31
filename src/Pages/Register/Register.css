@@ -1,0 +1,63 @@
+
+.container {
+    max-width: 100%;
+    
+    background-color: #3A3A3A;
+    display: flex;
+    max-height: fit-content;
+}
+
+.fitting {
+    width: 67%;
+    height: 100%;
+}
+
+.reg {
+
+    background-color: white;
+    width: 33%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.pull-everybody {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 10%;
+
+}
+
+.pull-everybody label {
+    color: #3A3A3A;
+    font-family: Roboto;
+}
+
+
+.p-inputtext {
+    width: 100%;
+
+}
+
+.p-password {
+    width: 100%;
+}
+
+.p-button {
+    width: 100%;
+    background-color: #0278D3;
+    border-radius: 0;
+}
+.go-to-login{
+    display:flex;
+    justify-content: center;
+    width:100%;
+}
+.go-to-login a {
+    text-decoration: none;
+    color: #009BE7;
+}
