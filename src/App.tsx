@@ -10,7 +10,7 @@ import { useState } from "react";
      
 
 import "./App.css"
-import Rotas from "./routes";
+import Rotas from "./Routes/routes";
 
 
 function App() {
