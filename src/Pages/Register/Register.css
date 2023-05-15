@@ -1,4 +1,16 @@
+@media screen and (max-width: 400px){
+    .container{
+        width: 100%;
+    }
 
+    .fitting{
+        display: none;
+    }
+
+    .reg{
+        min-width: 100%;
+    }
+}
 .container {
     max-width: 100%;
     

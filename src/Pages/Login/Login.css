@@ -1,3 +1,17 @@
+@media screen and (max-width: 400px){
+    .container{
+        width: 100%;
+    }
+
+    .fitting{
+        display: none;
+    }
+
+    .login{
+        min-width: 100%;
+    }
+}
+
 .container{
     max-width:100%;
     width: 100%;
