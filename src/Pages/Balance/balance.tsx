@@ -7,7 +7,6 @@ import axios from "axios";
 import { InputNumber } from 'primereact/inputnumber';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
-
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 
@@ -38,6 +37,7 @@ export default function Admin() {
         { label: 'Gestão de Carteiras', icon: 'pi pi-user' },
         { label: 'Gestão de Acessos', icon: 'pi pi-user' }
     ];
+    
     return (
         <div className="container">
             <div className="menu">
