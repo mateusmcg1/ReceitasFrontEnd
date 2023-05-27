@@ -18,6 +18,7 @@ function Register() {
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const toast = useRef<Toast>(null);
+    
 
     const show = (severity:ToastMessage["severity"], summary:string, detail:string) => {
         toast.current?.show({severity, summary, detail});
@@ -37,7 +38,6 @@ function Register() {
                         password: password,
                         firstName: firstName,
                         lastName: lastName,
-
                     })
 
 
@@ -68,7 +68,7 @@ return (
 
     <div className="container">
         <div className="fitting" />
-
+      
         <div className="reg">
             <div className="pull-everybody" >
                 <Toast ref={toast} />

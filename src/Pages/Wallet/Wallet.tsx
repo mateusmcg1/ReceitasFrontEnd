@@ -1,25 +1,17 @@
-import './balance.css'
 import { Menu } from 'primereact/menu';
-import { useState, useEffect, SetStateAction } from 'react';
-import 'primeicons/primeicons.css';
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from "axios";
-import { InputNumber } from 'primereact/inputnumber';
-import { InputText } from 'primereact/inputtext';
-import { Button } from 'primereact/button';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
+import { InputText } from 'primereact/inputtext';
+import { Button } from 'primereact/button';
 
-
-export default function Balance() {
-
-    let navigate = useNavigate()
+export default function Wallet() {
 
     const [userName, setUserName] = useState('Magnamio De Amorim');
-    const [value1, setValue1] = useState(0);
-    const [value2, setValue2] = useState(0);
-    const [value3, setValue3] = useState(0);
     const [text1, setText1] = useState('');
+    let navigate = useNavigate()
 
     let items = [
         { label: 'Balanço', icon: 'pi pi-user' },
@@ -27,11 +19,10 @@ export default function Balance() {
         { label: 'Contas a receber', icon: 'pi pi-user' },
         { label: 'Gestão de Carteiras', icon: 'pi pi-user' },
         { label: 'Gestão de Acessos', icon: 'pi pi-user' }
-    ];
+    ]; 
 
     return (
-
-        <div className="balance-container">
+        <div className='wallet-container'>
             <div className='top-nav'>
                 <div className='margin-left'></div>
                 <ul>
@@ -44,22 +35,14 @@ export default function Balance() {
                 </ul>
             </div>
             <div className='container'>
-                <div className="menu">
+
+                <h1>Carteiras</h1>
+
+                <div className='menu'>
                     <Menu model={items} />
                 </div>
-                
 
                 <div className="main-content">
-                    <h1>Balanço</h1>
-
-                    <div className='finantial-balance'>
-                        <label htmlFor="value1">Saldo BRL</label>
-                        <InputNumber value={value1} onValueChange={(e) => setValue1(e.value!)} minFractionDigits={2} maxFractionDigits={2} />
-                        <label htmlFor="value2">Saldo USD</label>
-                        <InputNumber value={value2} onValueChange={(e) => setValue2(e.value!)} minFractionDigits={2} maxFractionDigits={2} />
-                        <label htmlFor="value3">Saldo TC</label>
-                        <InputNumber value={value3} onValueChange={(e) => setValue3(e.value!)} minFractionDigits={2} maxFractionDigits={2} />
-                    </div>
                     <div className='filtering-data'>
                         <label htmlFor="text1">Periodo</label>
                         <InputText value={text1} onChange={(e) => setText1(e.target.value)} />
@@ -69,22 +52,19 @@ export default function Balance() {
                         {<Button label="AÇÕES" /*style={{ marginTop: "10%" }}*/ />}
                         {<Button label="INCLUIR" /*style={{ marginTop: "10%" }}*/ />}
                     </div>
+
                     <div className='data-table'>
 
-                        <DataTable  tableStyle={{ minWidth: '50rem' }}>
-                            <Column field="data" header="Data"></Column>
-                            <Column field="fornecedor" header="Fornecedor"></Column>
-                            <Column field="valor" header="Valor"></Column>
-                            <Column field="pago" header="Pago"></Column>
-                            <Column field="observacao" header="Observação"></Column>
-                            <Column field="parcela" header="Parcela"></Column>
+                        <DataTable tableStyle={{ minWidth: '50rem' }}>
+                            <Column field="data" header="Data de Criação"></Column>
+                            <Column field="name" header="Nome"></Column>
+                            <Column field="currency" header="Moeda"></Column>
                         </DataTable>
 
                     </div>
-
                 </div>
-                {/* </main> */}
             </div>
         </div>
+
     )
 }
