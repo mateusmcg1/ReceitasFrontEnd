@@ -9,33 +9,39 @@ import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
-
+import { Avatar } from 'primereact/avatar';
 
 export default function Balance() {
 
     let navigate = useNavigate()
 
-    const [userName, setUserName] = useState('Magnamio De Amorim');
+    const [userName, setUserName] = useState('Nome');
+
     const [value1, setValue1] = useState(0);
     const [value2, setValue2] = useState(0);
     const [value3, setValue3] = useState(0);
+    const [value4, setValue4] = useState(0);
+    let [vencidas, setVencidas] = useState(0);
+    let [aPagar, setAPagar] = useState(0);
+    let [aReceber, setAReceber] = useState(0);
     const [text1, setText1] = useState('');
+    const [walletName, setWalletName] = useState('Example')
+    
 
     let items = [
-        { label: 'Balanço', icon: 'pi pi-user' },
-        { label: 'Contas a pagar', icon: 'pi pi-user' },
-        { label: 'Contas a receber', icon: 'pi pi-user' },
-        { label: 'Gestão de Carteiras', icon: 'pi pi-user' },
+        { label: 'Balanço', icon: 'pi pi-dollar' },
+        { label: 'Gestão de Carteiras', icon: 'pi pi-wallet' },
         { label: 'Gestão de Acessos', icon: 'pi pi-user' }
     ];
 
     return (
 
-        <div className="balance-container">
+        <div className="wallet-container">
             <div className='top-nav'>
-                <div className='margin-left'></div>
+                <div className='margin-left' ></div>
                 <ul>
-                    <li key={userName}>
+                <Avatar label={userName.substring(0,1)} style={{ backgroundColor: '#9c27b0', color: '#ffffff' }} /> 
+                    <li key={userName} style={{ marginRight: "5%" }}>
                         <span>{userName}</span>
                     </li>
                     <li>
@@ -43,37 +49,67 @@ export default function Balance() {
                     </li>
                 </ul>
             </div>
+
             <div className='container'>
                 <div className="menu">
                     <Menu model={items} />
                 </div>
-                
+
 
                 <div className="main-content">
                     <h1>Balanço</h1>
 
                     <div className='finantial-balance'>
-                        <label htmlFor="value1">Saldo BRL</label>
-                        <InputNumber value={value1} onValueChange={(e) => setValue1(e.value!)} minFractionDigits={2} maxFractionDigits={2} />
-                        <label htmlFor="value2">Saldo USD</label>
-                        <InputNumber value={value2} onValueChange={(e) => setValue2(e.value!)} minFractionDigits={2} maxFractionDigits={2} />
-                        <label htmlFor="value3">Saldo TC</label>
-                        <InputNumber value={value3} onValueChange={(e) => setValue3(e.value!)} minFractionDigits={2} maxFractionDigits={2} />
-                    </div>
-                    <div className='filtering-data'>
-                        <label htmlFor="text1">Periodo</label>
-                        <InputText value={text1} onChange={(e) => setText1(e.target.value)} />
 
-                        {<Button label="FILTRAR" /*style={{ marginTop: "10%" }}*/ />}
-                        {<Button label="FILTROS AVANÇADOS" /*style={{ marginTop: "10%" }}*/ />}
-                        {<Button label="AÇÕES" /*style={{ marginTop: "10%" }}*/ />}
-                        {<Button label="INCLUIR" /*style={{ marginTop: "10%" }}*/ />}
+                        <div className='wallet-name'>
+                            <span>{walletName}</span>
+                        </div>
+
+                        <div className='finantial-organization'>
+
+                            <div className='finantial-framework'>
+                                <label htmlFor="value1">Saldo (BRL)</label>
+                                <span>R$ {value1}</span>
+                            </div>
+                            <div className='finantial-framework'>
+                                <label htmlFor="value2">Vencidas ({vencidas})</label>
+                                <span>R$ {vencidas}</span>
+                            </div>
+                            <div className='finantial-framework'>
+                                <label htmlFor="value3">A pagar ({aPagar})</label>
+                                <span>R$ {aPagar}</span>
+                            </div>
+                            <div className='finantial-framework'>
+                                <label htmlFor="value4">A receber ({aReceber})</label>
+                                <span>R$ {aReceber}</span>
+                            </div>
+
+                        </div>
                     </div>
+
+                    <div className='filtering-data'>
+
+                        <div className='period'>
+                            <label htmlFor="text1">Período</label>
+                        </div>
+                        
+                        <div className='botoes'>
+                            <InputText value={text1} onChange={(e) => setText1(e.target.value)} />
+                    
+                            {<Button label="FILTRAR" /*style={{ marginTop: "10%" }}*/ />}
+                            {<Button id='advanced-filter' label="FILTROS AVANÇADOS" /*style={{ marginTop: "10%" }}*/ />}
+                            {<Button label="AÇÕES" /*style={{ marginTop: "10%" }}*/ />}
+                            {<Button label="INCLUIR" /*style={{ marginTop: "10%" }}*/ />}
+                      
+                        </div>
+
+                    </div>
+
                     <div className='data-table'>
 
-                        <DataTable  tableStyle={{ minWidth: '50rem' }}>
+                        <DataTable tableStyle={{ minWidth: '50rem' }}>
                             <Column field="data" header="Data"></Column>
-                            <Column field="fornecedor" header="Fornecedor"></Column>
+                            <Column field="referencia" header="Referência"></Column>
                             <Column field="valor" header="Valor"></Column>
                             <Column field="pago" header="Pago"></Column>
                             <Column field="observacao" header="Observação"></Column>

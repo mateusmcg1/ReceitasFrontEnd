@@ -10,11 +10,10 @@ export default function Admin() {
     let navigate = useNavigate()
 
     let items = [
-        {label: 'Balanço', icon: 'pi pi-user'},
+        {label: 'Balanço', icon: 'pi pi-dollar'},
         {label: 'Contas a pagar', icon: 'pi pi-user'},
         {label: 'Contas a receber', icon: 'pi pi-user'},
-        {label: 'Gestão de Carteiras', icon: 'pi pi-user'},
-        {label: 'Gestão de Acessos', icon: 'pi pi-user'}
+        {label: 'Gestão de Carteiras', icon: 'pi pi-wallet'},
     ];
     return(
         <div className="container">

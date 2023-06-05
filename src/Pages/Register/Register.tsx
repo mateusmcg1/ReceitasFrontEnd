@@ -32,7 +32,7 @@ function Register() {
 
             if (password === confirmationPassword) {
                 try {
-                    const result = await axios.post('https://dev-api.pjx.f3ssoftware.com/users', {
+                    const result = await axios.post('https://dev-api.pjx.f3ssoftware.com/v1/users', {
 
                         email: user,
                         password: password,

@@ -6,18 +6,18 @@ import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
+import { Avatar } from 'primereact/avatar';
+import './wallet.css'
 
 export default function Wallet() {
 
-    const [userName, setUserName] = useState('Magnamio De Amorim');
+    const [userName, setUserName] = useState('User');
     const [text1, setText1] = useState('');
     let navigate = useNavigate()
 
     let items = [
-        { label: 'Balanço', icon: 'pi pi-user' },
-        { label: 'Contas a pagar', icon: 'pi pi-user' },
-        { label: 'Contas a receber', icon: 'pi pi-user' },
-        { label: 'Gestão de Carteiras', icon: 'pi pi-user' },
+        { label: 'Balanço', icon: 'pi pi-dollar' },
+        { label: 'Gestão de Carteiras', icon: 'pi pi-wallet' },
         { label: 'Gestão de Acessos', icon: 'pi pi-user' }
     ]; 
 
@@ -26,7 +26,8 @@ export default function Wallet() {
             <div className='top-nav'>
                 <div className='margin-left'></div>
                 <ul>
-                    <li key={userName}>
+                <Avatar label={userName.substring(0,1)} style={{ backgroundColor: '#9c27b0', color: '#ffffff' }} /> 
+                    <li key={userName} style={{ marginRight: "5%" }}>
                         <span>{userName}</span>
                     </li>
                     <li>

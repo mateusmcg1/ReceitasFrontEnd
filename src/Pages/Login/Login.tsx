@@ -5,8 +5,8 @@ import { InputText } from 'primereact/inputtext';
 import { Password } from 'primereact/password';
 import { Button } from 'primereact/button';
 import axios from "axios";
+import {Toast, ToastMessage} from 'primereact/toast'
 
-import { Toast } from 'primereact/toast';
 
         
 
@@ -19,7 +19,12 @@ export default function Login() {
     const [usuario, setUsuario] = useState(false);
     const [accessToken, setAccessToken] = useState('')
     const [refreshToken, setRefreshToken] = useState('');
+    const toast = useRef<Toast>(null);
+    
 
+    const show = (severity:ToastMessage["severity"], summary:string, detail:string) => {
+        toast.current?.show({severity, summary, detail});
+    };
 
 
     async function LogUser() {
@@ -42,14 +47,15 @@ export default function Login() {
 
                 }
                 
-                catch{
-                     alert('Usuário não credenciado.')
+                catch(err:any){
+                    //  alert('Usuário não credenciado.')
+                    show('error', 'Erro', 'Usuário não credenciado'); 
 
                 }
         }
 
         else {
-            alert('Insira os dados em todos os campos')
+            show('warn', 'Atenção!', 'Insira os dados em todos os campos.'); 
         }
 
 
@@ -65,6 +71,7 @@ export default function Login() {
             <div className="fitting" />
             <div className="login">
                 <div className="pull-everybody">
+                    <Toast ref={toast} />
                     <div style={{ marginTop: "2%", width: "100%" }}>
                         <label>Usuário</label>
                         <InputText value={user} onChange={(e) => setUser(e.target.value)} />
