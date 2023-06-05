@@ -1,0 +1,50 @@
+    .filter-container{
+        padding: 2% 5%;
+    }
+    #enquandramento-full{
+        display: flex;
+        flex-direction: row;
+    }
+    #enquadramento{
+        width: 70%;
+    }
+    .filter-container h1{
+        font-size: 45px;
+        margin-bottom: 3%;
+    }
+
+    .filter-container .inputs{
+        color:#4F4F4F;
+        margin-bottom: 3%;
+    }
+
+    .filter-container .card{
+        margin-bottom: 1%;
+    } 
+    
+    #range{
+        margin-bottom: 2%;
+    }
+
+    .filter-container .card1{
+        margin-bottom: 2%;
+        display: flex;
+        flex-direction: row;
+    }
+
+    .filter-container .p-checkbox-box{
+        width: 18px;
+        height: 18px;
+    }
+    .filter-container .card1 label{
+        margin-left: 1%;
+    }
+
+    .enquadramento-filtro{
+        width: 100%;
+        display: flex;
+        justify-content: flex-end;
+    }
+    .enquadramento-filtro button{
+        width:15%;
+    }

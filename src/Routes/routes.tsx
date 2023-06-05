@@ -5,7 +5,7 @@ import Balance from '../Pages/Balance/balance'
 import Admin from '../Pages/Admin/Admin'
 import Erro from '../Pages/Erro/erro'
 import Wallet from '../Pages/Wallet/Wallet'
-
+import AdvancedFilter from '../Pages/Filtros Avançados/advanced-filter'
 function Rotas(){
     return(
         <BrowserRouter>
@@ -17,6 +17,7 @@ function Rotas(){
                 <Route path='/balance' element={<Balance/>}/>
                 <Route path='/admin' element={<Admin/>}/>
                 <Route path='/wallet' element={<Wallet/>}/>
+                <Route path='/advancedfilter' element={<AdvancedFilter/>}/>
 
                 <Route path='*' element={<Erro/>}/>
             </Routes>
