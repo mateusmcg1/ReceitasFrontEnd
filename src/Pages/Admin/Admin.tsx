@@ -10,15 +10,16 @@ export default function Admin() {
     let navigate = useNavigate()
 
     let items = [
-        {label: 'Balanço', icon: 'pi pi-dollar'},
-        {label: 'Contas a pagar', icon: 'pi pi-user'},
-        {label: 'Contas a receber', icon: 'pi pi-user'},
-        {label: 'Gestão de Carteiras', icon: 'pi pi-wallet'},
+        { label: 'Balanço', icon: 'pi pi-dollar', command: () => navigate('/balance') },
+        // { label: 'Contas a pagar', icon: 'pi pi-user' },
+        // { label: 'Contas a receber', icon: 'pi pi-user' },
+        { label: 'Gestão de Carteiras', icon: 'pi pi-wallet', command: () => navigate('/wallet') },
+        { label: 'Gestão de Acessos', icon: 'pi pi-user', },
     ];
-    return(
+    return (
         <div className="container">
             <div className="menu">
-                <Menu model={items}/>
+                <Menu model={items} />
             </div>
             <div className="main-content">
                 <h1></h1>
