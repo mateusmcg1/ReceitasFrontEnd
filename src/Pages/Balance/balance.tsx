@@ -36,9 +36,9 @@ export default function Balance() {
 
     return (
 
-        <div className="wallet-container">
+        <div className="balance-container">
             <div className='top-nav'>
-                <div className='margin-left' ></div>
+                <div className='margin-left'></div>
                 <ul>
                 <Avatar label={userName.substring(0,1)} style={{ backgroundColor: '#9c27b0', color: '#ffffff' }} /> 
                     <li key={userName} style={{ marginRight: "5%" }}>
@@ -96,9 +96,9 @@ export default function Balance() {
                         <div className='botoes'>
                             <InputText value={text1} onChange={(e) => setText1(e.target.value)} />
                     
-                            {<Button label="FILTRAR" /*style={{ marginTop: "10%" }}*/ />}
-                            {<Button id='advanced-filter' label="FILTROS AVANÇADOS" /*style={{ marginTop: "10%" }}*/ />}
-                            {<Button label="AÇÕES" /*style={{ marginTop: "10%" }}*/ />}
+                            {<Button label="FILTRAR" style={{ marginLeft: "-2%" }} />}
+                            {<Button id='advanced-filter' label="FILTROS AVANÇADOS" /*style={{ marginLeft: "-1%" }}*/ />}
+                            {<Button label="AÇÕES" style={{ marginLeft: "10%", marginRight:"-8%" }} />}
                             {<Button label="INCLUIR" /*style={{ marginTop: "10%" }}*/ />}
                       
                         </div>

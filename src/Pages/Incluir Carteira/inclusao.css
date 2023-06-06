@@ -1,0 +1,31 @@
+.inclusao-container {
+    padding: 5% 5%;
+    width: 70%;
+}
+
+.inclusao-container h1 {
+    font-size: 45px;
+    margin-bottom: 3%;
+}
+
+.inclusao-frame {
+    width: 100%;
+    color: #4F4F4F;
+}
+
+.inclusao-frame .p-inputtext {
+    height: 56px;
+    margin-bottom: 5%;
+    border: 1px solid #828282;
+    margin-top: 1%;
+}
+
+.inclusao-button {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.inclusao-button .p-button {
+    width: 15%;
+    background-color: #009BE7;
+}

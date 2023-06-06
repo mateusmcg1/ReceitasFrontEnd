@@ -6,6 +6,8 @@ import Admin from '../Pages/Admin/Admin'
 import Erro from '../Pages/Erro/erro'
 import Wallet from '../Pages/Wallet/Wallet'
 import AdvancedFilter from '../Pages/Filtros Avançados/advanced-filter'
+import InclusaoCarteira from '../Pages/Incluir Carteira/inclusao'
+
 function Rotas(){
     return(
         <BrowserRouter>
@@ -18,6 +20,7 @@ function Rotas(){
                 <Route path='/admin' element={<Admin/>}/>
                 <Route path='/wallet' element={<Wallet/>}/>
                 <Route path='/advancedfilter' element={<AdvancedFilter/>}/>
+                <Route path='/addwallet' element={<InclusaoCarteira/>}/>
 
                 <Route path='*' element={<Erro/>}/>
             </Routes>
