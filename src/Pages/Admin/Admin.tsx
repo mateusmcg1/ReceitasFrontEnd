@@ -39,7 +39,7 @@ export default function Admin() {
                     try {
                         // Avoid using same name 'result' again, because of shadowed names of variables
                         const resultRefresh = await axios.post(`$https://dev-api.pjx.f3ssoftware.com/v1/refresh-token`, { refresh_token: sessionStorage.getItem('refresh_token') })
-                        sessionStorage.setItem("access_token", resultRefresh.data.access_token);
+                        sessionStorage.setItem("access_token", resultRefresh.data.access_token);    
                         // Call again 
                         fetchUsers();
                     } catch (error) { // Avoid using 'err' name again, because of shadowed variable
