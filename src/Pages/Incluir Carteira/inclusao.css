@@ -1,3 +1,9 @@
+@media screen and (max-width: 430px){
+    .inclusao-button .p-button {
+        min-width: 40%;
+    }
+} 
+
 .inclusao-container {
     padding: 5% 5%;
     width: 70%;

@@ -96,11 +96,11 @@ export default function Balance() {
                         <div className='botoes'>
                             <InputText value={text1} onChange={(e) => setText1(e.target.value)} />
 
-                            {<Button label="FILTRAR" style={{ marginLeft: "-2%" }} />}
+                            {<Button label="FILTRAR"/>}
                             <Link to={`/advancedfilter`}>
                             {<Button id='advanced-filter' label="FILTROS AVANÇADOS" />}
                                 </Link>
-                            {<Button label="AÇÕES" style={{ marginLeft: "10%", marginRight: "-8%" }} />}
+                            {<Button label="AÇÕES" style={{ marginLeft: "10%", marginRight: "-5%" }} />}
                             {<Button label="INCLUIR" /*style={{ marginTop: "10%" }}*/ />}
 
                         </div>
