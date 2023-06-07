@@ -55,7 +55,7 @@ export default function Wallet() {
                         <InputText value={text1} onChange={(e) => setText1(e.target.value)} />
 
                             {<Button label="FILTRAR" style={{ marginLeft: "-1%" }} />}
-                            {<Button id='advanced-filter' label="FILTROS AVANÇADOS" style={{ marginLeft: "-3%" }}/>}
+                            <Link to={`/advancedfilter`}>{<Button id='advanced-filter' label="FILTROS AVANÇADOS" style={{ marginLeft: "-3%" }}/>}</Link>
                 
                             {<Button label="AÇÕES" style={{ marginRight: "-5%", marginLeft:"10%" }} />}
                             

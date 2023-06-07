@@ -26,7 +26,7 @@ export default function Balance() {
     let [aReceber, setAReceber] = useState(0);
     const [text1, setText1] = useState('');
     const [walletName, setWalletName] = useState('Example')
-    
+
 
     let items = [
         { label: 'Balanço', icon: 'pi pi-dollar', command: () => navigate('/balance') },
@@ -40,7 +40,7 @@ export default function Balance() {
             <div className='top-nav'>
                 <div className='margin-left'></div>
                 <ul>
-                <Avatar label={userName.substring(0,1)} style={{ backgroundColor: '#9c27b0', color: '#ffffff' }} /> 
+                    <Avatar label={userName.substring(0, 1)} style={{ backgroundColor: '#9c27b0', color: '#ffffff' }} />
                     <li key={userName} style={{ marginRight: "5%" }}>
                         <span>{userName}</span>
                     </li>
@@ -92,15 +92,17 @@ export default function Balance() {
                         <div className='period'>
                             <label htmlFor="text1">Período</label>
                         </div>
-                        
+
                         <div className='botoes'>
                             <InputText value={text1} onChange={(e) => setText1(e.target.value)} />
-                    
+
                             {<Button label="FILTRAR" style={{ marginLeft: "-2%" }} />}
-                            {<Button id='advanced-filter' label="FILTROS AVANÇADOS" /*style={{ marginLeft: "-1%" }}*/ />}
-                            {<Button label="AÇÕES" style={{ marginLeft: "10%", marginRight:"-8%" }} />}
+                            <Link to={`/advancedfilter`}>
+                            {<Button id='advanced-filter' label="FILTROS AVANÇADOS" />}
+                                </Link>
+                            {<Button label="AÇÕES" style={{ marginLeft: "10%", marginRight: "-8%" }} />}
                             {<Button label="INCLUIR" /*style={{ marginTop: "10%" }}*/ />}
-                      
+
                         </div>
 
                     </div>

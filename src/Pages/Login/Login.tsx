@@ -17,8 +17,6 @@ export default function Login() {
     const [user, setUser] = useState('');
     const [senha, setSenha] = useState('');
     const [usuario, setUsuario] = useState(false);
-    const [accessToken, setAccessToken] = useState('')
-    const [refreshToken, setRefreshToken] = useState('');
     const toast = useRef<Toast>(null);
     
 
@@ -37,12 +35,10 @@ export default function Login() {
                 username: user,
                 password: senha,
 
-            })
-               
-                    setAccessToken(result.data.access_token)
-                    setRefreshToken(result.data.refresh_token)
-                    sessionStorage.setItem("access_token", accessToken);
-                    sessionStorage.setItem("refresh_token", refreshToken);
+            })  
+        
+                    sessionStorage.setItem("access_token", result.data.access_token);
+                    sessionStorage.setItem("refresh_token", result.data.refresh_token);
                     navigate('/admin', {replace: true})
 
                 }
