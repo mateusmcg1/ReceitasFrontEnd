@@ -1,6 +1,11 @@
-@media screen and (max-width: 430px){
+@media screen and (max-width:500px){
     .inclusao-button .p-button {
-        min-width: 40%;
+        min-width: 45%;
+    }
+}
+@media screen and (min-width:500px) and (max-width:1050px){
+    .inclusao-button .p-button {
+        min-width: 30%;
     }
 } 
 
