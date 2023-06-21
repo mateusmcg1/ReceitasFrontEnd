@@ -19,7 +19,7 @@ export default function InclusaoCarteira() {
                 <label htmlFor="text2">Moeda</label>
                 <InputText value={text2} onChange={(e) => setText2(e.target.value)} />
                 <div className='inclusao-button'>
-                {<Button label="INCLUIR" />}
+                    {<Button label="INCLUIR" />}
                 </div>
             </div>
 

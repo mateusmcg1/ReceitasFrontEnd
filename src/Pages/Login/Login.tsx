@@ -5,11 +5,7 @@ import { InputText } from 'primereact/inputtext';
 import { Password } from 'primereact/password';
 import { Button } from 'primereact/button';
 import axios from "axios";
-import {Toast, ToastMessage} from 'primereact/toast'
-
-
-        
-
+import { Toast, ToastMessage } from 'primereact/toast'
 
 export default function Login() {
 
@@ -18,10 +14,11 @@ export default function Login() {
     const [senha, setSenha] = useState('');
     const [usuario, setUsuario] = useState(false);
     const toast = useRef<Toast>(null);
-    
+    const [visible, setVisible] = useState<boolean>(false);
 
-    const show = (severity:ToastMessage["severity"], summary:string, detail:string) => {
-        toast.current?.show({severity, summary, detail});
+
+    const show = (severity: ToastMessage["severity"], summary: string, detail: string) => {
+        toast.current?.show({ severity, summary, detail });
     };
 
 
@@ -29,29 +26,29 @@ export default function Login() {
 
         if (user !== '' && senha !== '') {
 
-            try{
-            const result = await axios.post('https://dev-api.pjx.f3ssoftware.com/v1/authentication/login', {
+            try {
+                const result = await axios.post(`${process.env.REACT_APP_API_URL}/v1/authentication/login`, {
 
-                username: user,
-                password: senha,
+                    username: user,
+                    password: senha,
 
-            })  
-        
-                    sessionStorage.setItem("access_token", result.data.access_token);
-                    sessionStorage.setItem("refresh_token", result.data.refresh_token);
-                    navigate('/admin', {replace: true})
+                })
 
-                }
-                
-                catch(err:any){
-                    //  alert('Usuário não credenciado.')
-                    show('error', 'Erro', 'Usuário não credenciado'); 
+                sessionStorage.setItem("access_token", result.data.access_token);
+                sessionStorage.setItem("refresh_token", result.data.refresh_token);
+                navigate('/admin', { replace: true })
 
-                }
+            }
+
+            catch (err: any) {
+                //  alert('Usuário não credenciado.')
+                show('error', 'Erro', 'Usuário não credenciado');
+
+            }
         }
 
         else {
-            show('warn', 'Atenção!', 'Insira os dados em todos os campos.'); 
+            show('warn', 'Atenção!', 'Insira os dados em todos os campos.');
         }
 
 
@@ -80,7 +77,7 @@ export default function Login() {
                         {/* <input value={senha}
                             onChange={(e) => setSenha(e.target.value)} /> */}
                     </div>
-                    
+
                     <Button label="Entrar" onClick={LogUser} style={{ marginTop: "10%" }} />
                     {/* <button onClick={logUser}>Entrar</button> */}
                     <div className="Register" style={{ marginTop: "5%" }}>

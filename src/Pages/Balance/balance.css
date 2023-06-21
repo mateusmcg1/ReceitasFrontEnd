@@ -83,6 +83,19 @@
     align-items: center;
 }
 
+.wallet-name .p-button{
+    background-color: #D9D9D9;
+    color: black;
+    border: none;
+    transition: none;
+}
+
+.wallet-name .p-button:hover {
+    background-color: #D9D9D9;
+    border:none;
+    color: black;
+}
+
 .finantial-organization {
     display: flex;
     /* flex-direction: row; */

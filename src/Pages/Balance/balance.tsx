@@ -10,6 +10,7 @@ import { Button } from 'primereact/button';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Avatar } from 'primereact/avatar';
+import { Dialog } from 'primereact/dialog'
 
 export default function Balance() {
 
@@ -26,6 +27,7 @@ export default function Balance() {
     let [aReceber, setAReceber] = useState(0);
     const [text1, setText1] = useState('');
     const [walletName, setWalletName] = useState('Example')
+    const [visible, setVisible] = useState<boolean>(false);
 
 
     let items = [
@@ -37,91 +39,72 @@ export default function Balance() {
     return (
 
         <div className="balance-container">
-            <div className='top-nav'>
-                <div className='margin-left'></div>
-                <ul>
-                    <Avatar label={userName.substring(0, 1)} style={{ backgroundColor: '#9c27b0', color: '#ffffff' }} />
-                    <li key={userName} style={{ marginRight: "5%" }}>
-                        <span>{userName}</span>
-                    </li>
-                    <li>
-                        <span>Sair</span>
-                    </li>
-                </ul>
-            </div>
+            <div className="main-content">
+                <h1>Balanço</h1>
 
-            <div className='container'>
-                <div className="menu">
-                    <Menu model={items} />
-                </div>
+                <div className='finantial-balance'>
 
-
-                <div className="main-content">
-                    <h1>Balanço</h1>
-
-                    <div className='finantial-balance'>
-
-                        <div className='wallet-name'>
-                            <span>{walletName}</span>
-                        </div>
-
-                        <div className='finantial-organization'>
-
-                            <div className='finantial-framework'>
-                                <label htmlFor="value1">Saldo (BRL)</label>
-                                <span>R$ {value1}</span>
-                            </div>
-                            <div className='finantial-framework'>
-                                <label htmlFor="value2">Vencidas ({vencidas})</label>
-                                <span>R$ {vencidas}</span>
-                            </div>
-                            <div className='finantial-framework'>
-                                <label htmlFor="value3">A pagar ({aPagar})</label>
-                                <span>R$ {aPagar}</span>
-                            </div>
-                            <div className='finantial-framework'>
-                                <label htmlFor="value4">A receber ({aReceber})</label>
-                                <span>R$ {aReceber}</span>
-                            </div>
-
-                        </div>
+                    <div className='wallet-name'>
+                        <Button label={walletName} onClick={() => setVisible(true)} />
+                        <Dialog header="Selecionar Carteira" visible={visible} style={{ width: '50vw' }} onHide={() => setVisible(false)}> </Dialog>
+                        {/*  */}
                     </div>
 
-                    <div className='filtering-data'>
+                    <div className='finantial-organization'>
 
-                        <div className='period'>
-                            <label htmlFor="text1">Período</label>
+                        <div className='finantial-framework'>
+                            <label htmlFor="value1">Saldo (BRL)</label>
+                            <span>R$ {value1}</span>
+                        </div>
+                        <div className='finantial-framework'>
+                            <label htmlFor="value2">Vencidas ({vencidas})</label>
+                            <span>R$ {vencidas}</span>
+                        </div>
+                        <div className='finantial-framework'>
+                            <label htmlFor="value3">A pagar ({aPagar})</label>
+                            <span>R$ {aPagar}</span>
+                        </div>
+                        <div className='finantial-framework'>
+                            <label htmlFor="value4">A receber ({aReceber})</label>
+                            <span>R$ {aReceber}</span>
                         </div>
 
-                        <div className='botoes'>
-                            <InputText value={text1} onChange={(e) => setText1(e.target.value)} />
+                    </div>
+                </div>
 
-                            {<Button label="FILTRAR"/>}
-                            <Link to={`/advancedfilter`}>
+                <div className='filtering-data'>
+
+                    <div className='period'>
+                        <label htmlFor="text1">Período</label>
+                    </div>
+
+                    <div className='botoes'>
+                        <InputText value={text1} onChange={(e) => setText1(e.target.value)} />
+
+                        {<Button label="FILTRAR" />}
+                        <Link to={`/advancedfilter`}>
                             {<Button id='advanced-filter' label="FILTROS AVANÇADOS" />}
-                                </Link>
-                            {<Button label="AÇÕES" style={{ marginLeft: "10%", marginRight: "-5%" }} />}
-                            {<Button label="INCLUIR" /*style={{ marginTop: "10%" }}*/ />}
-
-                        </div>
-
-                    </div>
-
-                    <div className='data-table'>
-
-                        <DataTable tableStyle={{ minWidth: '50rem' }}>
-                            <Column field="data" header="Data"></Column>
-                            <Column field="referencia" header="Referência"></Column>
-                            <Column field="valor" header="Valor"></Column>
-                            <Column field="pago" header="Pago"></Column>
-                            <Column field="observacao" header="Observação"></Column>
-                            <Column field="parcela" header="Parcela"></Column>
-                        </DataTable>
+                        </Link>
+                        {<Button label="AÇÕES" style={{ marginLeft: "10%", marginRight: "-5%" }} />}
+                        {<Button label="INCLUIR" /*style={{ marginTop: "10%" }}*/ />}
 
                     </div>
 
                 </div>
-                {/* </main> */}
+
+                <div className='data-table'>
+
+                    <DataTable tableStyle={{ minWidth: '50rem' }}>
+                        <Column field="data" header="Data"></Column>
+                        <Column field="referencia" header="Referência"></Column>
+                        <Column field="valor" header="Valor"></Column>
+                        <Column field="pago" header="Pago"></Column>
+                        <Column field="observacao" header="Observação"></Column>
+                        <Column field="parcela" header="Parcela"></Column>
+                    </DataTable>
+
+                </div>
+
             </div>
         </div>
     )

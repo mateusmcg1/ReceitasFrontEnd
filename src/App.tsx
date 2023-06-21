@@ -11,13 +11,14 @@ import { useState } from "react";
 
 import "./App.css"
 import Rotas from "./Routes/routes";
+import { Casket } from "./Shared/Casket/Casket";
 
 
 function App() {
-
+ 
   return (
     <div> 
-      <Rotas/>
+      <Rotas></Rotas>
     </div>
   );
 }
