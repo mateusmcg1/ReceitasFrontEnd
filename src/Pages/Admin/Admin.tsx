@@ -11,13 +11,13 @@ export default function Admin() {
     let navigate = useNavigate()
 
     const [users, setUsers] = useState('');
-    let items = [
-        { label: 'Balanço', icon: 'pi pi-dollar', command: () => navigate('/balance') },
-        // { label: 'Contas a pagar', icon: 'pi pi-user' },
-        // { label: 'Contas a receber', icon: 'pi pi-user' },
-        { label: 'Gestão de Carteiras', icon: 'pi pi-wallet', command: () => navigate('/wallet') },
-        { label: 'Gestão de Acessos', icon: 'pi pi-user', },
-    ];
+    // let items = [
+    //     { label: 'Balanço', icon: 'pi pi-dollar', command: () => navigate('/balance') },
+    //     // { label: 'Contas a pagar', icon: 'pi pi-user' },
+    //     // { label: 'Contas a receber', icon: 'pi pi-user' },
+    //     { label: 'Gestão de Carteiras', icon: 'pi pi-wallet', command: () => navigate('/wallet') },
+    //     { label: 'Gestão de Acessos', icon: 'pi pi-user', },
+    // ];
 
     const fetchUsers = async () => {
         try {
@@ -61,9 +61,9 @@ export default function Admin() {
 
     return (
         <div className="container">
-            <div className="menu">
+            {/* <div className="menu">
                 <Menu model={items} />
-            </div>
+            </div> */}
             <div className="main-content">
                 <h1></h1>
             </div>

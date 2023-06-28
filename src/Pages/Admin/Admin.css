@@ -9,7 +9,7 @@
   } */
     
 .container .menu {
-    width: 15%;
+    width: 10%;
     display: flex;
     flex-direction:column;
     align-items: flex-start;

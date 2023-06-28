@@ -11,13 +11,14 @@ import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Avatar } from 'primereact/avatar';
 import { Dialog } from 'primereact/dialog'
+import { Dropdown } from 'primereact/dropdown';
 
 export default function Balance() {
 
     let navigate = useNavigate()
 
     const [userName, setUserName] = useState('Nome');
-
+    const [wallets, setWallets] = useState<any[]>([]);
     const [value1, setValue1] = useState(0);
     const [value2, setValue2] = useState(0);
     const [value3, setValue3] = useState(0);
@@ -36,6 +37,23 @@ export default function Balance() {
         { label: 'Gestão de Acessos', icon: 'pi pi-user' }
     ];
 
+    const fetchWallets = async () => {
+        try {
+            const result = await axios.get(`${process.env.REACT_APP_API_URL}/v1/wallets`, {
+                headers: {
+                    Authorization: `Bearer ${sessionStorage.getItem('access_token')!}`,
+                },
+            });
+            setWallets(result.data);
+        } catch (err) {
+            alert(err);
+        }
+
+    }
+    useEffect(() => {
+        fetchWallets();
+    }, []);
+
     return (
 
         <div className="balance-container">
@@ -46,7 +64,11 @@ export default function Balance() {
 
                     <div className='wallet-name'>
                         <Button label={walletName} onClick={() => setVisible(true)} />
-                        <Dialog header="Selecionar Carteira" visible={visible} style={{ width: '50vw' }} onHide={() => setVisible(false)}> </Dialog>
+                        <Dialog header="Selecionar Carteira" visible={visible} style={{ width: '50vw' }} onHide={() => setVisible(false)}>
+                            {wallets.map((wallet, index) => <div key={index}>
+                                {wallet?.name}
+                            </div>)}
+                        </Dialog>
                         {/*  */}
                     </div>
 
