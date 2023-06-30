@@ -27,15 +27,16 @@
     display: flex;
     align-items: center;
     justify-content:flex-end;
+    
 }
 
 .topbar li{
-    text-decoration: none;
+    list-style: none;
     margin-right: 5%;
 }
 
 .topbar .p-avatar{
-    margin-right: 2%;
+    margin-right: 1%;
    
 }
 
