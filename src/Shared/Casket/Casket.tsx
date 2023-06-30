@@ -21,7 +21,7 @@ export function Casket({ children }: { children?: any }) {
                 <div className="topbar">
                     <ul>
                         <Avatar label={userName.substring(0, 1)} style={{ backgroundColor: '#9c27b0', color: '#ffffff' }} />
-                        <li key={userName} style={{ marginRight: "5%" }}>
+                        <li key={userName}>
                             <span>{userName}</span>
                         </li>
                         <li>

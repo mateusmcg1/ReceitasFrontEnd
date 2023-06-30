@@ -1,14 +1,14 @@
-.casket-container{
 
+.casket-container{
     width: 100%;
-    height: 100vh !important;
+    
 }
 
 .A{
     width:100%;
     display: flex;
     flex-direction: row;
-
+    height: 5vh;
 }
 
 .margin{
@@ -17,7 +17,6 @@
 }
 .topbar{
     width: 85%;
-    height: 5vh !important;
     background-color: #D4D4D4;
     display: flex;
 }
@@ -28,7 +27,6 @@
     display: flex;
     align-items: center;
     justify-content:flex-end;
-    
 }
 
 .topbar li{
@@ -46,11 +44,23 @@
     font-size: 14px;
 }
 
+.menu {
+   
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-top: 10%;
+    width: 15%;
+    /* padding: 12px 24px;
+    gap: 10px; */
+}
+
 .column-order{
     padding: 0;
     display: flex;
     flex-direction: row;
     background-color: #2B2B2B;
+    height: 95vh;
 }
 
 
