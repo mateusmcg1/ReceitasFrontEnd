@@ -16,12 +16,6 @@ export default function Wallet() {
     const [text1, setText1] = useState('');
     let navigate = useNavigate()
 
-    let items = [
-        { label: 'Balanço', icon: 'pi pi-dollar', command: () => navigate('/balance') },
-        { label: 'Gestão de Carteiras', icon: 'pi pi-wallet', command: () => navigate('/wallet') },
-        { label: 'Gestão de Acessos', icon: 'pi pi-user' }
-    ];
-
     return (
         <div className='wallet-container'>
             <div className='wallet-main-content'>

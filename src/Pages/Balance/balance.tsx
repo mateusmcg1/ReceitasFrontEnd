@@ -31,12 +31,6 @@ export default function Balance() {
     const [visible, setVisible] = useState<boolean>(false);
 
 
-    let items = [
-        { label: 'Balanço', icon: 'pi pi-dollar', command: () => navigate('/balance') },
-        { label: 'Gestão de Carteiras', icon: 'pi pi-wallet', command: () => navigate('/wallet') },
-        { label: 'Gestão de Acessos', icon: 'pi pi-user' }
-    ];
-
     const fetchWallets = async () => {
         try {
             const result = await axios.get(`${process.env.REACT_APP_API_URL}/v1/wallets`, {

@@ -1,24 +1,56 @@
-.main-content {
-    padding: 2% 5%;
+.casket-container{
+
+    width: 100%;
+    height: 100vh !important;
 }
 
-.main-content h1 {
-    margin-bottom: 3%;
-    font-size: 45px;
-}
-
-.menu {
-    width: 15%;
+.A{
+    width:100%;
     display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    margin-top: 10%;
-    /* padding: 12px 24px;
-    gap: 10px; */
+    flex-direction: row;
+
 }
 
-.wallet-name .p-button:hover {
-    background-color: #D9D9D9;
-    border:none;
-    color: black;
+.margin{
+    width:15%;
+    background-color:#2B2B2B;
 }
+.topbar{
+    width: 85%;
+    height: 5vh !important;
+    background-color: #D4D4D4;
+    display: flex;
+}
+
+.topbar ul{
+    width: 100%;
+    padding:0;
+    display: flex;
+    align-items: center;
+    justify-content:flex-end;
+    
+}
+
+.topbar li{
+    text-decoration: none;
+    margin-right: 5%;
+}
+
+.topbar .p-avatar{
+    margin-right: 2%;
+   
+}
+
+.topbar span{
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.column-order{
+    padding: 0;
+    display: flex;
+    flex-direction: row;
+    background-color: #2B2B2B;
+}
+
+

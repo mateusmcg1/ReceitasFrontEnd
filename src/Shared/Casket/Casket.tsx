@@ -13,25 +13,32 @@ export function Casket({ children }: { children?: any }) {
         { label: 'Gestão de Carteiras', icon: 'pi pi-wallet', command: () => { navigate('wallet') } },
         { label: 'Gestão de Acessos', icon: 'pi pi-user' }
     ];
-    return (<div className="container">
-        <div>
-            <ul>
-                <Avatar label={userName.substring(0, 1)} style={{ backgroundColor: '#9c27b0', color: '#ffffff' }} />
-                <li key={userName} style={{ marginRight: "5%" }}>
-                    <span>{userName}</span>
-                </li>
-                <li>
-                    <span>Sair</span>
-                </li>
-            </ul>
+    return (
+        <div className="casket-container">
+
+            <div className="A">
+                <div className="margin"></div>
+                <div className="topbar">
+                    <ul>
+                        <Avatar label={userName.substring(0, 1)} style={{ backgroundColor: '#9c27b0', color: '#ffffff' }} />
+                        <li key={userName} style={{ marginRight: "5%" }}>
+                            <span>{userName}</span>
+                        </li>
+                        <li>
+                            <span>Sair</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div className="column-order">
+                <div className='menu'>
+                    <Menu model={items} />
+                </div>
+                <div className="main-content">
+                    <Outlet></Outlet>
+                </div>
+            </div>
         </div>
-        <div className='menu'>
-            <Menu model={items} />
-        </div>
-        <div className="main-content">
-            <Outlet></Outlet>
-        </div>
-    </div>
 
     )
 }
