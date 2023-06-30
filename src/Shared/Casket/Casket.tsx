@@ -1,5 +1,5 @@
 import { Menu } from "primereact/menu";
-import { Outlet, Routes, useNavigate } from "react-router-dom";
+import { Link, Outlet, Routes, useNavigate } from "react-router-dom";
 import Rotas from "../../Routes/routes";
 import './Casket.css';
 import { Avatar } from "primereact/avatar";
@@ -25,7 +25,7 @@ export function Casket({ children }: { children?: any }) {
                             <span>{userName}</span>
                         </li>
                         <li>
-                            <span>Sair</span>
+                            <Link to={`/login`}><span>Sair</span></Link>
                         </li>
                     </ul>
                 </div>

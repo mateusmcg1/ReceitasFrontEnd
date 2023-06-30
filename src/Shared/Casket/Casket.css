@@ -39,7 +39,10 @@
     margin-right: 1%;
    
 }
-
+.topbar a{
+    text-decoration: none;
+    color: black
+}
 .topbar span{
     font-weight: bold;
     font-size: 14px;
