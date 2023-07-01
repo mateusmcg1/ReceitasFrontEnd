@@ -1,6 +1,6 @@
 import './wallet.css'
 import { Menu } from 'primereact/menu';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from "axios";
 import { DataTable } from 'primereact/datatable';
@@ -8,13 +8,54 @@ import { Column } from 'primereact/column';
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 import { Avatar } from 'primereact/avatar';
+import { SplitButton } from 'primereact/splitbutton';
+import { WalletDto } from '../../models/wallet.dto';
+import { MenuItem } from 'primereact/menuitem';
+import { Dialog } from 'primereact/dialog';
+import IncludeWallet from '../Incluir Carteira/IncludeWallet';
 
 
 export default function Wallet() {
 
-    const [userName, setUserName] = useState('User');
-    const [text1, setText1] = useState('');
-    let navigate = useNavigate()
+    const [find, setFind] = useState('')
+    const [loading, setLoading] = useState(false);
+    const [selectedWallet, setSelectedWallet] = useState<any>();
+    const [wallets, setWallets] = useState<WalletDto[]>([]);
+    const [showNewWallet, setShowNewWallet] = useState(false);
+
+    const actions: MenuItem[] = [
+        {
+            label: 'Editar',
+            icon: 'pi pi-pencil',
+            command: () => {
+                console.log(selectedWallet);
+            }
+        },
+        {
+            label: 'Deletar',
+            icon: 'pi pi-trash',
+            command: () => {
+                console.log(selectedWallet);
+            }
+        },
+    ];
+
+    useEffect(() => {
+        fetchWallets()
+    }, []);
+
+    const fetchWallets = async () => {
+        try {
+            const result = await axios.get(`${process.env.REACT_APP_API_URL}/v1/wallets`, {
+                headers: {
+                    Authorization: `Bearer ${sessionStorage.getItem('access_token')}`
+                }
+            });
+            setWallets(result.data);
+        } catch (err) {
+
+        }
+    }
 
     return (
         <div className='wallet-container'>
@@ -27,23 +68,29 @@ export default function Wallet() {
 
                 <div id='label-input-frame'>
 
-                    <InputText value={text1} onChange={(e) => setText1(e.target.value)} />
+                    <InputText value={find} onChange={(e) => setFind(e.target.value)} />
 
                     {<Button label="FILTRAR" style={{ marginLeft: "-1%" }} />}
-                    <Link to={`/advancedfilter`}>{<Button id='advanced-filter' label="FILTROS AVANÇADOS" style={{ marginLeft: "-3%" }} />}</Link>
 
-                    {<Button label="AÇÕES" style={{ marginRight: "-5%", marginLeft: "10%" }} />}
+                    <SplitButton label="AÇÕES" icon="pi pi-plus" onClick={() => {
+                        console.log('clicked');
+                    }} model={actions} />
+                    {/* {<Button label="AÇÕES" style={{ marginRight: "-5%", marginLeft: "10%" }} />} */}
 
-                    <Link to={`/addwallet`}>{<Button id='inclusao' label="INCLUIR"  /*style={{ marginTop: "10%" }}*/ />}</Link>
+                    <Button id='inclusao' label="INCLUIR" onClick={() => setShowNewWallet(true)} />
                 </div>
 
-
-                <DataTable tableStyle={{ minWidth: '50rem' }}>
-                    <Column field="data" header="Data de Criação"></Column>
+                <DataTable loading={loading} selectionMode='single' selection={selectedWallet} onSelectionChange={(e) => setSelectedWallet(e.value)} tableStyle={{ minWidth: '50rem' }} value={wallets}>
+                    <Column body={(data) => {
+                        return <span>{new Date(data.createdAt).toLocaleDateString('pt-BR')}</span>
+                    }} header="Data de Criação"></Column>
                     <Column field="name" header="Nome"></Column>
                     <Column field="currency" header="Moeda"></Column>
                 </DataTable>
             </div>
+            <Dialog header="Incluir Carteira" visible={showNewWallet} style={{ width: '50vw' }} onHide={() => setShowNewWallet(false)}>
+                <IncludeWallet></IncludeWallet>
+            </Dialog>
         </div>
     )
 }

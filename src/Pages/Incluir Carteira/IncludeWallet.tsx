@@ -3,7 +3,7 @@ import './inclusao.css'
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 
-export default function InclusaoCarteira() {
+export default function IncludeWallet() {
 
     const [text1, setText1] = useState('');
     const [text2, setText2] = useState('');

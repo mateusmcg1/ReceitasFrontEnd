@@ -7,19 +7,18 @@
     font-family: Roboto;
     margin:0;
   } */
-    
+
 .container .menu {
-    width: 10%;
-    display: flex;
-    flex-direction:column;
-    align-items: flex-start;
-    margin-top:5%;
-    min-width: 15%;
-    /* padding: 12px 24px;
+  width: 10%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-top: 5%;
+  min-width: 15%;
+  /* padding: 12px 24px;
     gap: 10px; */
-    
 }
-.p-menu{
+/* .p-menu{
     background-color: #2B2B2B;
     width:100%;
     border-radius: 0;
@@ -43,8 +42,8 @@
 
 .p-menuitem-text{
     color: white !important ;
-}
+} */
 .main-content {
-    width: 85%;
-    background-color: white;
+  width: 85%;
+  background-color: white;
 }
