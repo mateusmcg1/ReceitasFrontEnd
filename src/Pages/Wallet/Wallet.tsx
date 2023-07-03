@@ -88,7 +88,7 @@ export default function Wallet() {
                     <Column field="currency" header="Moeda"></Column>
                 </DataTable>
             </div>
-            <Dialog header="Incluir Carteira" visible={showNewWallet} style={{ width: '50vw' }} onHide={() => setShowNewWallet(false)}>
+            <Dialog visible={showNewWallet} style={{ width: '50vw' }} onHide={() => setShowNewWallet(false)}>
                 <IncludeWallet></IncludeWallet>
             </Dialog>
         </div>

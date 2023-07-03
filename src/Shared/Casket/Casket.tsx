@@ -17,6 +17,7 @@ export function Casket({ children }: { children?: any }) {
     }, []);
 
     const location = useLocation();
+    console.log(location)
 
     let items = [
         { label: 'Balanço', icon: 'pi pi-dollar', command: () => { navigate('balance') } },

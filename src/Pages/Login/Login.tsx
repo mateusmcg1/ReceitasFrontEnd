@@ -1,6 +1,6 @@
 import "./Login.css"
 import { useState, useRef } from 'react'
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { InputText } from 'primereact/inputtext';
 import { Password } from 'primereact/password';
 import { Button } from 'primereact/button';
@@ -15,7 +15,6 @@ export default function Login() {
     const [usuario, setUsuario] = useState(false);
     const toast = useRef<Toast>(null);
     const [visible, setVisible] = useState<boolean>(false);
-
 
     const show = (severity: ToastMessage["severity"], summary: string, detail: string) => {
         toast.current?.show({ severity, summary, detail });
