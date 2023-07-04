@@ -9,7 +9,7 @@ import { useState } from "react";
 //import {useState} from 'react'  
      
 
-import "./App.css"
+import "./App.scss"
 import Rotas from "./Routes/routes";
 import { Casket } from "./Shared/Casket/Casket";
 

@@ -124,7 +124,7 @@ export default function Balance() {
                     </DataTable>
 
                 </div>
-                <Dialog header="" visible={showIncludeTransaction} style={{ width: '50vw' }} onHide={() => setShowIncludeTransaction(false)}>
+                <Dialog header="Nova Transação" visible={showIncludeTransaction} style={{ width: '50vw' }} onHide={() => setShowIncludeTransaction(false)}>
                     <NewTransaction></NewTransaction>
                 </Dialog>
             </div>
