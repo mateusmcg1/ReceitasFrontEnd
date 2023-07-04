@@ -12,6 +12,7 @@ import { Column } from 'primereact/column';
 import { Avatar } from 'primereact/avatar';
 import { Dialog } from 'primereact/dialog'
 import { Dropdown } from 'primereact/dropdown';
+import NewTransaction from '../New_transaction/new_transaction';
 
 export default function Balance() {
 
@@ -29,6 +30,7 @@ export default function Balance() {
     const [text1, setText1] = useState('');
     const [walletName, setWalletName] = useState('Example')
     const [visible, setVisible] = useState<boolean>(false);
+    const [showIncludeTransaction, setShowIncludeTransaction] = useState(false);
 
 
     const fetchWallets = async () => {
@@ -102,7 +104,9 @@ export default function Balance() {
                             {<Button id='advanced-filter' label="FILTROS AVANÇADOS" />}
                         </Link>
                         {<Button label="AÇÕES" style={{ marginLeft: "10%", marginRight: "-5%" }} />}
-                        {<Button label="INCLUIR" /*style={{ marginTop: "10%" }}*/ />}
+                        {<Button label="INCLUIR" onClick={(e) => {
+                            setShowIncludeTransaction(true);
+                        }} /*style={{ marginTop: "10%" }}*/ />}
 
                     </div>
 
@@ -120,7 +124,9 @@ export default function Balance() {
                     </DataTable>
 
                 </div>
-
+                <Dialog header="" visible={showIncludeTransaction} style={{ width: '50vw' }} onHide={() => setShowIncludeTransaction(false)}>
+                    <NewTransaction></NewTransaction>
+                </Dialog>
             </div>
         </div>
     )
