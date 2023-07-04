@@ -12,6 +12,7 @@ import { Column } from 'primereact/column';
 import { Avatar } from 'primereact/avatar';
 import { Dialog } from 'primereact/dialog'
 import { Dropdown } from 'primereact/dropdown';
+import AdvancedFilter from '../Filtros Avançados/advanced-filter'
 
 export default function Balance() {
 
@@ -29,7 +30,7 @@ export default function Balance() {
     const [text1, setText1] = useState('');
     const [walletName, setWalletName] = useState('Example')
     const [visible, setVisible] = useState<boolean>(false);
-
+    const [showFilter, setShowFilter] = useState(false);
 
     const fetchWallets = async () => {
         try {
@@ -98,9 +99,9 @@ export default function Balance() {
                         <InputText value={text1} onChange={(e) => setText1(e.target.value)} />
 
                         {<Button label="FILTRAR" />}
-                        <Link to={`/advancedfilter`}>
-                            {<Button id='advanced-filter' label="FILTROS AVANÇADOS" />}
-                        </Link>
+                            
+                            {<Button id='advanced-filter' label="FILTROS AVANÇADOS" onClick={() => setShowFilter(true)}/>}
+                        
                         {<Button label="AÇÕES" style={{ marginLeft: "10%", marginRight: "-5%" }} />}
                         {<Button label="INCLUIR" /*style={{ marginTop: "10%" }}*/ />}
 
@@ -120,7 +121,9 @@ export default function Balance() {
                     </DataTable>
 
                 </div>
-
+                <Dialog visible={showFilter} style={{ width: '50vw' }} onHide={() => setShowFilter(false)}>
+                <AdvancedFilter></AdvancedFilter>
+                </Dialog>
             </div>
         </div>
     )
