@@ -13,6 +13,7 @@ export default function TransactionForm() {
   const [reference, setReference] = useState("");
   const [selectedType, setSelectedType] = useState("");
   const [checked, setChecked] = useState<boolean>(false);
+  // const [installments, setInstallments] = useState<string>({})
   return (
     <div className="flex flex-column gap-2">
       <label htmlFor="reference">Referencia</label>
@@ -61,7 +62,7 @@ export default function TransactionForm() {
         ></Checkbox>
         <label className="ml-2" htmlFor="installments">Possui parcelamento</label>
       </div>
-      {checked == true ? <div></div> : <></> }
+      {checked === true ?  <div></div> : <></> }
     </div>
   );
 }
