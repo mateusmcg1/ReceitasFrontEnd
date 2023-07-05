@@ -99,9 +99,9 @@ export default function Balance() {
                         <InputText value={text1} onChange={(e) => setText1(e.target.value)} />
 
                         {<Button label="FILTRAR" />}
-                            
-                            {<Button id='advanced-filter' label="FILTROS AVANÇADOS" onClick={() => setShowFilter(true)}/>}
-                        
+
+                        {<Button id='advanced-filter' label="FILTROS AVANÇADOS" onClick={() => setShowFilter(true)} />}
+
                         {<Button label="AÇÕES" style={{ marginLeft: "10%", marginRight: "-5%" }} />}
                         {<Button label="INCLUIR" /*style={{ marginTop: "10%" }}*/ />}
 
@@ -122,7 +122,7 @@ export default function Balance() {
 
                 </div>
                 <Dialog visible={showFilter} style={{ width: '50vw' }} onHide={() => setShowFilter(false)}>
-                <AdvancedFilter></AdvancedFilter>
+                    <AdvancedFilter></AdvancedFilter>
                 </Dialog>
             </div>
         </div>

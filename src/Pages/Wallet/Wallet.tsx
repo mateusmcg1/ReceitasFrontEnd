@@ -23,6 +23,7 @@ export default function Wallet() {
     const [wallets, setWallets] = useState<WalletDto[]>([]);
     const [showNewWallet, setShowNewWallet] = useState(false);
 
+
     const actions: MenuItem[] = [
         {
             label: 'Editar',
@@ -41,7 +42,7 @@ export default function Wallet() {
     ];
 
     useEffect(() => {
-        fetchWallets()
+        fetchWallets();
     }, []);
 
     const fetchWallets = async () => {
