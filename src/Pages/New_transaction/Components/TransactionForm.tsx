@@ -4,6 +4,7 @@ import { InputNumber } from "primereact/inputnumber";
 import { Calendar, CalendarChangeEvent } from "primereact/calendar";
 import { Dropdown, DropdownChangeEvent } from "primereact/dropdown";
 import { Checkbox } from "primereact/checkbox";
+import { Installment } from "../../../models/Installment";
 
 //FALTA IMPLEMENTAR O CSS DE ACORDO COM O PROTÓTIPO//
 
@@ -13,7 +14,9 @@ export default function TransactionForm() {
   const [reference, setReference] = useState("");
   const [selectedType, setSelectedType] = useState("");
   const [checked, setChecked] = useState<boolean>(false);
-  // const [installments, setInstallments] = useState<string>({})
+  // const [installments, setInstallments] = useState([new Installment])
+
+
   return (
     <div className="flex flex-column gap-2">
       <label htmlFor="reference">Referencia</label>
