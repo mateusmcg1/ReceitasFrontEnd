@@ -5,7 +5,7 @@ import Balance from '../Pages/Balance/balance'
 import Admin from '../Pages/Admin/Admin'
 import Erro from '../Pages/Erro/erro'
 import Wallet from '../Pages/Wallet/Wallet'
-import IncludeWallet from '../Pages/Incluir Carteira/IncludeWallet';
+import IncludeWallet from '../Pages/Wallet/Incluir Carteira/IncludeWallet';
 import Verifying from '../Pages/Verifying/verifying'
 import { Casket } from '../Shared/Casket/Casket';
 

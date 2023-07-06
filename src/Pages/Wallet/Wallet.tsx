@@ -12,7 +12,7 @@ import { SplitButton } from 'primereact/splitbutton';
 import { WalletDto } from '../../models/wallet.dto';
 import { MenuItem } from 'primereact/menuitem';
 import { Dialog } from 'primereact/dialog';
-import IncludeWallet from '../Incluir Carteira/IncludeWallet';
+import IncludeWallet from './Incluir Carteira/IncludeWallet';
 import EditWallet from './Editar Carteira/editWallet'
 
 export default function Wallet() {
