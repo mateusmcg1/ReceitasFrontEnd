@@ -1,10 +1,10 @@
-import { useState } from 'react';
-import './inclusao.css'
+import { useState, useEffect } from 'react';
+import './editWallet.css'
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 import axios from "axios";
 
-export default function IncludeWallet() {
+export default function EditWallet() {
 
     const [text1, setText1] = useState('');
     const [text2, setText2] = useState('');
@@ -12,7 +12,7 @@ export default function IncludeWallet() {
 
     const addWallets = async () => {
         try {
-            const result = await axios.post(`${process.env.REACT_APP_API_URL}/v1/wallets`, {
+            const result = await axios.put(`${process.env.REACT_APP_API_URL}/v1/wallets/${sessionStorage.getItem('oldData')}`, {
                 currency: text2,
                 name: text1,
                 createdAt: new Date()
@@ -22,6 +22,8 @@ export default function IncludeWallet() {
                         Authorization: `Bearer ${sessionStorage.getItem('access_token')}`
                     }
                 })
+                sessionStorage.setItem('oldData', '');
+                alert('sucesso');
         }
         catch (err) {
             alert(err);
