@@ -26,7 +26,7 @@ export default function TransactionForm() {
       const result = await axios.post(
         `${process.env.REACT_APP_API_URL}/v1/transactions`,{
           reference: reference,
-          due_date: date?.toString(),
+          due_date: date,
           installments: installments,
           type:selectedType,
           amount: value
