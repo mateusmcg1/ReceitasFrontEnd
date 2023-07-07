@@ -61,7 +61,9 @@ export default function Wallet() {
                        return () => clearInterval(interval);
                 }
                 catch (err) {
-                    alert(err);
+                    if (err = 401){
+                    show('error', 'Unauthorized', 'Acesso negado! O token de acesso informado é inválido.');
+                    }
                 }
             }
         }
