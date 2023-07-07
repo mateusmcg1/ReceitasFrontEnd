@@ -133,7 +133,7 @@ export default function Balance() {
 
                 </div>
                 <Dialog header="Nova Transação" visible={showIncludeTransaction} style={{ width: '50vw' }} onHide={() => setShowIncludeTransaction(false)}>
-                    <NewTransaction walletId={0}></NewTransaction>
+                    <NewTransaction walletId={selectedWallet?.id!}></NewTransaction>
                 </Dialog>
             </div>
         </div>

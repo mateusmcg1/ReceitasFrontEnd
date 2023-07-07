@@ -11,7 +11,7 @@ import { Button } from "primereact/button";
 
 //FALTA IMPLEMENTAR O CSS DE ACORDO COM O PROTÓTIPO//
 
-export default function TransactionForm() {
+export default function TransactionForm({walletId}:{walletId: string}) {
   const [value, setValue] = useState(0);
   const [date, setDate] = useState<string | Date | Date[] | null>([new Date()]);
   const [reference, setReference] = useState("");
@@ -29,7 +29,8 @@ export default function TransactionForm() {
           due_date: date,
           installments: installments,
           type:selectedType,
-          amount: value
+          amount: value,
+          wallet_id:walletId
         },
         {
           headers: {

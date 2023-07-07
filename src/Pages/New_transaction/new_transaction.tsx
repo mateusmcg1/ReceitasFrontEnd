@@ -5,12 +5,12 @@ import TransactionForm from "./Components/TransactionForm";
 
 //FALTA IMPLEMENTAR O CSS DE ACORDO COM O PROTÓTIPO//
 
-export default function NewTransaction({walletId}:{walletId:number}) {
+export default function NewTransaction({walletId}:{walletId:string}) {
   return (
     <div>
         <TabView>
       <TabPanel header="Avulsa">
-        <TransactionForm></TransactionForm>
+        <TransactionForm walletId={walletId}></TransactionForm>
       </TabPanel>
       <TabPanel header="Recorrente">
         <p className="m-0">
