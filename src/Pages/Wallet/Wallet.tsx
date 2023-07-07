@@ -1,6 +1,6 @@
 import './wallet.css'
 import { Menu } from 'primereact/menu';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from "axios";
 import { DataTable } from 'primereact/datatable';
@@ -12,8 +12,9 @@ import { SplitButton } from 'primereact/splitbutton';
 import { WalletDto } from '../../models/wallet.dto';
 import { MenuItem } from 'primereact/menuitem';
 import { Dialog } from 'primereact/dialog';
-import IncludeWallet from '../Incluir Carteira/IncludeWallet';
-
+import IncludeWallet from './Incluir Carteira/IncludeWallet';
+import EditWallet from './Editar Carteira/editWallet'
+import { Toast, ToastMessage } from 'primereact/toast';
 
 export default function Wallet() {
 
@@ -22,27 +23,56 @@ export default function Wallet() {
     const [selectedWallet, setSelectedWallet] = useState<any>();
     const [wallets, setWallets] = useState<WalletDto[]>([]);
     const [showNewWallet, setShowNewWallet] = useState(false);
+    const [showEditWallet, setShowEditWallet] = useState(false);
+    const toast = useRef<Toast>(null);
 
+    const show = (severity: ToastMessage["severity"], summary: string, detail: string) => {
+        toast.current?.show({ severity, summary, detail });
+    };
+    
     const actions: MenuItem[] = [
         {
             label: 'Editar',
             icon: 'pi pi-pencil',
-            command: () => {
+            command: async () => {
+
                 console.log(selectedWallet);
+                sessionStorage.setItem('oldData', selectedWallet.id)
+                setShowEditWallet(true); //Basically I set this to call a dialog which invokes the editWallet component so the user can edit the infos 
+                                         //from the selected row in the table. At the moment, user needs to refresh the page to see the result.  
             }
         },
         {
             label: 'Deletar',
             icon: 'pi pi-trash',
-            command: () => {
+            command: async () => {
                 console.log(selectedWallet);
+               
+                try {
+                    await axios.delete(`${process.env.REACT_APP_API_URL}/v1/wallets/${selectedWallet.id}`, {
+                        headers: {
+                            Authorization: `Bearer ${sessionStorage.getItem('access_token')}`
+                        }
+                    })
+                    show('success', 'Success', 'Deletado com sucesso.');
+                    const interval = setInterval(() => {
+                        window.location.reload();;
+                       },2*1000);
+                       return () => clearInterval(interval);
+                }
+                catch (err) {
+                    alert(err);
+                }
             }
-        },
+        }
     ];
 
     useEffect(() => {
-        fetchWallets()
-    }, []);
+        fetchWallets();
+        
+         }, []);
+        
+   
 
     const fetchWallets = async () => {
         try {
@@ -53,12 +83,15 @@ export default function Wallet() {
             });
             setWallets(result.data);
         } catch (err) {
-
+            
         }
+        
     }
+
 
     return (
         <div className='wallet-container'>
+            <Toast ref={toast} />
             <div className='wallet-main-content'>
 
                 <h1>Carteiras</h1>
@@ -90,6 +123,9 @@ export default function Wallet() {
             </div>
             <Dialog visible={showNewWallet} style={{ width: '50vw' }} onHide={() => setShowNewWallet(false)}>
                 <IncludeWallet></IncludeWallet>
+            </Dialog>
+            <Dialog visible={showEditWallet} style={{ width: '50vw' }} onHide={() => setShowEditWallet(false)}>
+                <EditWallet></EditWallet>
             </Dialog>
         </div>
     )

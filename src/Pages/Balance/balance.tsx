@@ -12,6 +12,10 @@ import { Column } from 'primereact/column';
 import { Avatar } from 'primereact/avatar';
 import { Dialog } from 'primereact/dialog'
 import { Dropdown } from 'primereact/dropdown';
+import AdvancedFilter from '../Filtros Avançados/advanced-filter'
+import NewTransaction from '../New_transaction/new_transaction';
+import { SelectWallet } from './SelectWallet/SelectWallet';
+import { WalletDto } from '../../models/wallet.dto';
 
 export default function Balance() {
 
@@ -29,6 +33,9 @@ export default function Balance() {
     const [text1, setText1] = useState('');
     const [walletName, setWalletName] = useState('Example')
     const [visible, setVisible] = useState<boolean>(false);
+    const [showFilter, setShowFilter] = useState(false);
+    const [showIncludeTransaction, setShowIncludeTransaction] = useState(false);
+    const [selectedWallet, setSelectedWallet] = useState<WalletDto>();
 
 
     const fetchWallets = async () => {
@@ -48,6 +55,11 @@ export default function Balance() {
         fetchWallets();
     }, []);
 
+    useEffect(() => {
+        console.log('selecionada: ', selectedWallet);
+        setWalletName(selectedWallet?.name!);
+    }, [selectedWallet])
+
     return (
 
         <div className="balance-container">
@@ -59,9 +71,7 @@ export default function Balance() {
                     <div className='wallet-name'>
                         <Button label={walletName} onClick={() => setVisible(true)} />
                         <Dialog header="Selecionar Carteira" visible={visible} style={{ width: '50vw' }} onHide={() => setVisible(false)}>
-                            {wallets.map((wallet, index) => <div key={index}>
-                                {wallet?.name}
-                            </div>)}
+                            <SelectWallet wallets={wallets} onUpdate={setSelectedWallet}></SelectWallet>
                         </Dialog>
                         {/*  */}
                     </div>
@@ -98,11 +108,13 @@ export default function Balance() {
                         <InputText value={text1} onChange={(e) => setText1(e.target.value)} />
 
                         {<Button label="FILTRAR" />}
-                        <Link to={`/advancedfilter`}>
-                            {<Button id='advanced-filter' label="FILTROS AVANÇADOS" />}
-                        </Link>
+
+                        {<Button id='advanced-filter' label="FILTROS AVANÇADOS" onClick={() => setShowFilter(true)} />}
+
                         {<Button label="AÇÕES" style={{ marginLeft: "10%", marginRight: "-5%" }} />}
-                        {<Button label="INCLUIR" /*style={{ marginTop: "10%" }}*/ />}
+                        {<Button label="INCLUIR" onClick={(e) => {
+                            setShowIncludeTransaction(true);
+                        }} /*style={{ marginTop: "10%" }}*/ />}
 
                     </div>
 
@@ -120,7 +132,9 @@ export default function Balance() {
                     </DataTable>
 
                 </div>
-
+                <Dialog header="Nova Transação" visible={showIncludeTransaction} style={{ width: '50vw' }} onHide={() => setShowIncludeTransaction(false)}>
+                    <NewTransaction></NewTransaction>
+                </Dialog>
             </div>
         </div>
     )
