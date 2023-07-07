@@ -1,10 +1,13 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { InputText } from "primereact/inputtext";
 import { InputNumber } from "primereact/inputnumber";
 import { Calendar, CalendarChangeEvent } from "primereact/calendar";
 import { Dropdown, DropdownChangeEvent } from "primereact/dropdown";
 import { Installment } from "../../../models/Installment";
 import InstallmentForm from "./InstallmentForm";
+import axios from "axios";
+import { TransactionDTO } from "../../../models/TransactionDTO";
+import { Button } from "primereact/button";
 
 //FALTA IMPLEMENTAR O CSS DE ACORDO COM O PROTÓTIPO//
 
@@ -13,24 +16,48 @@ export default function TransactionForm() {
   const [date, setDate] = useState<string | Date | Date[] | null>([new Date()]);
   const [reference, setReference] = useState("");
   const [selectedType, setSelectedType] = useState("");
-  const [installmentNumber, setInstallmentNumber] = useState(0)
-  const [installments, setInstallments] = useState<Installment[]>([new Installment()]);
+  const [installmentNumber, setInstallmentNumber] = useState(0);
+  const [installments, setInstallments] = useState<Installment[]>([
+    new Installment(),
+  ]);
+
+  const asyncNewTransaction = async () => {
+    try {
+      const result = await axios.post(
+        `${process.env.REACT_APP_API_URL}/v1/transactions`,{
+          reference: reference,
+          due_date: date?.toString(),
+          installments: installments,
+          type:selectedType,
+          amount: value
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${sessionStorage.getItem("access_token")!}`,
+          },
+        }
+      );
+    } catch (err) {
+      alert(err);
+    }
+  };
+
 
   const onUpdateItem = (installment: Installment, index: number) => {
     const installmentsArr = [...installments];
-    installmentsArr[index] = (installment);
+    installmentsArr[index] = installment;
     setInstallments(installmentsArr);
   };
 
   const updateInstallmentNumber = (installmentNumber: number) => {
     let installmentArr = [];
-    for(let i = 0 ; i< installmentNumber; i++) {
+    for (let i = 0; i < installmentNumber; i++) {
       installmentArr.push({
         number: i,
-      })
+      });
     }
     setInstallments(installmentArr);
-  }
+  };
 
   return (
     <div className="flex flex-column gap-2">
@@ -84,10 +111,16 @@ export default function TransactionForm() {
         min={0}
         decrementButtonIcon="pi pi-minus"
       />
-      {installmentNumber}
-        {installments.map((newInstallments, index) => {
-            return <InstallmentForm index={index} key={index} onHandleUpdate={onUpdateItem}></InstallmentForm>
-        })} 
+      {installments.map((newInstallments, index) => {
+        return (
+          <InstallmentForm
+            index={index}
+            key={index}
+            onHandleUpdate={onUpdateItem}
+          ></InstallmentForm>
+        );
+      })}
+       <Button label="Submit" onClick={asyncNewTransaction} style={{ marginTop: "10%" }} />
     </div>
   );
 }

@@ -5,7 +5,7 @@ import TransactionForm from "./Components/TransactionForm";
 
 //FALTA IMPLEMENTAR O CSS DE ACORDO COM O PROTÓTIPO//
 
-export default function NewTransaction() {
+export default function NewTransaction({walletId}:{walletId:number}) {
   return (
     <div>
         <TabView>
