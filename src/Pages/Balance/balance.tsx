@@ -111,7 +111,7 @@ export default function Balance() {
 
                         {<Button id='advanced-filter' label="FILTROS AVANÇADOS" onClick={() => setShowFilter(true)} />}
 
-                        {<Button label="AÇÕES" style={{ marginLeft: "10%", marginRight: "-5%" }} />}
+                        {<Button label="AÇÕES" style={{ marginLeft: "15%", marginRight: "-5%" }} />}
                         {<Button label="INCLUIR" onClick={(e) => {
                             setShowIncludeTransaction(true);
                         }} /*style={{ marginTop: "10%" }}*/ />}
@@ -133,7 +133,7 @@ export default function Balance() {
 
                 </div>
                 <Dialog header="Nova Transação" visible={showIncludeTransaction} style={{ width: '50vw' }} onHide={() => setShowIncludeTransaction(false)}>
-                    <NewTransaction></NewTransaction>
+                    <NewTransaction walletId={0}></NewTransaction>
                 </Dialog>
             </div>
         </div>

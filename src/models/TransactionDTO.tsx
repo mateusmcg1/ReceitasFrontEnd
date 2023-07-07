@@ -7,7 +7,7 @@ export interface TransactionDTO {
     reference?: string,
     due_date?: string,
     paid?: boolean,
-    installments?:Installment,
+    installments?:Installment[],
     observation?: string,
     wallet_id?: string
 }
