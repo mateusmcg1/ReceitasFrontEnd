@@ -13,6 +13,7 @@ import { Avatar } from 'primereact/avatar';
 import { Dialog } from 'primereact/dialog'
 import { Dropdown } from 'primereact/dropdown';
 import AdvancedFilter from '../Filtros Avançados/advanced-filter'
+import NewTransaction from '../New_transaction/new_transaction';
 
 export default function Balance() {
 
@@ -31,6 +32,8 @@ export default function Balance() {
     const [walletName, setWalletName] = useState('Example')
     const [visible, setVisible] = useState<boolean>(false);
     const [showFilter, setShowFilter] = useState(false);
+    const [showIncludeTransaction, setShowIncludeTransaction] = useState(false);
+
 
     const fetchWallets = async () => {
         try {
@@ -103,7 +106,9 @@ export default function Balance() {
                         {<Button id='advanced-filter' label="FILTROS AVANÇADOS" onClick={() => setShowFilter(true)} />}
 
                         {<Button label="AÇÕES" style={{ marginLeft: "10%", marginRight: "-5%" }} />}
-                        {<Button label="INCLUIR" /*style={{ marginTop: "10%" }}*/ />}
+                        {<Button label="INCLUIR" onClick={(e) => {
+                            setShowIncludeTransaction(true);
+                        }} /*style={{ marginTop: "10%" }}*/ />}
 
                     </div>
 
@@ -121,8 +126,8 @@ export default function Balance() {
                     </DataTable>
 
                 </div>
-                <Dialog visible={showFilter} style={{ width: '50vw' }} onHide={() => setShowFilter(false)}>
-                    <AdvancedFilter></AdvancedFilter>
+                <Dialog header="Nova Transação" visible={showIncludeTransaction} style={{ width: '50vw' }} onHide={() => setShowIncludeTransaction(false)}>
+                    <NewTransaction></NewTransaction>
                 </Dialog>
             </div>
         </div>
