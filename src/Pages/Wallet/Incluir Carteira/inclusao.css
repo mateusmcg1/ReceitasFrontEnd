@@ -1,48 +1,48 @@
-@media screen and (max-width:500px){
-    .inclusao-button .p-button {
-        min-width: 100%;
-    }
-    
-    .inclusao-container h1{
-        font-size: 15%;
-        color: red;
-    }
+@media screen and (max-width: 500px) {
+  .inclusao-button .p-button {
+    min-width: 100%;
+  }
+
+  .inclusao-container h1 {
+    font-size: 15%;
+    color: red;
+  }
 }
-@media screen and (min-width:500px) and (max-width:1050px){
-    .inclusao-button .p-button {
-        min-width: 30%;
-    }
-} 
+@media screen and (min-width: 500px) and (max-width: 1050px) {
+  .inclusao-button .p-button {
+    min-width: 30%;
+  }
+}
 
 .inclusao-container {
-    padding: 5% 5%;
-    width: 70%;
+  padding: 5% 5%;
+  width: 70%;
 }
 
 .inclusao-container h1 {
-    font-size: 45px;
-    margin-bottom: 3%;
-    color: black;
+  font-size: 45px;
+  margin-bottom: 3%;
+  color: black;
 }
 
 .inclusao-frame {
-    width: 100%;
-    color: #4F4F4F;
+  width: 100%;
+  color: #4f4f4f;
 }
 
-.inclusao-frame .p-inputtext {
+/* .inclusao-frame .p-inputtext {
     height: 56px;
     margin-bottom: 5%;
     border: 1px solid #828282;
     margin-top: 1%;
-}
+} */
 
 .inclusao-button {
-    display: flex;
-    justify-content: flex-end;
+  display: flex;
+  justify-content: flex-end;
 }
 
 .inclusao-button .p-button {
-    width: 20%;
-    background-color: #009BE7;
+  width: 20%;
+  background-color: #009be7;
 }
