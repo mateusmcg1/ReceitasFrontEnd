@@ -6,7 +6,6 @@ import { Dropdown, DropdownChangeEvent } from "primereact/dropdown";
 import { Installment } from "../../../models/Installment";
 import InstallmentForm from "./InstallmentForm";
 import axios from "axios";
-import { TransactionDTO } from "../../../models/TransactionDTO";
 import { Button } from "primereact/button";
 
 //FALTA IMPLEMENTAR O CSS DE ACORDO COM O PROTÓTIPO//
@@ -20,6 +19,7 @@ export default function TransactionForm({walletId}:{walletId: string}) {
   const [installments, setInstallments] = useState<Installment[]>([
     new Installment(),
   ]);
+  const [paid, setPaid] = useState(false)
 
   const asyncNewTransaction = async () => {
     try {
@@ -30,7 +30,8 @@ export default function TransactionForm({walletId}:{walletId: string}) {
           installments: installments,
           type:selectedType,
           amount: value,
-          wallet_id:walletId
+          wallet_id:walletId,
+          paid: paid
         },
         {
           headers: {
@@ -43,7 +44,16 @@ export default function TransactionForm({walletId}:{walletId: string}) {
     }
   };
 
-
+  const paidValidate = () => {
+    const isPaid = installments.filter((i: Installment) => i.paid === false).length > 0;
+    setPaid(!isPaid);
+  };
+  
+  
+  useEffect(() => {
+    paidValidate();
+}, [installments])
+  
   const onUpdateItem = (installment: Installment, index: number) => {
     const installmentsArr = [...installments];
     installmentsArr[index] = installment;
@@ -121,7 +131,7 @@ export default function TransactionForm({walletId}:{walletId: string}) {
           ></InstallmentForm>
         );
       })}
-       <Button label="Submit" onClick={asyncNewTransaction} style={{ marginTop: "10%" }} />
+       <Button label="Salvar" onClick={asyncNewTransaction} style={{ marginTop: "10%" }} />
     </div>
   );
 }

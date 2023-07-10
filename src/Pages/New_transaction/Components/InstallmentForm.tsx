@@ -12,24 +12,23 @@ export default function InstallmentForm({
   onHandleUpdate: any;
 }) {
   const [amount, setAmount] = useState(0);
-  const [dueDate, setDueDate] = useState<string | Date | Date[] | null>([
-    new Date(),
-  ]);
+  const [date, setDate] = useState<string | Date | Date[] | null>([new Date()]);
   const [paid, setPaid] = useState(false);
 
   useEffect(() => {
     const i: Installment = {
       amount: amount,
-      due_date: dueDate?.toString(),
+      due_date: date?.toString(),
       paid: paid,
+      number: (index+1)
     };
     onHandleUpdate(i, index);
-  }, [amount, dueDate, paid]);
+  }, [amount, date, paid]);
 
   return (
     <div className="formgrid grid ">
       <div className="field col">
-        <label htmlFor="value">Valor</label>
+        <label htmlFor="value">Valor (Parcela {index+1})</label>
         <InputNumber
           inputId="currency-br"
           value={amount}
@@ -42,9 +41,9 @@ export default function InstallmentForm({
       <div className="field col">
         <label htmlFor="date">Data</label>
         <Calendar
-          value={dueDate}
+          value={date}
           onChange={(e: CalendarChangeEvent) => {
-            setDueDate(e.value!);
+            setDate(e.value!);
           }}
           locale="en"
           dateFormat="dd/mm/yy"

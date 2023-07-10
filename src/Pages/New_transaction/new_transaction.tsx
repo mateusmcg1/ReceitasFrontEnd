@@ -2,6 +2,7 @@ import "./new_transaction.css";
 import { useState } from "react";
 import { TabView, TabPanel } from "primereact/tabview";
 import TransactionForm from "./Components/TransactionForm";
+import RecurrencyForm from "./Components/RecurrencyFrom";
 
 //FALTA IMPLEMENTAR O CSS DE ACORDO COM O PROTÓTIPO//
 
@@ -13,6 +14,9 @@ export default function NewTransaction({walletId}:{walletId:string}) {
         <TransactionForm walletId={walletId}></TransactionForm>
       </TabPanel>
       <TabPanel header="Recorrente">
+      <RecurrencyForm walletId={walletId}></RecurrencyForm>
+      </TabPanel>
+      <TabPanel header="Inter Carteira">
         <p className="m-0">
           Sed ut perspiciatis unde omnis iste natus error sit voluptatem
           accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae
