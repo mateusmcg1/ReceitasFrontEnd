@@ -17,10 +17,24 @@ export function Casket({ children }: { children?: any }) {
     }, []);
 
     const location = useLocation();
-    console.log(location)
 
     let items = [
-        { label: 'Balanço', icon: 'pi pi-dollar', command: () => { navigate('balance') } },
+        {
+            label: 'Balanço', icon: 'pi pi-dollar', command: () => { }, items: [
+                {
+                    label: 'Total', icon: 'pi pi-dollar', command: () => { navigate('balance') },
+                },
+                {
+                    label: 'Vencidas', icon: 'pi pi-dollar', command: () => { },
+                },
+                {
+                    label: 'A Pagar', icon: 'pi pi-dollar', command: () => { },
+                },
+                {
+                    label: 'A Receber', icon: 'pi pi-dollar', command: () => { },
+                }
+            ]
+        },
         { label: 'Gestão de Carteiras', icon: 'pi pi-wallet', command: () => { navigate('wallet') } },
         { label: 'Gestão de Acessos', icon: 'pi pi-user' }
     ];
@@ -48,14 +62,25 @@ export function Casket({ children }: { children?: any }) {
                 <div style={{ width: '15%', backgroundColor: '#2b2b2b' }}>
                     <div style={{ height: '100px' }}></div>
                     {items.map((menuItem, index) => {
-                        return <div className="menu-item" key={index} onClick={() => {
-                            setActiveMenuItem(menuItem);
-                            menuItem?.command!()
-                        }}>
-                            <div className="menu-item-display" style={{ color: activeMenuItem?.label === menuItem.label ? '#fff' : '#d2d2d2' }}>
-                                <a className={menuItem.icon} style={{ marginLeft: 15 }}></a>
-                                <span style={{ marginLeft: 10, fontSize: '14px' }}>{menuItem.label}</span>
+                        return <div>
+                            <div className="menu-item" key={index} onClick={() => {
+                                setActiveMenuItem(menuItem);
+                                menuItem?.command!()
+                            }}>
+                                <div className="menu-item-display" style={{ color: activeMenuItem?.label === menuItem.label ? '#fff' : '#d2d2d2' }}>
+                                    <a className={menuItem.icon} style={{ marginLeft: 15 }}></a>
+                                    <span style={{ marginLeft: 10, fontSize: '14px' }}>{menuItem.label}</span>
+                                </div>
                             </div>
+                            {menuItem?.items?.map((subItem, index) => {
+                                return <div className="submenu-item">
+                                    <div className="submenu-item-display">
+                                        <a className={subItem.icon} style={{ marginLeft: 15 }}></a>
+                                        <span style={{ marginLeft: 10, fontSize: '14px' }}>{subItem.label}</span>
+                                    </div>
+
+                                </div>
+                            })}
                         </div>
                     })}
 
