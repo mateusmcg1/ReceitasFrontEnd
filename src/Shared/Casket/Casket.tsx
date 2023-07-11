@@ -36,7 +36,7 @@ export function Casket({ children }: { children?: any }) {
             ]
         },
         { label: 'Gestão de Carteiras', icon: 'pi pi-wallet', command: () => { navigate('wallet') } },
-        { label: 'Gestão de Acessos', icon: 'pi pi-user' }
+        { label: 'Gestão de Acessos', icon: 'pi pi-user', command: () => { } }
     ];
     return (
         <div className="casket-container">
@@ -73,7 +73,10 @@ export function Casket({ children }: { children?: any }) {
                                 </div>
                             </div>
                             {menuItem?.items?.map((subItem, index) => {
-                                return <div className="submenu-item">
+                                return <div className="submenu-item" onClick={() => {
+                                    setActiveMenuItem(menuItem);
+                                    subItem.command!();
+                                }}>
                                     <div className="submenu-item-display">
                                         <a className={subItem.icon} style={{ marginLeft: 15 }}></a>
                                         <span style={{ marginLeft: 10, fontSize: '14px' }}>{subItem.label}</span>
