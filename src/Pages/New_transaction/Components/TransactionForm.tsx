@@ -8,30 +8,28 @@ import InstallmentForm from "./InstallmentForm";
 import axios from "axios";
 import { Button } from "primereact/button";
 
-//FALTA IMPLEMENTAR O CSS DE ACORDO COM O PROTÓTIPO//
 
-export default function TransactionForm({walletId}:{walletId: string}) {
+export default function TransactionForm({ walletId }: { walletId: string }) {
   const [value, setValue] = useState(0);
   const [date, setDate] = useState<string | Date | Date[] | null>([new Date()]);
   const [reference, setReference] = useState("");
   const [selectedType, setSelectedType] = useState("");
   const [installmentNumber, setInstallmentNumber] = useState(0);
-  const [installments, setInstallments] = useState<Installment[]>([
-    new Installment(),
-  ]);
-  const [paid, setPaid] = useState(false)
+  const [installments, setInstallments] = useState<Installment[]>([]);
+  const [paid, setPaid] = useState(false);
 
   const asyncNewTransaction = async () => {
     try {
       const result = await axios.post(
-        `${process.env.REACT_APP_API_URL}/v1/transactions`,{
+        `${process.env.REACT_APP_API_URL}/v1/transactions`,
+        {
           reference: reference,
           due_date: date,
           installments: installments,
-          type:selectedType,
+          type: selectedType,
           amount: value,
-          wallet_id:walletId,
-          paid: paid
+          wallet_id: walletId,
+          paid: paid,
         },
         {
           headers: {
@@ -45,15 +43,15 @@ export default function TransactionForm({walletId}:{walletId: string}) {
   };
 
   const paidValidate = () => {
-    const isPaid = installments.filter((i: Installment) => i.paid === false).length > 0;
+    const isPaid =
+      installments.filter((i: Installment) => i.paid === false).length > 0;
     setPaid(!isPaid);
   };
-  
-  
+
   useEffect(() => {
     paidValidate();
-}, [installments])
-  
+  }, [installments]);
+
   const onUpdateItem = (installment: Installment, index: number) => {
     const installmentsArr = [...installments];
     installmentsArr[index] = installment;
@@ -71,67 +69,109 @@ export default function TransactionForm({walletId}:{walletId: string}) {
   };
 
   return (
-    <div className="flex flex-column gap-2">
-      <label htmlFor="reference">Referencia</label>
-      <InputText
-        value={reference}
-        onChange={(e) => setReference(e.target.value)}
-      />
-      <label htmlFor="value">Valor</label>
-      <InputNumber
-        inputId="currency-br"
-        value={value}
-        onValueChange={(e) => setValue(Number(e.value))}
-        mode="currency"
-        currency="BRL"
-        locale="pt-BR"
-      />
-      <label htmlFor="date">Data</label>
-      <Calendar
-        value={date}
-        onChange={(e: CalendarChangeEvent) => {
-          setDate(e.value!);
-        }}
-        locale="en"
-        dateFormat="dd/mm/yy"
-      />
-      <label htmlFor="type">Tipo</label>
-      <Dropdown
-        value={selectedType}
-        onChange={(e: DropdownChangeEvent) => setSelectedType(e.value)}
-        options={[
-          { label: "Cobrança", value: "BILLING" },
-          { label: "Pagamento", value: "PAYMENT" },
-        ]}
-        optionLabel="label"
-        optionValue="value"
-        editable
-        placeholder="Selecione um tipo"
-        className="w-full md:w-14rem"
-      />
-      <label htmlFor="installments">Parcelas</label>
-      <InputNumber
-        value={installmentNumber}
-        onChange={(e) => updateInstallmentNumber(e.value!)}
-        showButtons
-        buttonLayout="horizontal"
-        style={{ width: "9rem" }}
-        decrementButtonClassName="p-button-secondary"
-        incrementButtonClassName="p-button-secondary"
-        incrementButtonIcon="pi pi-plus"
-        min={0}
-        decrementButtonIcon="pi pi-minus"
-      />
-      {installments.map((newInstallments, index) => {
-        return (
-          <InstallmentForm
-            index={index}
-            key={index}
-            onHandleUpdate={onUpdateItem}
-          ></InstallmentForm>
-        );
-      })}
-       <Button label="Salvar" onClick={asyncNewTransaction} style={{ marginTop: "10%" }} />
+    <div>
+      <div className="grid" style={{ marginTop: "2%" }}>
+        <div className="col-12">
+          <span className="p-float-label">
+            <InputText
+              value={reference}
+              onChange={(e) => setReference(e.target.value)}
+            />
+            <label htmlFor="reference">Referencia</label>
+          </span>
+        </div>
+      </div>
+      <div className="grid" style={{ marginTop: "2%" }}>
+        <div className="col-12">
+          <span className="p-float-label">
+            <InputNumber
+              id="value"
+              value={value}
+              onValueChange={(e) => setValue(Number(e.value))}
+              mode="currency"
+              currency="BRL"
+              locale="pt-BR"
+            />
+            <label htmlFor="amount">Valor</label>
+          </span>
+        </div>
+      </div>
+      <div className="grid" style={{ marginTop: "2%" }}>
+        <div className="col-12">
+          <span className="p-float-label">
+            <Calendar
+              value={date}
+              onChange={(e: CalendarChangeEvent) => {
+                setDate(e.value!);
+              }}
+              locale="en"
+              dateFormat="dd/mm/yy"
+            />
+            <label htmlFor="date">Data</label>
+          </span>
+        </div>
+      </div>
+      <div className="grid" style={{ marginTop: "2%" }}>
+        <div className="col-12">
+          <span className="p-float-label">
+            <Dropdown
+              value={selectedType}
+              onChange={(e: DropdownChangeEvent) => setSelectedType(e.value)}
+              options={[
+                { label: "Cobrança", value: "BILLING" },
+                { label: "Pagamento", value: "PAYMENT" },
+              ]}
+              optionLabel="label"
+              optionValue="value"
+              editable
+              placeholder="Selecione um tipo"
+              className="w-full md:w-14rem"
+            />
+            <label htmlFor="type">Tipo</label>
+          </span>
+        </div>
+      </div>
+      <div className="grid" style={{ marginTop: "2%" }}>
+        <div className="col-12">
+          <span className="p-float-label">
+            <InputNumber
+              value={installmentNumber}
+              onChange={(e) => updateInstallmentNumber(e.value!)}
+              showButtons
+              buttonLayout="horizontal"
+              style={{ width: "9rem" }}
+              decrementButtonClassName="p-button-secondary"
+              incrementButtonClassName="p-button-secondary"
+              incrementButtonIcon="pi pi-plus"
+              min={0}
+              decrementButtonIcon="pi pi-minus"
+            />
+            <label htmlFor="installments">Parcelas</label>
+          </span>
+        </div>
+      </div>
+      <div className="grid" style={{ marginTop: "2%" }}>
+        <div className="col-12">
+          {installments.map((newInstallments, index) => {
+            return (
+              <InstallmentForm
+                index={index}
+                key={index}
+                onHandleUpdate={onUpdateItem}
+              ></InstallmentForm>
+            );
+          })}
+        </div>
+      </div>
+      <div className="grid">
+        <div className="col-12">
+          <Button
+            label="Salvar"
+            onClick={asyncNewTransaction}
+            style={{ marginTop: "10%" }}
+          />
+        </div>
+      </div>
     </div>
   );
 }

@@ -12,13 +12,13 @@ export default function InstallmentForm({
   onHandleUpdate: any;
 }) {
   const [amount, setAmount] = useState(0);
-  const [date, setDate] = useState<string | Date | Date[] | null>([new Date()]);
+  const [date, setDate] = useState< Date>(new Date());
   const [paid, setPaid] = useState(false);
 
   useEffect(() => {
     const i: Installment = {
       amount: amount,
-      due_date: date?.toString(),
+      due_date: date!,
       paid: paid,
       number: (index+1)
     };
@@ -26,31 +26,35 @@ export default function InstallmentForm({
   }, [amount, date, paid]);
 
   return (
-    <div className="formgrid grid ">
+    <div className="formgrid grid" style={{ marginTop: "2%" }}>
       <div className="field col">
-        <label htmlFor="value">Valor (Parcela {index+1})</label>
-        <InputNumber
-          inputId="currency-br"
-          value={amount}
-          onValueChange={(e) => setAmount(Number(e.value))}
-          mode="currency"
-          currency="BRL"
-          locale="pt-BR"
-        />
+      <span className="p-float-label">
+            <InputNumber
+              id="amount"
+              value={amount}
+              onValueChange={(e) => setAmount(Number(e.value))}
+              mode="currency"
+              currency="BRL"
+              locale="pt-BR"
+            />
+            <label htmlFor="amount">Valor (Parcela {index+1})</label>
+          </span>
       </div>
       <div className="field col">
-        <label htmlFor="date">Data</label>
-        <Calendar
-          value={date}
-          onChange={(e: CalendarChangeEvent) => {
-            setDate(e.value!);
-          }}
-          locale="en"
-          dateFormat="dd/mm/yy"
-        />
+      <span className="p-float-label">
+            <Calendar
+              value={date}
+              onChange={(e: any) => {
+                setDate(e.value!);
+              }}
+              locale="en"
+              dateFormat="dd/mm/yy"
+            />
+            <label htmlFor="date">Data</label>
+          </span>
       </div>
       <div className="field col">
-        <div className="flex align-items-center">
+        <div className="flex align-items-center" style={{ marginTop: "5%" }}>
           <Checkbox
             inputId="paid"
             name="paid"
