@@ -16,7 +16,7 @@
 
 .inclusao-container {
   padding: 5% 5%;
-  width: 70%;
+  width: 70% !important;
 }
 
 .inclusao-container h1 {
@@ -28,6 +28,8 @@
 .inclusao-frame {
   width: 100%;
   color: #4f4f4f;
+  display: flex;
+  flex-direction: column;
 }
 
 /* .inclusao-frame .p-inputtext {
@@ -45,4 +47,14 @@
 .inclusao-button .p-button {
   width: 20%;
   background-color: #009be7;
+}
+
+.p-dropdown{
+  width: 100% !important;
+  height: 4.5vh !important;
+  margin-bottom: 3%;
+}
+
+.p-dropdown-label{
+  height: 100%;
 }

@@ -58,9 +58,9 @@ export default function IncludeWallet() {
                 <label htmlFor="text1" style={{ marginBottom: "1%" }}>Título</label>
                 <InputText value={text1} onChange={(e) => setText1(e.target.value)} />
 
-                {/* <label htmlFor="text2">Moeda</label> */}
-                <Dropdown value={selectedCurrency} onChange={(e) => setSelectedCurrency(e.value)} options={currencyTypes} 
-                    placeholder="Select Currency" className="w-full md:w-14rem" />
+                <label htmlFor="text2" style={{ marginBottom: "1%" }}>Moeda</label>
+                <Dropdown value={selectedCurrency} onChange={(e) => setSelectedCurrency(e.value)} options={currencyTypes}
+                    className="w-full md:w-14rem" />
                 {/* <InputText value={text2} onChange={(e) => setText2(e.target.value)} /> */}
 
 
