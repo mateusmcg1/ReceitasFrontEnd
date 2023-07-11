@@ -4,7 +4,7 @@ import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 import axios from "axios";
 import { Toast, ToastMessage } from 'primereact/toast';
-import { MultiSelect, MultiSelectChangeEvent } from 'primereact/multiselect';
+import { Dropdown } from 'primereact/dropdown';
 import { CurrencyDto } from '../../../models/currenty.dto';
 import { CurrencyEnum } from '../../../Shared/enums/CurrencyEnum';
 
@@ -14,7 +14,7 @@ export default function IncludeWallet() {
     const [text1, setText1] = useState('');
     const [text2, setText2] = useState('');
     const toast = useRef<Toast>(null);
-    const [selectedCurrency, setSelectedCurrency] = useState<CurrencyDto[]>([]);
+    const [selectedCurrency, setSelectedCurrency] = useState('');
     //É AQUI ONDE EU NAO SEI O QUE FAZER!
     var currencyTypes = Object.values(CurrencyEnum); // como chamar essa variável currencyTypes corretamente para que liste as moedas?// 
 
@@ -25,7 +25,7 @@ export default function IncludeWallet() {
     const addWallets = async () => {
         try {
             const result = await axios.post(`${process.env.REACT_APP_API_URL}/v1/wallets`, {
-                currency: text2,
+                currency: selectedCurrency,
                 name: text1,
                 createdAt: new Date()
             },
@@ -59,8 +59,8 @@ export default function IncludeWallet() {
                 <InputText value={text1} onChange={(e) => setText1(e.target.value)} />
 
                 {/* <label htmlFor="text2">Moeda</label> */}
-                <MultiSelect value={selectedCurrency} onChange={(e: MultiSelectChangeEvent) => setSelectedCurrency(e.value)} options={currencyTypes} display="chip" 
-                    placeholder="Select Currency" maxSelectedLabels={1} className="w-full md:w-20rem" />
+                <Dropdown value={selectedCurrency} onChange={(e) => setSelectedCurrency(e.value)} options={currencyTypes} 
+                    placeholder="Select Currency" className="w-full md:w-14rem" />
                 {/* <InputText value={text2} onChange={(e) => setText2(e.target.value)} /> */}
 
 

@@ -4,13 +4,16 @@ import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 import axios from "axios";
 import { Toast, ToastMessage } from 'primereact/toast'
+import { CurrencyEnum } from '../../../Shared/enums/CurrencyEnum';
+import { Dropdown } from 'primereact/dropdown';
 
 export default function EditWallet() {
 
     const [text1, setText1] = useState('');
-    const [text2, setText2] = useState('');
+    // const [text2, setText2] = useState('');
+    const [selectedCurrency, setSelectedCurrency] = useState('');
     const toast = useRef<Toast>(null);
-
+    var currencyTypes = Object.values(CurrencyEnum);
     const show = (severity: ToastMessage["severity"], summary: string, detail: string) => {
         toast.current?.show({ severity, summary, detail });
     };
@@ -18,7 +21,7 @@ export default function EditWallet() {
     const ChangeWallet = async () => {
         try {
             const result = await axios.put(`${process.env.REACT_APP_API_URL}/v1/wallets/${sessionStorage.getItem('oldData')}`, {
-                currency: text2,
+                currency: selectedCurrency,
                 name: text1,
                 createdAt: new Date()
             },
@@ -51,8 +54,10 @@ export default function EditWallet() {
             <div className='inclusao-frame'>
                 <label htmlFor="text1" style={{ marginBottom: "1%" }}>Título</label>
                 <InputText value={text1} onChange={(e) => setText1(e.target.value)} />
-                <label htmlFor="text2">Moeda</label>
-                <InputText value={text2} onChange={(e) => setText2(e.target.value)} />
+                <Dropdown value={selectedCurrency} onChange={(e) => setSelectedCurrency(e.value)} options={currencyTypes} 
+                    placeholder="Select Currency" className="w-full md:w-14rem" />
+                {/* <label htmlFor="text2">Moeda</label>
+                <InputText value={text2} onChange={(e) => setText2(e.target.value)} /> */}
                 <div className='inclusao-button'>
                     {<Button label="INCLUIR" onClick={ChangeWallet} />}
                 </div>
