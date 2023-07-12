@@ -7,7 +7,7 @@ import { Installment } from "../../../models/Installment";
 import InstallmentForm from "./InstallmentForm";
 import axios from "axios";
 import { Button } from "primereact/button";
-
+import { Checkbox } from "primereact/checkbox";
 
 export default function TransactionForm({ walletId }: { walletId: string }) {
   const [value, setValue] = useState(0);
@@ -99,14 +99,26 @@ export default function TransactionForm({ walletId }: { walletId: string }) {
       <div className="grid" style={{ marginTop: "2%" }}>
         <div className="col-12">
           <span className="p-float-label">
-            <Calendar
-              value={date}
-              onChange={(e: CalendarChangeEvent) => {
-                setDate(e.value!);
-              }}
-              locale="en"
-              dateFormat="dd/mm/yy"
-            />
+            {installmentNumber > 0 ? (
+              <Calendar
+                value={date}
+                onChange={(e: CalendarChangeEvent) => {
+                  setDate(e.value!);
+                }}
+                locale="en"
+                disabled
+                dateFormat="dd/mm/yy"
+              />
+            ) : (
+              <Calendar
+                value={date}
+                onChange={(e: CalendarChangeEvent) => {
+                  setDate(e.value!);
+                }}
+                locale="en"
+                dateFormat="dd/mm/yy"
+              />
+            )}
             <label htmlFor="date">Data</label>
           </span>
         </div>
@@ -136,7 +148,10 @@ export default function TransactionForm({ walletId }: { walletId: string }) {
           <span className="p-float-label">
             <InputNumber
               value={installmentNumber}
-              onChange={(e) => updateInstallmentNumber(e.value!)}
+              onChange={(e) => {
+                updateInstallmentNumber(e.value!);
+                setInstallmentNumber(e.value!);
+              }}
               showButtons
               buttonLayout="horizontal"
               style={{ width: "9rem" }}
@@ -149,6 +164,27 @@ export default function TransactionForm({ walletId }: { walletId: string }) {
             <label htmlFor="installments">Parcelas</label>
           </span>
         </div>
+        {installmentNumber > 0 ? (
+          <div></div>
+        ) : (
+          <div className="col-12">
+            <div
+              className="flex align-items-center"
+              style={{ marginTop: "5%" }}
+            >
+              <Checkbox
+                inputId="paid"
+                name="paid"
+                value=""
+                onChange={(e) => setPaid(e.checked!)}
+                checked={paid}
+              ></Checkbox>
+              <label htmlFor="paid" className="ml-2">
+                Pago
+              </label>
+            </div>
+          </div>
+        )}
       </div>
       <div className="grid" style={{ marginTop: "2%" }}>
         <div className="col-12">
