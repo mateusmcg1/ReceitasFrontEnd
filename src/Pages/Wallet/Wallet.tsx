@@ -125,8 +125,7 @@ export default function Wallet() {
                 </div>
 
                 <DataTable loading={loading} selectionMode='single' selection={selectedWallet} onSelectionChange={(e) => {
-                    console.log(e.value);
-                    setSelectedWallet(e.value)
+                    setSelectedWallet(e.value);
                 }} tableStyle={{ minWidth: '50rem' }} value={wallets}>
                     <Column body={(data) => {
                         return <span>{new Date(data.createdAt).toLocaleDateString('pt-BR')}</span>

@@ -5,7 +5,6 @@ import { Button } from 'primereact/button';
 import axios from "axios";
 import { Toast, ToastMessage } from 'primereact/toast';
 import { Dropdown } from 'primereact/dropdown';
-import { CurrencyDto } from '../../../models/currenty.dto';
 import { CurrencyEnum } from '../../../Shared/enums/CurrencyEnum';
 
 

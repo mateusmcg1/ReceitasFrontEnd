@@ -72,6 +72,7 @@ export default function Balance() {
                         <Button label={walletName} onClick={() => setVisible(true)} />
                         <Dialog header="Selecionar Carteira" visible={visible} style={{ width: '50vw' }} onHide={() => setVisible(false)}>
                             <SelectWallet wallets={wallets} onUpdate={setSelectedWallet}></SelectWallet>
+                            
                         </Dialog>
                         {/*  */}
                     </div>
