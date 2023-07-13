@@ -25,7 +25,7 @@ export default function TransactionForm({ walletId }: { walletId: string }) {
         {
           reference: reference,
           due_date: installmentNumber > 0 ? selectedDate : date,
-          installments: installments,
+          installments: installmentNumber > 0 ? installments : null,
           type: selectedType,
           amount: value,
           wallet_id: walletId,
