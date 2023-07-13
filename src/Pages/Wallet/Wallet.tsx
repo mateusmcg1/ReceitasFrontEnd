@@ -27,10 +27,10 @@ export default function Wallet() {
     const [showNewWallet, setShowNewWallet] = useState(false);
     const [showEditWallet, setShowEditWallet] = useState(false);
     const [showDeleteWallet, setShowDeleteWallet] = useState(false);
-    const toast = useRef<Toast>(null);
+    const walletToast = useRef<Toast>(null);
 
     const showToast = (severity: ToastMessage["severity"], summary: string, detail: string) => {
-        toast.current?.show({ severity, summary, detail });
+        walletToast.current?.show({ severity, summary, detail });
     };
 
     const actions: MenuItem[] = [
@@ -38,9 +38,7 @@ export default function Wallet() {
             label: 'Editar',
             icon: 'pi pi-pencil',
             command: async () => {
-
                 console.log(selectedWallet);
-                sessionStorage.setItem('oldData', selectedWallet.id)
                 setShowEditWallet(true); //Basically I set this to call a dialog which invokes the editWallet component so the user can edit the infos 
                 //from the selected row in the table. At the moment, user needs to refresh the page to see the result.  
             }
@@ -50,7 +48,6 @@ export default function Wallet() {
             icon: 'pi pi-trash',
             command: () => {
                 console.log(selectedWallet)
-                sessionStorage.setItem('oldData', selectedWallet.id)
                 confirmDialog({
                     message: 'Deseja deletar?',
                     header: 'Deletar Carteira',
@@ -69,8 +66,8 @@ export default function Wallet() {
 
     const deleteWallets = async () => {
 
-        try { 
-            await axios.delete(`${process.env.REACT_APP_API_URL}/v1/wallets/${sessionStorage.getItem('oldData')}`, {
+        try {
+            await axios.delete(`${process.env.REACT_APP_API_URL}/v1/wallets/${selectedWallet?.id}`, {
 
                 headers: {
                     Authorization: `Bearer ${sessionStorage.getItem('access_token')}`
@@ -80,8 +77,8 @@ export default function Wallet() {
             fetchWallets();
         }
 
-        catch (err) {
-            if (err = 401) {
+        catch (err: any) {
+            if (err.status = 401) {
                 showToast('error', 'Unauthorized', 'Acesso negado! O token de acesso informado é inválido.');
             }
         }
@@ -105,7 +102,7 @@ export default function Wallet() {
 
     return (
         <div className='wallet-container'>
-            <Toast ref={toast} />
+            <Toast ref={walletToast} />
             <div className='wallet-main-content'>
 
                 <h1>Carteiras</h1>
@@ -127,7 +124,10 @@ export default function Wallet() {
                     <Button id='inclusao' label="INCLUIR" onClick={() => setShowNewWallet(true)} />
                 </div>
 
-                <DataTable loading={loading} selectionMode='single' selection={selectedWallet} onSelectionChange={(e) => setSelectedWallet(e.value)} tableStyle={{ minWidth: '50rem' }} value={wallets}>
+                <DataTable loading={loading} selectionMode='single' selection={selectedWallet} onSelectionChange={(e) => {
+                    console.log(e.value);
+                    setSelectedWallet(e.value)
+                }} tableStyle={{ minWidth: '50rem' }} value={wallets}>
                     <Column body={(data) => {
                         return <span>{new Date(data.createdAt).toLocaleDateString('pt-BR')}</span>
                     }} header="Data de Criação"></Column>
@@ -139,15 +139,15 @@ export default function Wallet() {
                 <IncludeWallet closeDialog={() => {
                     setShowNewWallet(false);
                     fetchWallets();
-                }}></IncludeWallet>
+                }} toast={walletToast}></IncludeWallet>
             </Dialog>
             <Dialog visible={showEditWallet} style={{ width: '50vw' }} onHide={() => setShowEditWallet(false)}>
-                <EditWallet closeDialog={() => {
+                <EditWallet wallet={selectedWallet} closeDialog={() => {
                     setShowEditWallet(false);
                     fetchWallets();
                 }}></EditWallet>
             </Dialog>
-            <ConfirmDialog/>
+            <ConfirmDialog />
             {/* <Dialog visible={showDeleteWallet} style={{ width: '50vw' }} onHide={() => setShowDeleteWallet(false)}>
                 <DeleteWallet closeDialog={() => {
                     setShowDeleteWallet(false);

@@ -6,8 +6,9 @@ import axios from "axios";
 import { Toast, ToastMessage } from 'primereact/toast'
 import { CurrencyEnum } from '../../../Shared/enums/CurrencyEnum';
 import { Dropdown } from 'primereact/dropdown';
+import { WalletDto } from '../../../models/wallet.dto';
 
-export default function EditWallet({ closeDialog  }: { closeDialog: any }) {
+export default function EditWallet({ closeDialog, wallet }: { closeDialog: any, wallet: WalletDto }) {
 
     const [text1, setText1] = useState('');
     // const [text2, setText2] = useState('');
@@ -18,9 +19,14 @@ export default function EditWallet({ closeDialog  }: { closeDialog: any }) {
         toast.current?.show({ severity, summary, detail });
     };
 
+    useEffect(() => {
+        setText1(wallet?.name!);
+        setSelectedCurrency(wallet?.currency!);
+    }, [wallet]);
+
     const ChangeWallet = async () => {
         try {
-            const result = await axios.put(`${process.env.REACT_APP_API_URL}/v1/wallets/${sessionStorage.getItem('oldData')}`, {
+            const result = await axios.put(`${process.env.REACT_APP_API_URL}/v1/wallets/${wallet?.id}`, {
                 currency: selectedCurrency,
                 name: text1,
                 createdAt: new Date()
@@ -32,7 +38,7 @@ export default function EditWallet({ closeDialog  }: { closeDialog: any }) {
                 })
             sessionStorage.setItem('oldData', '');
             show('success', 'Success', 'Editado com sucesso.');
-            
+
 
             closeDialog();
 
