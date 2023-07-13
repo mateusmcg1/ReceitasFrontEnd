@@ -15,6 +15,7 @@ import { Dialog } from 'primereact/dialog';
 import IncludeWallet from './Incluir Carteira/IncludeWallet';
 import EditWallet from './Editar Carteira/editWallet'
 import { Toast, ToastMessage } from 'primereact/toast';
+import { FilterWalletDto } from './dtos/filter-wallet.dto';
 import DeleteWallet from './Deleta Carteira/deleteWallet';
 import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog';
 
@@ -85,12 +86,13 @@ export default function Wallet() {
 
 
     }
-    const fetchWallets = async () => {
+    const fetchWallets = async (params?: any) => {
         try {
             const result = await axios.get(`${process.env.REACT_APP_API_URL}/v1/wallets`, {
                 headers: {
                     Authorization: `Bearer ${sessionStorage.getItem('access_token')}`
-                }
+                },
+                params
             });
             setWallets(result.data);
         } catch (err) {
@@ -99,6 +101,9 @@ export default function Wallet() {
 
     }
 
+    useEffect(() => {
+        fetchWallets();
+    }, []);
 
     return (
         <div className='wallet-container'>
@@ -114,7 +119,9 @@ export default function Wallet() {
 
                     <InputText value={find} onChange={(e) => setFind(e.target.value)} />
 
-                    {<Button label="FILTRAR" style={{ marginLeft: "-1%" }} />}
+                    {<Button label="FILTRAR" style={{ marginLeft: "-1%" }} onClick={() => {
+                        fetchWallets({ name: find });
+                    }} />}
 
                     <SplitButton label="AÇÕES" icon="pi pi-plus" onClick={() => {
                         console.log('clicked');
