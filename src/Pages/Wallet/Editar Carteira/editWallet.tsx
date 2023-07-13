@@ -7,7 +7,7 @@ import { Toast, ToastMessage } from 'primereact/toast'
 import { CurrencyEnum } from '../../../Shared/enums/CurrencyEnum';
 import { Dropdown } from 'primereact/dropdown';
 
-export default function EditWallet() {
+export default function EditWallet({ closeDialog  }: { closeDialog: any }) {
 
     const [text1, setText1] = useState('');
     // const [text2, setText2] = useState('');
@@ -32,11 +32,9 @@ export default function EditWallet() {
                 })
             sessionStorage.setItem('oldData', '');
             show('success', 'Success', 'Editado com sucesso.');
+            
 
-            const interval = setInterval(() => {
-                window.location.reload();;
-            }, 2 * 1000);
-            return () => clearInterval(interval);
+            closeDialog();
 
         }
         catch (err) {
@@ -49,18 +47,18 @@ export default function EditWallet() {
     return (
         <div className='inclusao-container'>
             <Toast ref={toast} />
-            <h1>Incluir Carteira</h1>
+            <h1>Editar Carteira</h1>
 
             <div className='inclusao-frame'>
                 <label htmlFor="text1" style={{ marginBottom: "1%" }}>Título</label>
                 <InputText value={text1} onChange={(e) => setText1(e.target.value)} />
                 <label htmlFor={selectedCurrency} style={{ marginBottom: "1%" }}>Moeda</label>
-                <Dropdown value={selectedCurrency} onChange={(e) => setSelectedCurrency(e.value)} options={currencyTypes} 
-                     className="w-full md:w-14rem" />
+                <Dropdown value={selectedCurrency} onChange={(e) => setSelectedCurrency(e.value)} options={currencyTypes}
+                    className="w-full md:w-14rem" />
                 {/* 
                 <InputText value={text2} onChange={(e) => setText2(e.target.value)} /> */}
                 <div className='inclusao-button'>
-                    {<Button label="INCLUIR" onClick={ChangeWallet} />}
+                    {<Button label="EDITAR" onClick={ChangeWallet} />}
                 </div>
             </div>
 

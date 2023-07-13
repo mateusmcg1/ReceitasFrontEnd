@@ -19,7 +19,6 @@ function Rotas() {
                 <Route path='/' element={<Verifying />} />
                 <Route path='/login' element={<Login />} />
                 <Route path='/register' element={<Register />} />
-                <Route path='/include' element={<IncludeWallet />} />
 
                 <Route element={<Casket />}>
                     <Route path='/balance' element={<Balance />} />

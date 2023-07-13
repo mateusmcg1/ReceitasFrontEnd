@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import './inclusao.css'
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
@@ -9,7 +9,7 @@ import { CurrencyDto } from '../../../models/currenty.dto';
 import { CurrencyEnum } from '../../../Shared/enums/CurrencyEnum';
 
 
-export default function IncludeWallet() {
+export default function IncludeWallet({ closeDialog }: { closeDialog: any }) {
 
     const [text1, setText1] = useState('');
     const [text2, setText2] = useState('');
@@ -36,10 +36,11 @@ export default function IncludeWallet() {
 
                 })
             show('success', 'Success', 'Carteira adicionada com sucesso.');
-            const interval = setInterval(() => {
-                window.location.reload();;
-            }, 2 * 1000);
-            return () => clearInterval(interval);
+            closeDialog();
+            // const interval = setInterval(() => {
+            //     window.location.reload();;
+            // }, 2 * 1000);
+            // return () => clearInterval(interval);
         }
         catch (err) {
             if (err = 400) {
