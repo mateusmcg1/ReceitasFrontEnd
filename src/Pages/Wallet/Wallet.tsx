@@ -15,6 +15,7 @@ import { Dialog } from 'primereact/dialog';
 import IncludeWallet from './Incluir Carteira/IncludeWallet';
 import EditWallet from './Editar Carteira/editWallet'
 import { Toast, ToastMessage } from 'primereact/toast';
+import { FilterWalletDto } from './dtos/filter-wallet.dto';
 
 export default function Wallet() {
 
@@ -29,7 +30,7 @@ export default function Wallet() {
     const show = (severity: ToastMessage["severity"], summary: string, detail: string) => {
         toast.current?.show({ severity, summary, detail });
     };
-    
+
     const actions: MenuItem[] = [
         {
             label: 'Editar',
@@ -39,7 +40,7 @@ export default function Wallet() {
                 console.log(selectedWallet);
                 sessionStorage.setItem('oldData', selectedWallet.id)
                 setShowEditWallet(true); //Basically I set this to call a dialog which invokes the editWallet component so the user can edit the infos 
-                                         //from the selected row in the table. At the moment, user needs to refresh the page to see the result.  
+                //from the selected row in the table. At the moment, user needs to refresh the page to see the result.  
             }
         },
         {
@@ -47,7 +48,7 @@ export default function Wallet() {
             icon: 'pi pi-trash',
             command: async () => {
                 console.log(selectedWallet);
-               
+
                 try {
                     await axios.delete(`${process.env.REACT_APP_API_URL}/v1/wallets/${selectedWallet.id}`, {
                         headers: {
@@ -57,39 +58,36 @@ export default function Wallet() {
                     show('success', 'Success', 'Deletado com sucesso.');
                     const interval = setInterval(() => {
                         window.location.reload();;
-                       },2*1000);
-                       return () => clearInterval(interval);
+                    }, 2 * 1000);
+                    return () => clearInterval(interval);
                 }
                 catch (err) {
-                    if (err = 401){
-                    show('error', 'Unauthorized', 'Acesso negado! O token de acesso informado é inválido.');
+                    if (err = 401) {
+                        show('error', 'Unauthorized', 'Acesso negado! O token de acesso informado é inválido.');
                     }
                 }
             }
         }
     ];
 
-    useEffect(() => {
-        fetchWallets();
-        
-         }, []);
-        
-   
-
-    const fetchWallets = async () => {
+    const fetchWallets = async (params?: FilterWalletDto) => {
         try {
             const result = await axios.get(`${process.env.REACT_APP_API_URL}/v1/wallets`, {
                 headers: {
                     Authorization: `Bearer ${sessionStorage.getItem('access_token')}`
-                }
+                },
+                params
             });
             setWallets(result.data);
         } catch (err) {
-            
+
         }
-        
+
     }
 
+    useEffect(() => {
+        fetchWallets();
+    }, []);
 
     return (
         <div className='wallet-container'>
@@ -105,7 +103,9 @@ export default function Wallet() {
 
                     <InputText value={find} onChange={(e) => setFind(e.target.value)} />
 
-                    {<Button label="FILTRAR" style={{ marginLeft: "-1%" }} />}
+                    {<Button label="FILTRAR" style={{ marginLeft: "-1%" }} onClick={() => {
+                        fetchWallets({ name: find });
+                    }} />}
 
                     <SplitButton label="AÇÕES" icon="pi pi-plus" onClick={() => {
                         console.log('clicked');
