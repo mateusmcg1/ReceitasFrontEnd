@@ -5,10 +5,11 @@ import { Button } from 'primereact/button';
 import axios from "axios";
 import { Toast, ToastMessage } from 'primereact/toast';
 import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog';
+import { WalletDto } from '../../../models/wallet.dto';
 
 
 
-export default function DeleteWallet({ closeDialog }: { closeDialog: any }) {
+export default function DeleteWallet({ closeDialog, wallet }: { closeDialog: any, wallet: WalletDto }) {
 
 
     const toast = useRef<Toast>(null);
@@ -29,7 +30,7 @@ export default function DeleteWallet({ closeDialog }: { closeDialog: any }) {
 
         try {
 
-            await axios.delete(`${process.env.REACT_APP_API_URL}/v1/wallets/${sessionStorage.getItem('oldData')}`, {
+            await axios.delete(`${process.env.REACT_APP_API_URL}/v1/wallets/${wallet?.id}`, {
 
                 headers: {
                     Authorization: `Bearer ${sessionStorage.getItem('access_token')}`
@@ -49,6 +50,21 @@ export default function DeleteWallet({ closeDialog }: { closeDialog: any }) {
 
 
     return (
-        <ConfirmDialog header="hauahaha" />
+        <div className='deleting-wallet'>
+
+            <Toast ref={toast} />
+
+            {/* <h1 className="card flex justify-content-center">Deletar Carteira</h1> */}
+
+
+            <ConfirmDialog header />
+            <div className="card flex flex-wrap justify-content-between">
+                <Button onClick={() => closeDialog()} outlined severity='danger' icon="pi pi-times" label="Cancelar" className="button-delete"></Button>
+                <Button onClick={deleteWallets} icon="pi pi-check" severity='success' label="Confirmar" className="button-delete"></Button>
+            </div>
+
+
+
+        </div>
     )
 }

@@ -50,7 +50,8 @@ export function Casket({ children }: { children?: any }) {
                             <span>{userName}</span>
                         </li>
                         <li>
-                            <Link to={`/login`}><span>Sair</span></Link>
+                            <span style={{cursor:"pointer"}} onClick={() => navigate('login')}>Sair</span>
+                            {/* <Link to={`/login`}><span>Sair</span></Link> */}
                         </li>
                     </ul>
                 </div>

@@ -9,11 +9,11 @@ import { CurrencyDto } from '../../../models/currenty.dto';
 import { CurrencyEnum } from '../../../Shared/enums/CurrencyEnum';
 
 
-export default function IncludeWallet({ closeDialog }: { closeDialog: any }) {
+export default function IncludeWallet({ closeDialog, toast }: { closeDialog: any, toast: any }) {
 
     const [text1, setText1] = useState('');
     const [text2, setText2] = useState('');
-    const toast = useRef<Toast>(null);
+    
     const [selectedCurrency, setSelectedCurrency] = useState('');
     //É AQUI ONDE EU NAO SEI O QUE FAZER!
     var currencyTypes = Object.values(CurrencyEnum); // como chamar essa variável currencyTypes corretamente para que liste as moedas?// 
