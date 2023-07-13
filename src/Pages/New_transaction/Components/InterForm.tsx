@@ -17,7 +17,7 @@ export default function InterForm({ walletId }: { walletId: string }) {
   const [selectedType, setSelectedType] = useState("");
   const [wallets, setWallets] = useState<any[]>([]);
   const [selectedWallet, setSelectedWallet] = useState<WalletDto>()
-  
+
   const fetchWallets = async () => {
     try {
         const result = await axios.get(`${process.env.REACT_APP_API_URL}/v1/wallets`, {
@@ -36,28 +36,28 @@ useEffect(() => {
   fetchWallets();
 }, []);
 
-  // const asyncNewRecurrency = async () => {
-  //   try {
-  //     const result = await axios.post(
-  //       `${process.env.REACT_APP_API_URL}/v1/recurrency/${walletId}`,
-  //       {
-  //         // reference: reference,
-  //         // base_date: baseDate,
-  //         // frequency: selectedFrequency,
-  //         // type: selectedType,
-  //         // amount: amount,
-  //         // includeWeekends: includeWeekends,
-  //       },
-  //       {
-  //         headers: {
-  //           Authorization: `Bearer ${sessionStorage.getItem("access_token")!}`,
-  //         },
-  //       }
-  //     );
-  //   } catch (err) {
-  //     alert(err);
-  //   }
-  // };
+  const asyncNewInterWallet= async () => {
+    try {
+      const result = await axios.post(
+        `${process.env.REACT_APP_API_URL}/v1/transactions/inter-wallet`,
+        {
+          reference: reference,
+          due_date: baseDate,
+          type: selectedType,
+          amount: amount,
+          wallet_id: walletId,
+          destinatary_wallet_id: selectedWallet?.id
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${sessionStorage.getItem("access_token")!}`,
+          },
+        }
+      );
+    } catch (err) {
+      alert(err);
+    }
+  };
 
 
   return (
@@ -130,7 +130,7 @@ useEffect(() => {
       </div>
       <Button
         label="Salvar"
-        // onClick={asyncNewRecurrency}
+        onClick={asyncNewInterWallet}
         style={{ marginTop: "10%" }}
       />
     </div>
