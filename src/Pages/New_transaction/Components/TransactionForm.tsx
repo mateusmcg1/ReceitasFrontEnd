@@ -24,7 +24,7 @@ export default function TransactionForm({ walletId }: { walletId: string }) {
         `${process.env.REACT_APP_API_URL}/v1/transactions`,
         {
           reference: reference,
-          due_date: date,
+          due_date: installmentNumber > 0 ? selectedDate : date,
           installments: installments,
           type: selectedType,
           amount: value,
@@ -47,6 +47,8 @@ export default function TransactionForm({ walletId }: { walletId: string }) {
       installments.filter((i: Installment) => i.paid === false).length > 0;
     setPaid(!isPaid);
   };
+  const selectedDate = installments
+    .map((i: Installment) => i.due_date).slice(-1)[0];
 
   useEffect(() => {
     paidValidate();
