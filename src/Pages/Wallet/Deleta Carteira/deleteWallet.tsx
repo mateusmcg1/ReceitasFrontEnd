@@ -54,7 +54,7 @@ export default function DeleteWallet({ closeDialog, wallet }: { closeDialog: any
 
             <Toast ref={toast} />
 
-            {/* <h1 className="card flex justify-content-center">Deletar Carteira</h1> */}
+            {/* <h1 className="card flex justify-content-center">Deletar Carteira</h1> */}  
 
 
             <ConfirmDialog header />

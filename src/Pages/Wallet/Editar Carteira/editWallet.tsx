@@ -13,10 +13,10 @@ export default function EditWallet({ closeDialog, wallet }: { closeDialog: any, 
     const [text1, setText1] = useState('');
     // const [text2, setText2] = useState('');
     const [selectedCurrency, setSelectedCurrency] = useState('');
-    const toast = useRef<Toast>(null);
+    const Edittoast = useRef<Toast>(null);
     var currencyTypes = Object.values(CurrencyEnum);
     const show = (severity: ToastMessage["severity"], summary: string, detail: string) => {
-        toast.current?.show({ severity, summary, detail });
+        Edittoast.current?.show({ severity, summary, detail });
     };
 
     useEffect(() => {
@@ -36,7 +36,7 @@ export default function EditWallet({ closeDialog, wallet }: { closeDialog: any, 
                         Authorization: `Bearer ${sessionStorage.getItem('access_token')}`
                     }
                 })
-            sessionStorage.setItem('oldData', '');
+            
             show('success', 'Success', 'Editado com sucesso.');
 
 
@@ -52,7 +52,7 @@ export default function EditWallet({ closeDialog, wallet }: { closeDialog: any, 
 
     return (
         <div className='inclusao-container'>
-            <Toast ref={toast} />
+            <Toast ref={Edittoast} />
             <h1>Editar Carteira</h1>
 
             <div className='inclusao-frame'>

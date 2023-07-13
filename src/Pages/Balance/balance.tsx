@@ -31,7 +31,7 @@ export default function Balance() {
     let [aPagar, setAPagar] = useState(0);
     let [aReceber, setAReceber] = useState(0);
     const [text1, setText1] = useState('');
-    const [walletName, setWalletName] = useState('Example')
+    const [walletName, setWalletName] = useState('Selecionar Carteira')
     const [visible, setVisible] = useState<boolean>(false);
     const [showFilter, setShowFilter] = useState(false);
     const [showIncludeTransaction, setShowIncludeTransaction] = useState(false);
@@ -56,8 +56,10 @@ export default function Balance() {
     }, []);
 
     useEffect(() => {
-        console.log('selecionada: ', selectedWallet);
-        setWalletName(selectedWallet?.name!);
+        if (selectedWallet) {
+            console.log('selecionada: ', selectedWallet);
+            setWalletName(selectedWallet?.name!);
+        }
     }, [selectedWallet])
 
     return (
@@ -71,8 +73,11 @@ export default function Balance() {
                     <div className='wallet-name'>
                         <Button label={walletName} onClick={() => setVisible(true)} />
                         <Dialog header="Selecionar Carteira" visible={visible} style={{ width: '50vw' }} onHide={() => setVisible(false)}>
-                            <SelectWallet wallets={wallets} onUpdate={setSelectedWallet}></SelectWallet>
-                            
+                            <SelectWallet wallets={wallets} onUpdate={(selectedWallet: WalletDto) => {
+                                setSelectedWallet(selectedWallet);
+                                setVisible(false);
+                            }}></SelectWallet>
+
                         </Dialog>
                         {/*  */}
                     </div>

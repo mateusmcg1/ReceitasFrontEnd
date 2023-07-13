@@ -8,9 +8,9 @@ export function SelectWallet({ wallets, onUpdate }: { wallets: WalletDto[], onUp
     const [selectedWallet, setSelectedWallet] = useState<WalletDto>();
 
     return <div>
-        <Dropdown value={selectedWallet} onChange={(e) => onUpdate(e.value)} options={wallets} optionLabel="name"
+        <Dropdown value={selectedWallet} onChange={(e) =>setSelectedWallet(e.value)} options={wallets} optionLabel="name"
             placeholder="Selecione uma carteira" />
         
-        <Button className="card flex flex-wrap justify-content-center">Alterar</Button>
+        <Button className="card flex flex-wrap justify-content-center" onClick={(e) => onUpdate(selectedWallet)}>Alterar</Button>
     </div>
 }
