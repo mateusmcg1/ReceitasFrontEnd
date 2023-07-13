@@ -16,6 +16,7 @@ import AdvancedFilter from '../Filtros Avançados/advanced-filter'
 import NewTransaction from '../New_transaction/new_transaction';
 import { SelectWallet } from './SelectWallet/SelectWallet';
 import { WalletDto } from '../../models/wallet.dto';
+import { use } from 'i18next';
 
 export default function Balance() {
 
@@ -36,6 +37,7 @@ export default function Balance() {
     const [showFilter, setShowFilter] = useState(false);
     const [showIncludeTransaction, setShowIncludeTransaction] = useState(false);
     const [selectedWallet, setSelectedWallet] = useState<WalletDto>();
+    const [transactions, setTransactions] = useState<any[]>([]);
 
 
     const fetchWallets = async () => {
@@ -51,6 +53,21 @@ export default function Balance() {
         }
 
     }
+    const fetchTransactions = async (params?: any) => {
+        try {
+            const result = await axios.get(`${process.env.REACT_APP_API_URL}/v1/transactions/${selectedWallet?.id}`, {
+                headers: {
+                    Authorization: `Bearer ${sessionStorage.getItem('access_token')!}`,
+                },
+                params
+            });
+            console.log(result.data)
+            setTransactions(result.data)
+        } catch (err) {
+            alert(err);
+        }
+
+    }
     useEffect(() => {
         fetchWallets();
     }, []);
@@ -59,6 +76,7 @@ export default function Balance() {
         if (selectedWallet) {
             console.log('selecionada: ', selectedWallet);
             setWalletName(selectedWallet?.name!);
+            fetchTransactions();
         }
     }, [selectedWallet])
 
@@ -85,8 +103,8 @@ export default function Balance() {
                     <div className='finantial-organization'>
 
                         <div className='finantial-framework'>
-                            <label htmlFor="value1">Saldo (BRL)</label>
-                            <span>R$ {value1}</span>
+                            <label htmlFor="value1">Saldo ({selectedWallet?.currency})</label>
+                            <span>{value1.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>
                         </div>
                         <div className='finantial-framework'>
                             <label htmlFor="value2">Vencidas ({vencidas})</label>
@@ -113,7 +131,7 @@ export default function Balance() {
                     <div className='botoes'>
                         <InputText value={text1} onChange={(e) => setText1(e.target.value)} />
 
-                        {<Button label="FILTRAR" />}
+                        {<Button label="FILTRAR" onClick={() => fetchTransactions({ reference: text1 })} />}
 
                         {<Button id='advanced-filter' label="FILTROS AVANÇADOS" onClick={() => setShowFilter(true)} />}
 
@@ -128,13 +146,14 @@ export default function Balance() {
 
                 <div className='data-table'>
 
-                    <DataTable tableStyle={{ minWidth: '50rem' }}>
-                        <Column field="data" header="Data"></Column>
-                        <Column field="referencia" header="Referência"></Column>
-                        <Column field="valor" header="Valor"></Column>
-                        <Column field="pago" header="Pago"></Column>
-                        <Column field="observacao" header="Observação"></Column>
-                        <Column field="parcela" header="Parcela"></Column>
+                    <DataTable value={transactions} tableStyle={{ minWidth: '50rem' }}>
+                        <Column body={(data) => {
+                            return <span>{new Date(data.createdAt).toLocaleDateString('pt-BR')}</span>
+                        }} header="Data"></Column>
+                        <Column field="reference" header="Referência"></Column>
+                        <Column body={(transaction) => <span style={{ color: (transaction.type === 'BILLING' ? 'green' : 'red') }}>{Math.abs(transaction?.amount).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>} header="Valor"></Column>
+                        <Column body={(transaction) => <span>{transaction.paid ? 'Pago' : 'Não Pago'}</span>} header="Pago"></Column>
+                        <Column field="observation" header="Observação"></Column>
                     </DataTable>
 
                 </div>
