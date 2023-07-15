@@ -31,9 +31,7 @@
 }
 
 .inclusao-frame .p-inputtext {
-    height: 56px;
     margin-bottom: 5%;
-    border: 1px solid #828282;
     margin-top: 1%;
 }
 
@@ -46,3 +44,4 @@
     width: 20%;
     background-color: #009BE7;
 }
+

@@ -1,5 +1,5 @@
 import "./Login.css"
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { InputText } from 'primereact/inputtext';
 import { Password } from 'primereact/password';
@@ -20,6 +20,10 @@ export default function Login() {
         toast.current?.show({ severity, summary, detail });
     };
 
+    useEffect(() => {
+        
+        
+         }, []);
 
     async function LogUser() {
 
@@ -36,7 +40,6 @@ export default function Login() {
                 sessionStorage.setItem("access_token", result.data.access_token);
                 sessionStorage.setItem("refresh_token", result.data.refresh_token);
                 navigate('/admin', { replace: true })
-
             }
 
             catch (err: any) {
@@ -49,11 +52,6 @@ export default function Login() {
         else {
             show('warn', 'Atenção!', 'Insira os dados em todos os campos.');
         }
-
-
-
-
-
 
     }
 

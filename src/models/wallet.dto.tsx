@@ -1,4 +1,4 @@
-import { CurrencyEnum } from "../enums/CurrencyEnum";
+import { CurrencyEnum } from "../Shared/enums/CurrencyEnum";
 
 export interface WalletDto {
     currency?: CurrencyEnum;
