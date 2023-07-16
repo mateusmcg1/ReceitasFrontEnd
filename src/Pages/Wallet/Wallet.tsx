@@ -124,10 +124,6 @@ export default function Wallet() {
                         fetchWallets({ name: find });
                     }} />
 
-                    <Button label="TOAST" style={{ marginLeft: "-1%" }} onClick={() => {
-                        showToast('success', 'heuhauhe', 'TESTE');
-                    }} />
-
                     <SplitButton label="AÇÕES" icon="pi pi-plus" onClick={() => {
                         console.log('clicked');
                     }} model={actions} />
