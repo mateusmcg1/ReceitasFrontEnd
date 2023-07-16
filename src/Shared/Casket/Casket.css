@@ -4,6 +4,7 @@
 
 .main-content {
   background-color: #fff;
+  overflow-y: scroll;
 }
 
 .A {
