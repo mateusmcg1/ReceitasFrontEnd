@@ -50,12 +50,12 @@ export function Casket({ children }: { children?: any }) {
                             <span>{userName}</span>
                         </li>
                         <li>
-                            <span style={{cursor:"pointer"}} onClick={() => {
+                            <span style={{ cursor: "pointer" }} onClick={() => {
                                 navigate('login');
                                 sessionStorage.removeItem('access_token');
                                 sessionStorage.removeItem('refresh_token');
-                            }    
-                                }>Sair</span>
+                            }
+                            }>Sair</span>
                             {/* <Link to={`/login`}><span>Sair</span></Link> */}
                         </li>
                     </ul>
@@ -73,7 +73,7 @@ export function Casket({ children }: { children?: any }) {
                                 setActiveMenuItem(menuItem);
                                 menuItem?.command!()
                             }}>
-                                <div className="menu-item-display" style={{ color: activeMenuItem?.label === menuItem.label ? '#fff' : '#d2d2d2' }}>
+                                <div className="menu-item-display" style={{ color: activeMenuItem?.label === menuItem.label ? '#fff' : '#d2d2d2', fontWeight: activeMenuItem?.label === menuItem.label ? 'bolder' : 'normal' }}>
                                     <a className={menuItem.icon} style={{ marginLeft: 15 }}></a>
                                     <span style={{ marginLeft: 10, fontSize: '14px' }}>{menuItem.label}</span>
                                 </div>

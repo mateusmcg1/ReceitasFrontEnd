@@ -8,7 +8,7 @@ import { CurrencyEnum } from '../../../Shared/enums/CurrencyEnum';
 import { Dropdown } from 'primereact/dropdown';
 import { WalletDto } from '../../../models/wallet.dto';
 
-export default function EditWallet({ closeDialog, wallet }: { closeDialog: any, wallet: WalletDto }) {
+export default function EditWallet({ closeDialog, wallet, onSuccess, onError }: { closeDialog: any, wallet: WalletDto, onSuccess: Function, onError: Function }) {
 
     const [text1, setText1] = useState('');
     // const [text2, setText2] = useState('');
@@ -36,8 +36,8 @@ export default function EditWallet({ closeDialog, wallet }: { closeDialog: any, 
                         Authorization: `Bearer ${sessionStorage.getItem('access_token')}`
                     }
                 })
-            
-            show('success', 'Success', 'Editado com sucesso.');
+
+            onSuccess('success', 'Success', 'Editado com sucesso.');
 
 
             closeDialog();
@@ -45,7 +45,7 @@ export default function EditWallet({ closeDialog, wallet }: { closeDialog: any, 
         }
         catch (err) {
             if (err = 400) {
-                show('error', 'Erro', 'Invalid currency');
+                onError('error', 'Erro', 'Invalid currency');
             }
         }
     }

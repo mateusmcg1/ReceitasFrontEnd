@@ -28,10 +28,10 @@ export default function Wallet() {
     const [showNewWallet, setShowNewWallet] = useState(false);
     const [showEditWallet, setShowEditWallet] = useState(false);
     const [showDeleteWallet, setShowDeleteWallet] = useState(false);
-    const walletToast = useRef<Toast>(null);
+    const toast = useRef<Toast>(null);
 
     const showToast = (severity: ToastMessage["severity"], summary: string, detail: string) => {
-        walletToast.current?.show({ severity, summary, detail });
+        toast.current?.show([{ severity, summary, detail }]);
     };
 
     const actions: MenuItem[] = [
@@ -61,7 +61,6 @@ export default function Wallet() {
 
     useEffect(() => {
         fetchWallets();
-
     }, []);
 
 
@@ -73,7 +72,7 @@ export default function Wallet() {
                 headers: {
                     Authorization: `Bearer ${sessionStorage.getItem('access_token')}`
                 }
-            })
+            });
             showToast('success', 'Success', 'Deletado com sucesso.');
             fetchWallets();
         }
@@ -88,12 +87,14 @@ export default function Wallet() {
     }
     const fetchWallets = async (params?: any) => {
         try {
+            setLoading(true);
             const result = await axios.get(`${process.env.REACT_APP_API_URL}/v1/wallets`, {
                 headers: {
                     Authorization: `Bearer ${sessionStorage.getItem('access_token')}`
                 },
                 params
             });
+            setLoading(false);
             setWallets(result.data);
         } catch (err) {
 
@@ -107,7 +108,7 @@ export default function Wallet() {
 
     return (
         <div className='wallet-container'>
-            <Toast ref={walletToast} />
+            <Toast ref={toast} />
             <div className='wallet-main-content'>
 
                 <h1>Carteiras</h1>
@@ -119,9 +120,13 @@ export default function Wallet() {
 
                     <InputText value={find} onChange={(e) => setFind(e.target.value)} />
 
-                    {<Button label="FILTRAR" style={{ marginLeft: "-1%" }} onClick={() => {
+                    <Button label="FILTRAR" style={{ marginLeft: "-1%" }} onClick={() => {
                         fetchWallets({ name: find });
-                    }} />}
+                    }} />
+
+                    <Button label="TOAST" style={{ marginLeft: "-1%" }} onClick={() => {
+                        showToast('success', 'heuhauhe', 'TESTE');
+                    }} />
 
                     <SplitButton label="AÇÕES" icon="pi pi-plus" onClick={() => {
                         console.log('clicked');
@@ -141,17 +146,20 @@ export default function Wallet() {
                     <Column field="currency" header="Moeda"></Column>
                 </DataTable>
             </div>
-            <Dialog visible={showNewWallet} style={{ width: '50vw' }} onHide={() => setShowNewWallet(false)}>
+            <Dialog visible={showNewWallet} style={{ width: '50vw' }} onHide={() => {
+                setShowNewWallet(false)
+            }}>
                 <IncludeWallet closeDialog={() => {
                     setShowNewWallet(false);
                     fetchWallets();
-                }} toast={walletToast}></IncludeWallet>
+                }} onSuccess={showToast} onError={showToast}></IncludeWallet>
             </Dialog>
             <Dialog visible={showEditWallet} style={{ width: '50vw' }} onHide={() => setShowEditWallet(false)}>
                 <EditWallet wallet={selectedWallet} closeDialog={() => {
                     setShowEditWallet(false);
+                    // showToast('success', 'Success', 'Carteira editada com sucesso.');
                     fetchWallets();
-                }}></EditWallet>
+                }} onSuccess={showToast} onError={showToast}></EditWallet>
             </Dialog>
             <ConfirmDialog />
             {/* <Dialog visible={showDeleteWallet} style={{ width: '50vw' }} onHide={() => setShowDeleteWallet(false)}>

@@ -16,7 +16,6 @@ import AdvancedFilter from '../Filtros Avançados/advanced-filter'
 import NewTransaction from '../New_transaction/new_transaction';
 import { SelectWallet } from './SelectWallet/SelectWallet';
 import { WalletDto } from '../../models/wallet.dto';
-import { use } from 'i18next';
 
 export default function Balance() {
 

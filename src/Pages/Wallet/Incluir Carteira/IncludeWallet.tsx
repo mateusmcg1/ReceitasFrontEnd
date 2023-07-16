@@ -8,18 +8,20 @@ import { Dropdown } from 'primereact/dropdown';
 import { CurrencyEnum } from '../../../Shared/enums/CurrencyEnum';
 
 
-export default function IncludeWallet({ closeDialog, toast }: { closeDialog: any, toast: any }) {
+export default function IncludeWallet({ closeDialog, onSuccess, onError }: { closeDialog: any, onSuccess: Function, onError: Function }) {
 
     const [text1, setText1] = useState('');
     const [text2, setText2] = useState('');
-    
+    // const toast = useRef<Toast>(null);
+
     const [selectedCurrency, setSelectedCurrency] = useState('');
     //É AQUI ONDE EU NAO SEI O QUE FAZER!
     var currencyTypes = Object.values(CurrencyEnum); // como chamar essa variável currencyTypes corretamente para que liste as moedas?// 
 
-    const show = (severity: ToastMessage["severity"], summary: string, detail: string) => {
-        toast.current?.show({ severity, summary, detail });
-    };
+    // const show = (severity: ToastMessage["severity"], summary: string, detail: string) => {
+    //     toast.current?.show({ severity, summary, detail });
+    //     // closeDialog()
+    // };
 
     const addWallets = async () => {
         try {
@@ -34,7 +36,7 @@ export default function IncludeWallet({ closeDialog, toast }: { closeDialog: any
                     }
 
                 })
-            show('success', 'Success', 'Carteira adicionada com sucesso.');
+            onSuccess('success', 'Success', 'Carteira alterada com sucesso.');
             closeDialog();
             // const interval = setInterval(() => {
             //     window.location.reload();;
@@ -43,15 +45,13 @@ export default function IncludeWallet({ closeDialog, toast }: { closeDialog: any
         }
         catch (err) {
             if (err = 400) {
-                show('error', 'Erro', 'Invalid currency');
+                onError('error', 'Erro', 'Invalid currency');
             }
         }
     }
 
     return (
         <div className='inclusao-container'>
-
-            <Toast ref={toast} />
             <h1>Incluir Carteira</h1>
 
             <div className='inclusao-frame'>
@@ -63,9 +63,8 @@ export default function IncludeWallet({ closeDialog, toast }: { closeDialog: any
                     className="w-full md:w-14rem" />
                 {/* <InputText value={text2} onChange={(e) => setText2(e.target.value)} /> */}
 
-
                 <div className='inclusao-button'>
-                    {<Button label="INCLUIR" onClick={addWallets} />}
+                    {<Button label="INCLUIR" onClick={() => addWallets()} />}
                 </div>
             </div>
 
