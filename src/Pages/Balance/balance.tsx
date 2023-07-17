@@ -12,6 +12,7 @@ import { Column } from 'primereact/column';
 import { Avatar } from 'primereact/avatar';
 import { Dialog } from 'primereact/dialog'
 import { Dropdown } from 'primereact/dropdown';
+import { Calendar, CalendarChangeEvent } from "primereact/calendar";
 import AdvancedFilter from '../Filtros Avançados/advanced-filter'
 import NewTransaction from '../New_transaction/new_transaction';
 import { SelectWallet } from './SelectWallet/SelectWallet';
@@ -37,6 +38,7 @@ export default function Balance() {
     const [showIncludeTransaction, setShowIncludeTransaction] = useState(false);
     const [selectedWallet, setSelectedWallet] = useState<WalletDto>();
     const [transactions, setTransactions] = useState<any[]>([]);
+    const [dates, setDates] = useState<any[]>([])
 
 
     const fetchWallets = async () => {
@@ -56,12 +58,16 @@ export default function Balance() {
         try {
             const result = await axios.get(`${process.env.REACT_APP_API_URL}/v1/transactions/${selectedWallet?.id}`, {
                 headers: {
-                    Authorization: `Bearer ${sessionStorage.getItem('access_token')!}`,
+                    Authorization: `Bearer ${sessionStorage.getItem('access_token')}`,
                 },
-                params
+                params: {
+                    startDate: dates[0],
+                    endDate: dates[1]
+                }
             });
-            console.log(result.data)
+            // console.log(result.data)
             setTransactions(result.data)
+            console.log(dates[0])
         } catch (err) {
             alert(err);
         }
@@ -123,18 +129,33 @@ export default function Balance() {
 
                 <div className='filtering-data'>
 
-                    <div className='period'>
-                        <label htmlFor="text1">Período</label>
-                    </div>
+                     <div className='period'>
+                            <label htmlFor="date">Período</label>
+                        </div>
 
                     <div className='botoes'>
-                        <InputText value={text1} onChange={(e) => setText1(e.target.value)} />
+                        
 
-                        {<Button label="FILTRAR" onClick={() => fetchTransactions({ reference: text1 })} />}
+                        <Calendar
+                            value={dates}
+                            onChange={(e: any) => {
+                                setDates(e.value);
+                            }}
+
+                            selectionMode="range"
+                            locale="en"
+                            dateFormat="dd/mm/yy"
+                        />
+
+
+
+                        {/* <InputText value={text1} onChange={(e) => setText1(e.target.value)} /> */}
+
+                        {<Button label="FILTRAR" onClick={() => fetchTransactions({ reference: dates })} />}
 
                         {<Button id='advanced-filter' label="FILTROS AVANÇADOS" onClick={() => setShowFilter(true)} />}
 
-                        {<Button label="AÇÕES" style={{ marginLeft: "15%", marginRight: "-5%" }} />}
+                        {<Button label="AÇÕES" style={{}} />}
                         {<Button label="INCLUIR" onClick={(e) => {
                             setShowIncludeTransaction(true);
                         }} /*style={{ marginTop: "10%" }}*/ />}
