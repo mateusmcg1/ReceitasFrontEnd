@@ -9,7 +9,15 @@ import axios from "axios";
 import { Button } from "primereact/button";
 import { Checkbox } from "primereact/checkbox";
 
-export default function TransactionForm({ walletId }: { walletId: string }) {
+export default function TransactionForm({
+  walletId,
+  onSuccess,
+  onError,
+}: {
+  walletId: string;
+  onSuccess: Function;
+  onError: Function;
+}) {
   const [value, setValue] = useState(0);
   const [date, setDate] = useState<string | Date | Date[] | null>([new Date()]);
   const [reference, setReference] = useState("");
@@ -37,8 +45,13 @@ export default function TransactionForm({ walletId }: { walletId: string }) {
           },
         }
       );
+      onSuccess("success", "Successo", "Transação incluida com sucesso.");
     } catch (err) {
-      alert(err);
+      {
+        err = 400
+          ? onError("error", "Erro", "Preencha todos os campos obrigatórios")
+          : onError("error", "Erro", "");
+      }
     }
   };
 
@@ -48,7 +61,8 @@ export default function TransactionForm({ walletId }: { walletId: string }) {
     setPaid(!isPaid);
   };
   const selectedDate = installments
-    .map((i: Installment) => i.due_date).slice(-1)[0];
+    .map((i: Installment) => i.due_date)
+    .slice(-1)[0];
 
   useEffect(() => {
     paidValidate();
@@ -76,10 +90,12 @@ export default function TransactionForm({ walletId }: { walletId: string }) {
         <div className="col-12">
           <span className="p-float-label">
             <InputText
+              id="reference"
+              name="reference"
               value={reference}
               onChange={(e) => setReference(e.target.value)}
             />
-            <label htmlFor="reference">Referencia</label>
+            <label htmlFor="reference">Referencia *</label>
           </span>
         </div>
       </div>
@@ -94,7 +110,7 @@ export default function TransactionForm({ walletId }: { walletId: string }) {
               currency="BRL"
               locale="pt-BR"
             />
-            <label htmlFor="amount">Valor</label>
+            <label htmlFor="amount">Valor *</label>
           </span>
         </div>
       </div>
@@ -121,7 +137,7 @@ export default function TransactionForm({ walletId }: { walletId: string }) {
                 dateFormat="dd/mm/yy"
               />
             )}
-            <label htmlFor="date">Data</label>
+            <label htmlFor="date">Data *</label>
           </span>
         </div>
       </div>
@@ -141,7 +157,7 @@ export default function TransactionForm({ walletId }: { walletId: string }) {
               placeholder="Selecione um tipo"
               className="w-full md:w-14rem"
             />
-            <label htmlFor="type">Tipo</label>
+            <label htmlFor="type">Tipo *</label>
           </span>
         </div>
       </div>

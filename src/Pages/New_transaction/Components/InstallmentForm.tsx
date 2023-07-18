@@ -37,7 +37,7 @@ export default function InstallmentForm({
               currency="BRL"
               locale="pt-BR"
             />
-            <label htmlFor="amount">Valor (Parcela {index+1})</label>
+            <label htmlFor="amount">Valor (Parcela {index+1}) *</label>
           </span>
       </div>
       <div className="field col">
@@ -50,7 +50,7 @@ export default function InstallmentForm({
               locale="en"
               dateFormat="dd/mm/yy"
             />
-            <label htmlFor="date">Data</label>
+            <label htmlFor="date">Data *</label>
           </span>
       </div>
       <div className="field col">

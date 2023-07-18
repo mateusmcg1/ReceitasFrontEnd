@@ -9,7 +9,15 @@ import { Checkbox } from "primereact/checkbox";
 
 //FALTA IMPLEMENTAR O CSS DE ACORDO COM O PROTÓTIPO//
 
-export default function RecurrencyForm({ walletId }: { walletId: string }) {
+export default function RecurrencyForm({
+  walletId,
+  onSuccess,
+  onError,
+}: {
+  walletId: string;
+  onSuccess: Function;
+  onError: Function;
+}) {
   const [amount, setAmount] = useState<number>();
   const [baseDate, setBaseDate] = useState<string | Date | Date[] | null>([
     new Date(),
@@ -37,8 +45,13 @@ export default function RecurrencyForm({ walletId }: { walletId: string }) {
           },
         }
       );
+      onSuccess("success", "Successo", "Transação incluida com sucesso.");
     } catch (err) {
-      alert(err);
+      {
+        err = 400
+          ? onError("error", "Erro", "Preencha todos os campos obrigatórios")
+          : onError("error", "Erro", "");
+      }
     }
   };
 
@@ -103,26 +116,31 @@ export default function RecurrencyForm({ walletId }: { walletId: string }) {
       </div>
       <div className="grid" style={{ marginTop: "2%" }}>
         <div className="col">
-        <span className="p-float-label">
-          <Dropdown
-            value={selectedFrequency}
-            onChange={(e: DropdownChangeEvent) => setSelectedFrequency(e.value)}
-            options={[
-              { label: "Diária", value: "DAILY" },
-              { label: "Semanal", value: "WEEKLY" },
-              { label: "Mensal", value: "MONTHLY" },
-            ]}
-            optionLabel="label"
-            optionValue="value"
-            editable
-            placeholder="Selecione uma frequência"
-            className="w-full md:w-14rem"
-          />
-          <label htmlFor="frequency">Frequência</label>
+          <span className="p-float-label">
+            <Dropdown
+              value={selectedFrequency}
+              onChange={(e: DropdownChangeEvent) =>
+                setSelectedFrequency(e.value)
+              }
+              options={[
+                { label: "Diária", value: "DAILY" },
+                { label: "Semanal", value: "WEEKLY" },
+                { label: "Mensal", value: "MONTHLY" },
+              ]}
+              optionLabel="label"
+              optionValue="value"
+              editable
+              placeholder="Selecione uma frequência"
+              className="w-full md:w-14rem"
+            />
+            <label htmlFor="frequency">Frequência</label>
           </span>
         </div>
         <div className="col">
-          <div className="flex jusitfy-content-center" style={{ marginTop: "4%" }}>
+          <div
+            className="flex jusitfy-content-center"
+            style={{ marginTop: "4%" }}
+          >
             <Checkbox
               inputId="includeWeekends"
               name="weekends"

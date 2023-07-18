@@ -7,8 +7,15 @@ import axios from "axios";
 import { Button } from "primereact/button";
 import { WalletDto } from "../../../models/wallet.dto";
 
-
-export default function InterForm({ walletId }: { walletId: string }) {
+export default function InterForm({
+  walletId,
+  onSuccess,
+  onError,
+}: {
+  walletId: string;
+  onSuccess: Function;
+  onError: Function;
+}) {
   const [amount, setAmount] = useState<number>();
   const [baseDate, setBaseDate] = useState<string | Date | Date[] | null>([
     new Date(),
@@ -16,27 +23,29 @@ export default function InterForm({ walletId }: { walletId: string }) {
   const [reference, setReference] = useState("");
   const [selectedType, setSelectedType] = useState("");
   const [wallets, setWallets] = useState<any[]>([]);
-  const [selectedWallet, setSelectedWallet] = useState<WalletDto>()
+  const [selectedWallet, setSelectedWallet] = useState<WalletDto>();
 
   const fetchWallets = async () => {
     try {
-        const result = await axios.get(`${process.env.REACT_APP_API_URL}/v1/wallets`, {
-            headers: {
-                Authorization: `Bearer ${sessionStorage.getItem('access_token')!}`,
-            },
-        });
-        setWallets(result.data);
+      const result = await axios.get(
+        `${process.env.REACT_APP_API_URL}/v1/wallets`,
+        {
+          headers: {
+            Authorization: `Bearer ${sessionStorage.getItem("access_token")!}`,
+          },
+        }
+      );
+      setWallets(result.data);
     } catch (err) {
-        alert(err);
+      alert(err);
     }
+  };
 
-}
+  useEffect(() => {
+    fetchWallets();
+  }, []);
 
-useEffect(() => {
-  fetchWallets();
-}, []);
-
-  const asyncNewInterWallet= async () => {
+  const asyncNewInterWallet = async () => {
     try {
       const result = await axios.post(
         `${process.env.REACT_APP_API_URL}/v1/transactions/inter-wallet`,
@@ -46,7 +55,7 @@ useEffect(() => {
           type: selectedType,
           amount: amount,
           wallet_id: walletId,
-          destinatary_wallet_id: selectedWallet?.id
+          destinatary_wallet_id: selectedWallet?.id,
         },
         {
           headers: {
@@ -54,19 +63,28 @@ useEffect(() => {
           },
         }
       );
+      onSuccess("success", "Successo", "Transação incluida com sucesso.");
     } catch (err) {
-      alert(err);
+      {
+        err = 400
+          ? onError("error", "Erro", "Preencha todos os campos obrigatórios")
+          : onError("error", "Erro", "");
+      }
     }
   };
-
 
   return (
     <div>
       <div className="grid" style={{ marginTop: "2%" }}>
         <div className="col">
           <span className="p-float-label">
-          <Dropdown value={selectedWallet} onChange={(e) => setSelectedWallet(e.value)} options={wallets} optionLabel="name"
-            placeholder="Selecione uma carteira" />
+            <Dropdown
+              value={selectedWallet}
+              onChange={(e) => setSelectedWallet(e.value)}
+              options={wallets}
+              optionLabel="name"
+              placeholder="Selecione uma carteira"
+            />
             <label htmlFor="type">Carteira Destino</label>
           </span>
         </div>
@@ -110,7 +128,7 @@ useEffect(() => {
       </div>
       <div className="grid" style={{ marginTop: "2%" }}>
         <div className="col">
-        <span className="p-float-label">
+          <span className="p-float-label">
             <Dropdown
               value={selectedType}
               onChange={(e: DropdownChangeEvent) => setSelectedType(e.value)}
