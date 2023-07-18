@@ -55,23 +55,40 @@ export default function Balance() {
 
     }
     const fetchTransactions = async (params?: any) => {
-        try {
-            const result = await axios.get(`${process.env.REACT_APP_API_URL}/v1/transactions/${selectedWallet?.id}`, {
-                headers: {
-                    Authorization: `Bearer ${sessionStorage.getItem('access_token')}`,
-                },
-                params: {
-                    startDate: dates[0],
-                    endDate: dates[1]
-                }
-            });
-            // console.log(result.data)
-            setTransactions(result.data)
-            console.log(dates[0])
-        } catch (err) {
-            alert(err);
+        if (dates) {
+            try {
+                const result = await axios.get(`${process.env.REACT_APP_API_URL}/v1/transactions/${selectedWallet?.id}`, {
+                    headers: {
+                        Authorization: `Bearer ${sessionStorage.getItem('access_token')}`,
+                    },
+                    params: {
+                        startDate: dates[0],
+                        endDate: dates[1]
+                    }
+                });
+                // console.log(result.data)
+                setTransactions(result.data)
+
+            } catch (err) {
+                alert(err);
+            }
         }
 
+        else{
+            try {
+                const result = await axios.get(`${process.env.REACT_APP_API_URL}/v1/transactions/${selectedWallet?.id}`, {
+                    headers: {
+                        Authorization: `Bearer ${sessionStorage.getItem('access_token')}`,
+                    },
+                    
+                });
+                // console.log(result.data)
+                setTransactions(result.data)
+
+            } catch (err) {
+                alert(err);
+            }
+        }
     }
     useEffect(() => {
         fetchWallets();
@@ -129,12 +146,12 @@ export default function Balance() {
 
                 <div className='filtering-data'>
 
-                     <div className='period'>
-                            <label htmlFor="date">Período</label>
-                        </div>
+                    <div className='period'>
+                        <label htmlFor="date">Período</label>
+                    </div>
 
                     <div className='botoes'>
-                        
+
 
                         <Calendar
                             value={dates}
