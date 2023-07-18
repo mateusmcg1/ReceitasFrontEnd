@@ -49,15 +49,17 @@ export default function Balance() {
                 },
             });
             setWallets(result.data);
+        
         } catch (err) {
             alert(err);
         }
 
     }
     const fetchTransactions = async (params?: any) => {
+
         if (dates) {
             try {
-                const result = await axios.get(`${process.env.REACT_APP_API_URL}/v1/transactions/${selectedWallet?.id}`, {
+                var result = await axios.get(`${process.env.REACT_APP_API_URL}/v1/transactions/${selectedWallet?.id}`, {
                     headers: {
                         Authorization: `Bearer ${sessionStorage.getItem('access_token')}`,
                     },
@@ -66,25 +68,26 @@ export default function Balance() {
                         endDate: dates[1]
                     }
                 });
-                // console.log(result.data)
+                
                 setTransactions(result.data)
+
 
             } catch (err) {
                 alert(err);
             }
         }
 
-        else{
+        else {
             try {
-                const result = await axios.get(`${process.env.REACT_APP_API_URL}/v1/transactions/${selectedWallet?.id}`, {
+                result = await axios.get(`${process.env.REACT_APP_API_URL}/v1/transactions/${selectedWallet?.id}`, {
                     headers: {
                         Authorization: `Bearer ${sessionStorage.getItem('access_token')}`,
                     },
-                    
-                });
-                // console.log(result.data)
-                setTransactions(result.data)
 
+                });
+                
+                setTransactions(result.data)
+                console.log(result.data)
             } catch (err) {
                 alert(err);
             }
@@ -196,6 +199,9 @@ export default function Balance() {
                 </div>
                 <Dialog header="Nova Transação" visible={showIncludeTransaction} style={{ width: '50vw' }} onHide={() => setShowIncludeTransaction(false)}>
                     <NewTransaction walletId={selectedWallet?.id!}></NewTransaction>
+                </Dialog>
+                <Dialog header="Filtros Avançados" visible={showFilter} style={{ width: '50vw' }} onHide={() => setShowFilter(false)}>
+                    <AdvancedFilter></AdvancedFilter>
                 </Dialog>
             </div>
         </div>
