@@ -7,7 +7,6 @@ import axios from "axios";
 import { Button } from "primereact/button";
 import { Checkbox } from "primereact/checkbox";
 
-//FALTA IMPLEMENTAR O CSS DE ACORDO COM O PROTÓTIPO//
 
 export default function RecurrencyForm({
   walletId,

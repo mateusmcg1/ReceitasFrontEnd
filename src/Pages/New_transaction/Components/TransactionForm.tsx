@@ -8,6 +8,8 @@ import InstallmentForm from "./InstallmentForm";
 import axios from "axios";
 import { Button } from "primereact/button";
 import { Checkbox } from "primereact/checkbox";
+import { useFormik } from 'formik';
+import { classNames } from 'primereact/utils';
 
 export default function TransactionForm({
   walletId,
@@ -45,15 +47,38 @@ export default function TransactionForm({
           },
         }
       );
-      onSuccess("success", "Successo", "Transação incluida com sucesso.");
+      onSuccess("success", "Successo", "Transação incluida com sucesso");
     } catch (err) {
       {
         err = 400
-          ? onError("error", "Erro", "Preencha todos os campos obrigatórios")
+          ? onError("error", "Erro", "Preencha os campos obrigatórios")
           : onError("error", "Erro", "");
       }
     }
   };
+  const formik = useFormik({
+    initialValues: {
+      reference: ''
+  },
+    validate: (data) => {
+        let errors: any = {};
+
+        errors.reference = data?.reference?.length === 0;
+
+        return errors;
+    },
+    onSubmit: (data) => {
+        data  && onError(data);
+        formik.resetForm();
+    }
+});
+
+const isFormFieldInvalid = (fieldName: string) => {
+  // formik.touched[fieldName] && formik.errors[fieldName])
+  const formikToucheds: any = formik.touched;
+  const formikError: any = formik.errors;
+  return !!formikToucheds[fieldName] && !!formikError[fieldName];
+};
 
   const paidValidate = () => {
     const isPaid =
@@ -86,14 +111,19 @@ export default function TransactionForm({
 
   return (
     <div>
+      <form onSubmit={formik.handleSubmit}>
       <div className="grid" style={{ marginTop: "2%" }}>
         <div className="col-12">
           <span className="p-float-label">
             <InputText
               id="reference"
               name="reference"
-              value={reference}
-              onChange={(e) => setReference(e.target.value)}
+              value={formik.values.reference}
+              onChange={(e) => {
+                formik.setFieldValue('reference', e.target.value); 
+                setReference(e.target.value);
+              }}
+              className={classNames({ 'p-invalid': isFormFieldInvalid('reference') })}
             />
             <label htmlFor="reference">Referencia *</label>
           </span>
@@ -221,11 +251,13 @@ export default function TransactionForm({
         <div className="col-12">
           <Button
             label="Salvar"
+            type="submit"
             onClick={asyncNewTransaction}
             style={{ marginTop: "10%" }}
           />
         </div>
       </div>
+      </form>
     </div>
   );
 }
