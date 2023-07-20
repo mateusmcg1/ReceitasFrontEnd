@@ -43,20 +43,20 @@ export default function Balance() {
     const walletsBill = async () => {
         try {
             const result = await axios.get(`${process.env.REACT_APP_API_URL}/v1/wallets/${selectedWallet?.id}`, {
-         
-                    headers: {
-                        Authorization: `Bearer ${sessionStorage.getItem('access_token')}`
-                    }
-                    
-                })
-                setValue1(result.data.stats.walletBalance);
-                setVencidas(result.data.stats.walletExpiredBillingQuantity)
-                setValue2(result.data.stats.walletExpiredBillingAmount)
-                setValue3(result.data.stats.walletOutcomeBillingAmount)
-                setAPagar(result.data.stats.walletOutcomeBillingQuantity)
-                setAReceber(result.data.stats.walletIncomeBillingQuantity)
-                setValue4(result.data.stats.walletIncomeBillingAmount)
-                
+
+                headers: {
+                    Authorization: `Bearer ${sessionStorage.getItem('access_token')}`
+                }
+
+            })
+            setValue1(result.data.stats.walletBalance);
+            setVencidas(result.data.stats.walletExpiredBillingQuantity)
+            setValue2(result.data.stats.walletExpiredBillingAmount)
+            setValue3(result.data.stats.walletOutcomeBillingAmount)
+            setAPagar(result.data.stats.walletOutcomeBillingQuantity)
+            setAReceber(result.data.stats.walletIncomeBillingQuantity)
+            setValue4(result.data.stats.walletIncomeBillingAmount)
+
         } catch (err) {
             alert(err);
         }
@@ -70,7 +70,7 @@ export default function Balance() {
                 },
             });
             setWallets(result.data);
-        
+
         } catch (err) {
             alert(err);
         }
@@ -89,9 +89,9 @@ export default function Balance() {
                         endDate: dates[1]
                     }
                 });
-                
+
                 setTransactions(result.data)
-    
+
 
             } catch (err) {
                 alert(err);
@@ -106,9 +106,9 @@ export default function Balance() {
                     },
 
                 });
-                
+
                 setTransactions(result.data)
-                
+
             } catch (err) {
                 alert(err);
             }
@@ -116,7 +116,7 @@ export default function Balance() {
     }
     useEffect(() => {
         fetchWallets();
-        
+
     }, []);
 
     useEffect(() => {
@@ -173,24 +173,25 @@ export default function Balance() {
                 <div className='filtering-data'>
 
                     <div className='period'>
-                        <label htmlFor="date">Período</label>
+
                     </div>
 
                     <div className='botoes'>
 
+                        <span className="p-float-label">
+                            <Calendar
+                                id='date'
+                                value={dates}
+                                onChange={(e: any) => {
+                                    setDates(e.value);
+                                }}
 
-                        <Calendar
-                            value={dates}
-                            onChange={(e: any) => {
-                                setDates(e.value);
-                            }}
-
-                            selectionMode="range"
-                            locale="en"
-                            dateFormat="dd/mm/yy"
-                        />
-
-
+                                selectionMode="range"
+                                locale="en"
+                                dateFormat="dd/mm/yy"
+                            />
+                            <label htmlFor="date">Período</label>
+                        </span>
 
                         {/* <InputText value={text1} onChange={(e) => setText1(e.target.value)} /> */}
 
@@ -223,7 +224,7 @@ export default function Balance() {
                 <Dialog header="Nova Transação" visible={showIncludeTransaction} style={{ width: '50vw' }} onHide={() => setShowIncludeTransaction(false)}>
                     <NewTransaction walletId={selectedWallet?.id!}></NewTransaction>
                 </Dialog>
-                <Dialog header="Filtros Avançados" className='filter-dialog' visible={showFilter} style={{ width: '50vw'}} onHide={() => setShowFilter(false)}>
+                <Dialog header="Filtros Avançados" className='filter-dialog' visible={showFilter} style={{ width: '50vw' }} onHide={() => setShowFilter(false)}>
                     <AdvancedFilter></AdvancedFilter>
                 </Dialog>
             </div>
