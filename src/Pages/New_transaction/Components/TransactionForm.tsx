@@ -8,8 +8,8 @@ import InstallmentForm from "./InstallmentForm";
 import axios from "axios";
 import { Button } from "primereact/button";
 import { Checkbox } from "primereact/checkbox";
-import { useFormik } from 'formik';
-import { classNames } from 'primereact/utils';
+import { useFormik } from "formik";
+import { classNames } from "primereact/utils";
 
 export default function TransactionForm({
   walletId,
@@ -30,7 +30,7 @@ export default function TransactionForm({
 
   const asyncNewTransaction = async () => {
     try {
-      const result = await axios.post(
+      await axios.post(
         `${process.env.REACT_APP_API_URL}/v1/transactions`,
         {
           reference: reference,
@@ -49,36 +49,51 @@ export default function TransactionForm({
       );
       onSuccess("success", "Successo", "Transação incluida com sucesso");
     } catch (err) {
-      {
-        err = 400
-          ? onError("error", "Erro", "Preencha os campos obrigatórios")
-          : onError("error", "Erro", "");
-      }
+      err = 400
+        ? onError("error", "Erro", "Preencha os campos obrigatórios")
+        : onError("error", "Erro", "");
     }
   };
   const formik = useFormik({
     initialValues: {
-      reference: ''
-  },
+      reference: "",
+      value: null,
+      date: new Date(),
+    },
     validate: (data) => {
-        let errors: any = {};
+      let errors: any = {};
 
-        errors.reference = data?.reference?.length === 0;
+      
+        // !data.reference ? (
+        //   (errors.reference = data?.reference?.length === 0)
+        // ) : !data.value ? (
+        //   (errors.value = data?.value === undefined)
+        // ) : !data.date ? (
+        //   (errors.date = data?.date === undefined)
+        // ) : (
+        //   <></>
+        // );
+        // errors.value = data?.value === undefined;
+        errors.date = data?.date === undefined;
+      
+      // errors.reference = data?.reference?.length === 0;
 
-        return errors;
+      return errors;
     },
     onSubmit: (data) => {
-        data  && onError(data);
-        formik.resetForm();
-    }
-});
+      data && onError(data);
+      formik.resetForm();
+    },
+  });
 
-const isFormFieldInvalid = (fieldName: string) => {
-  // formik.touched[fieldName] && formik.errors[fieldName])
-  const formikToucheds: any = formik.touched;
-  const formikError: any = formik.errors;
-  return !!formikToucheds[fieldName] && !!formikError[fieldName];
-};
+  const isFormFieldInvalid = (fieldName: string) => {
+    // formik.touched[fieldName] && formik.errors[fieldName])
+    const formikToucheds: any = formik.touched;
+    const formikError: any = formik.errors;
+    return !!formikToucheds[fieldName] && !!formikError[fieldName];
+  };
+
+  
 
   const paidValidate = () => {
     const isPaid =
@@ -91,7 +106,7 @@ const isFormFieldInvalid = (fieldName: string) => {
 
   useEffect(() => {
     paidValidate();
-  }, [installments]);
+  },[installments]);
 
   const onUpdateItem = (installment: Installment, index: number) => {
     const installmentsArr = [...installments];
@@ -112,151 +127,164 @@ const isFormFieldInvalid = (fieldName: string) => {
   return (
     <div>
       <form onSubmit={formik.handleSubmit}>
-      <div className="grid" style={{ marginTop: "2%" }}>
-        <div className="col-12">
-          <span className="p-float-label">
-            <InputText
-              id="reference"
-              name="reference"
-              value={formik.values.reference}
-              onChange={(e) => {
-                formik.setFieldValue('reference', e.target.value); 
-                setReference(e.target.value);
-              }}
-              className={classNames({ 'p-invalid': isFormFieldInvalid('reference') })}
-            />
-            <label htmlFor="reference">Referencia *</label>
-          </span>
-        </div>
-      </div>
-      <div className="grid" style={{ marginTop: "2%" }}>
-        <div className="col-12">
-          <span className="p-float-label">
-            <InputNumber
-              id="value"
-              value={value}
-              onValueChange={(e) => setValue(Number(e.value))}
-              mode="currency"
-              currency="BRL"
-              locale="pt-BR"
-            />
-            <label htmlFor="amount">Valor *</label>
-          </span>
-        </div>
-      </div>
-      <div className="grid" style={{ marginTop: "2%" }}>
-        <div className="col-12">
-          <span className="p-float-label">
-            {installmentNumber > 0 ? (
-              <Calendar
-                value={date}
-                onChange={(e: CalendarChangeEvent) => {
-                  setDate(e.value!);
-                }}
-                locale="en"
-                disabled
-                dateFormat="dd/mm/yy"
-              />
-            ) : (
-              <Calendar
-                value={date}
-                onChange={(e: CalendarChangeEvent) => {
-                  setDate(e.value!);
-                }}
-                locale="en"
-                dateFormat="dd/mm/yy"
-              />
-            )}
-            <label htmlFor="date">Data *</label>
-          </span>
-        </div>
-      </div>
-      <div className="grid" style={{ marginTop: "2%" }}>
-        <div className="col-12">
-          <span className="p-float-label">
-            <Dropdown
-              value={selectedType}
-              onChange={(e: DropdownChangeEvent) => setSelectedType(e.value)}
-              options={[
-                { label: "Cobrança", value: "BILLING" },
-                { label: "Pagamento", value: "PAYMENT" },
-              ]}
-              optionLabel="label"
-              optionValue="value"
-              editable
-              placeholder="Selecione um tipo"
-              className="w-full md:w-14rem"
-            />
-            <label htmlFor="type">Tipo *</label>
-          </span>
-        </div>
-      </div>
-      <div className="grid" style={{ marginTop: "2%" }}>
-        <div className="col-12">
-          <span className="p-float-label">
-            <InputNumber
-              value={installmentNumber}
-              onChange={(e) => {
-                updateInstallmentNumber(e.value!);
-                setInstallmentNumber(e.value!);
-              }}
-              showButtons
-              buttonLayout="horizontal"
-              style={{ width: "9rem" }}
-              decrementButtonClassName="p-button-secondary"
-              incrementButtonClassName="p-button-secondary"
-              incrementButtonIcon="pi pi-plus"
-              min={0}
-              decrementButtonIcon="pi pi-minus"
-            />
-            <label htmlFor="installments">Parcelas</label>
-          </span>
-        </div>
-        {installmentNumber > 0 ? (
-          <div></div>
-        ) : (
+        <div className="grid" style={{ marginTop: "2%" }}>
           <div className="col-12">
-            <div
-              className="flex align-items-center"
-              style={{ marginTop: "5%" }}
-            >
-              <Checkbox
-                inputId="paid"
-                name="paid"
-                value=""
-                onChange={(e) => setPaid(e.checked!)}
-                checked={paid}
-              ></Checkbox>
-              <label htmlFor="paid" className="ml-2">
-                Pago
-              </label>
-            </div>
+            <span className="p-float-label">
+              <InputText
+                id="reference"
+                name="reference"
+                value={formik.values.reference}
+                onChange={(e) => {
+                  formik.setFieldValue("reference", e.target.value);
+                  setReference(e.target.value);
+                }}
+                className={classNames({
+                  "p-invalid": isFormFieldInvalid("reference"),
+                })}
+              />
+              <label htmlFor="reference">Referencia *</label>
+            </span>
           </div>
-        )}
-      </div>
-      <div className="grid" style={{ marginTop: "2%" }}>
-        <div className="col-12">
-          {installments.map((newInstallments, index) => {
-            return (
-              <InstallmentForm
-                index={index}
-                key={index}
-                onHandleUpdate={onUpdateItem}
-              ></InstallmentForm>
-            );
-          })}
         </div>
-      </div>
-      <div className="grid">
-        <div className="col-12">
-          <Button
-            label="Salvar"
-            type="submit"
-            onClick={asyncNewTransaction}
-            style={{ marginTop: "10%" }}
-          />
+        <div className="grid" style={{ marginTop: "2%" }}>
+          <div className="col-12">
+            <span className="p-float-label">
+              <InputNumber
+                id="value"
+                name="value"
+                value={formik.values.value}
+                onValueChange={(e) => {
+                  formik.setFieldValue("value", e.value);
+                  setValue(Number(e.value));
+                }}
+                inputClassName={classNames({
+                  "p-invalid": isFormFieldInvalid("value"),
+                })}
+                mode="currency"
+                currency="BRL"
+                locale="pt-BR"
+              />
+              <label htmlFor="amount">Valor *</label>
+            </span>
+          </div>
         </div>
-      </div>
+        <div className="grid" style={{ marginTop: "2%" }}>
+          <div className="col-12">
+            <span className="p-float-label">
+              {installmentNumber > 0 ? (
+                <Calendar
+                  value={date}
+                  onChange={(e: CalendarChangeEvent) => {
+                    setDate(e.value!);
+                  }}
+                  locale="en"
+                  disabled
+                  dateFormat="dd/mm/yy"
+                />
+              ) : (
+                <Calendar
+                  value={formik.values.date}
+                  name="date"
+                  onChange={(e: CalendarChangeEvent) => {
+                    formik.setFieldValue("date", e.value);
+                    setDate(e.value!);
+                  }}
+                  className={classNames({
+                    "p-invalid": isFormFieldInvalid("date"),
+                  })}
+                  locale="en"
+                  dateFormat="dd/mm/yy"
+                />
+              )}
+              <label htmlFor="date">Data *</label>
+            </span>
+          </div>
+        </div>
+        <div className="grid" style={{ marginTop: "2%" }}>
+          <div className="col-12">
+            <span className="p-float-label">
+              <Dropdown
+                value={selectedType}
+                onChange={(e: DropdownChangeEvent) => setSelectedType(e.value)}
+                options={[
+                  { label: "Cobrança", value: "BILLING" },
+                  { label: "Pagamento", value: "PAYMENT" },
+                ]}
+                optionLabel="label"
+                optionValue="value"
+                editable
+                placeholder="Selecione um tipo"
+                className="w-full md:w-14rem"
+              />
+              <label htmlFor="type">Tipo *</label>
+            </span>
+          </div>
+        </div>
+        <div className="grid" style={{ marginTop: "2%" }}>
+          <div className="col-12">
+            <span className="p-float-label">
+              <InputNumber
+                value={installmentNumber}
+                onChange={(e) => {
+                  updateInstallmentNumber(e.value!);
+                  setInstallmentNumber(e.value!);
+                }}
+                showButtons
+                buttonLayout="horizontal"
+                style={{ width: "9rem" }}
+                decrementButtonClassName="p-button-secondary"
+                incrementButtonClassName="p-button-secondary"
+                incrementButtonIcon="pi pi-plus"
+                min={0}
+                decrementButtonIcon="pi pi-minus"
+              />
+              <label htmlFor="installments">Parcelas</label>
+            </span>
+          </div>
+          {installmentNumber > 0 ? (
+            <div></div>
+          ) : (
+            <div className="col-12">
+              <div
+                className="flex align-items-center"
+                style={{ marginTop: "5%" }}
+              >
+                <Checkbox
+                  inputId="paid"
+                  name="paid"
+                  onChange={(e) => setPaid(e.checked!)}
+                  checked={paid}
+                ></Checkbox>
+                <label htmlFor="paid" className="ml-2">
+                  Pago
+                </label>
+              </div>
+            </div>
+          )}
+        </div>
+        <div className="grid" style={{ marginTop: "2%" }}>
+          <div className="col-12">
+            {installments.map((newInstallments, index) => {
+              return (
+                <InstallmentForm
+                  index={index}
+                  key={index}
+                  onHandleUpdate={onUpdateItem}
+                ></InstallmentForm>
+              );
+            })}
+          </div>
+        </div>
+        <div className="grid">
+          <div className="col-12">
+            <Button
+              label="Salvar"
+              type="submit"
+              onClick={asyncNewTransaction}
+              style={{ marginTop: "10%" }}
+            />
+          </div>
+        </div>
       </form>
     </div>
   );
