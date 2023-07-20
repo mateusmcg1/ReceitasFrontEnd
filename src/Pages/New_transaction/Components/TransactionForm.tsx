@@ -59,24 +59,26 @@ export default function TransactionForm({
       reference: "",
       value: null,
       date: new Date(),
+      selectedType: '',
     },
     validate: (data) => {
       let errors: any = {};
 
-      
-        // !data.reference ? (
-        //   (errors.reference = data?.reference?.length === 0)
-        // ) : !data.value ? (
-        //   (errors.value = data?.value === undefined)
-        // ) : !data.date ? (
-        //   (errors.date = data?.date === undefined)
-        // ) : (
-        //   <></>
-        // );
-        // errors.value = data?.value === undefined;
-        errors.date = data?.date === undefined;
-      
-      // errors.reference = data?.reference?.length === 0;
+
+        !data.reference ? (
+          (errors.reference = data?.reference?.length === 0)
+        ) : <></>
+        !data.value ? (
+          (errors.value = data?.value === null)
+        ) : <></>
+        !data.date ? (
+          (errors.date = data?.date === null)
+        ) : <></>
+        !data.selectedType ? (
+          (errors.selectedType = data?.selectedType?.length === 0)
+        ) : <></>
+
+
 
       return errors;
     },
@@ -204,8 +206,12 @@ export default function TransactionForm({
           <div className="col-12">
             <span className="p-float-label">
               <Dropdown
-                value={selectedType}
-                onChange={(e: DropdownChangeEvent) => setSelectedType(e.value)}
+                value={formik.values.selectedType}
+                name="selectedType"
+                onChange={(e: DropdownChangeEvent) => {setSelectedType(e.value); formik.setFieldValue('selectedType', e.value)}}
+                className={classNames({
+                  "p-invalid w-full md:w-14rem": isFormFieldInvalid("selectedType"),
+                })}
                 options={[
                   { label: "Cobrança", value: "BILLING" },
                   { label: "Pagamento", value: "PAYMENT" },
@@ -214,7 +220,6 @@ export default function TransactionForm({
                 optionValue="value"
                 editable
                 placeholder="Selecione um tipo"
-                className="w-full md:w-14rem"
               />
               <label htmlFor="type">Tipo *</label>
             </span>
