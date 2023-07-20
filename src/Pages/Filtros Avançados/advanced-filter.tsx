@@ -28,7 +28,7 @@ export default function AdvancedFilter() {
                 <div id='enquadramento'>
                     <div className='inputs'>
 
-                        <span className="p-float-label" style={{ marginTop: '6%', fontSize: '90%' }}>
+                        <span className="p-float-label" style={{ marginTop: '1%', fontSize: '90%' }}>
 
                             <InputText id='value1' value={value1} onChange={(e) => setValue1(e.target.value)} />
                             <label htmlFor="value1">Período</label>
