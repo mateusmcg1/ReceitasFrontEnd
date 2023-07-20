@@ -6,6 +6,8 @@ import { Dropdown, DropdownChangeEvent } from "primereact/dropdown";
 import axios from "axios";
 import { Button } from "primereact/button";
 import { WalletDto } from "../../../models/wallet.dto";
+import { useFormik } from "formik";
+import { classNames } from "primereact/utils";
 
 export default function InterForm({
   walletId,
@@ -73,84 +75,160 @@ export default function InterForm({
     }
   };
 
+  const formik = useFormik({
+    initialValues: {
+      reference: "",
+      amount: null,
+      baseDate: new Date(),
+      selectedType: "",
+      selectedWallet: ''
+    },
+    validate: (data) => {
+      let errors: any = {};
+
+      !data.reference ? (
+        (errors.reference = data?.reference?.length === 0)
+      ) : (
+        <></>
+      );
+
+      !data.amount ? (errors.amount = data?.amount === null) : <></>;
+      !data.baseDate ? (errors.baseDate = data?.baseDate === null) : <></>;
+      !data.selectedType ? (
+        (errors.selectedType = data?.selectedType?.length === 0)
+      ) : (
+        <></>
+      );
+      !data.selectedType ? (
+        (errors.selectedWallet = data?.selectedWallet?.length === 0)
+      ) : (
+        <></>
+      );
+
+      return errors;
+    },
+    onSubmit: (data) => {
+      data && onError(data);
+      formik.resetForm();
+    },
+  });
+
+  const isFormFieldInvalid = (fieldName: string) => {
+    const formikToucheds: any = formik.touched;
+    const formikError: any = formik.errors;
+    return !!formikToucheds[fieldName] && !!formikError[fieldName];
+  };
+
   return (
-    <div>
-      <div className="grid" style={{ marginTop: "2%" }}>
-        <div className="col">
-          <span className="p-float-label">
-            <Dropdown
-              value={selectedWallet}
-              onChange={(e) => setSelectedWallet(e.value)}
-              options={wallets}
-              optionLabel="name"
-              placeholder="Selecione uma carteira"
-            />
-            <label htmlFor="type">Carteira Destino</label>
-          </span>
+    <form onSubmit={formik.handleSubmit}>
+      <div>
+        <div className="grid" style={{ marginTop: "2%" }}>
+          <div className="col">
+            <span className="p-float-label">
+              <Dropdown
+                value={formik.values.selectedWallet}
+                onChange={(e: DropdownChangeEvent) => {
+                  setSelectedWallet(e.value);
+                  formik.setFieldValue("selectedWallet", e.value);
+                }}
+                className={classNames({
+                  "p-invalid":
+                    isFormFieldInvalid("selectedWallet"),
+                })}
+                options={wallets}
+                optionLabel="name"
+                placeholder="Selecione uma carteira"
+              />
+              <label htmlFor="type">Carteira Destino</label>
+            </span>
+          </div>
+          <div className="col">
+            <span className="p-float-label">
+              <InputNumber
+                id="amount"
+                value={formik.values.amount}
+                onValueChange={(e) => {
+                  formik.setFieldValue("amount", e.value);
+                  setAmount(Number(e.value));
+                }}
+                inputClassName={classNames({
+                  "p-invalid": isFormFieldInvalid("amount"),
+                })}
+                mode="currency"
+                currency="BRL"
+                locale="pt-BR"
+              />
+              <label htmlFor="amount">Valor</label>
+            </span>
+          </div>
         </div>
-        <div className="col">
-          <span className="p-float-label">
-            <InputNumber
-              id="amount"
-              value={amount}
-              onValueChange={(e) => setAmount(Number(e.value))}
-              mode="currency"
-              currency="BRL"
-              locale="pt-BR"
-            />
-            <label htmlFor="amount">Valor</label>
-          </span>
+        <div className="grid" style={{ marginTop: "2%" }}>
+          <div className="col">
+            <span className="p-float-label">
+              <Calendar
+                value={formik.values.baseDate}
+                name="baseDate"
+                onChange={(e: CalendarChangeEvent) => {
+                  formik.setFieldValue("baseDate", e.value);
+                  setBaseDate(e.value!);
+                }}
+                className={classNames({
+                  "p-invalid": isFormFieldInvalid("baseDate"),
+                })}
+                locale="en"
+                dateFormat="dd/mm/yy"
+              />
+              <label htmlFor="date">Data Base</label>
+            </span>
+          </div>
+          <div className="col">
+            <span className="p-float-label">
+              <InputText
+                value={formik.values.reference}
+                onChange={(e) => {
+                  formik.setFieldValue("reference", e.target.value);
+                  setReference(e.target.value);
+                }}
+                className={classNames({
+                  "p-invalid": isFormFieldInvalid("reference"),
+                })}
+              />
+              <label htmlFor="reference">Referencia</label>
+            </span>
+          </div>
         </div>
+        <div className="grid" style={{ marginTop: "2%" }}>
+          <div className="col">
+            <span className="p-float-label">
+              <Dropdown
+                value={formik.values.selectedType}
+                onChange={(e: DropdownChangeEvent) => {
+                  setSelectedType(e.value);
+                  formik.setFieldValue("selectedType", e.value);
+                }}
+                className={classNames({
+                  "p-invalid w-full md:w-14rem":
+                    isFormFieldInvalid("selectedType"),
+                })}
+                options={[
+                  { label: "Cobrança", value: "BILLING" },
+                  { label: "Pagamento", value: "PAYMENT" },
+                ]}
+                optionLabel="label"
+                optionValue="value"
+                editable
+                placeholder="Selecione um tipo"
+              />
+              <label htmlFor="type">Tipo</label>
+            </span>
+          </div>
+        </div>
+        <Button
+          label="Salvar"
+          onClick={asyncNewInterWallet}
+          style={{ marginTop: "10%" }}
+        />
       </div>
-      <div className="grid" style={{ marginTop: "2%" }}>
-        <div className="col">
-          <span className="p-float-label">
-            <Calendar
-              value={baseDate}
-              onChange={(e: CalendarChangeEvent) => {
-                setBaseDate(e.value!);
-              }}
-              locale="en"
-              dateFormat="dd/mm/yy"
-            />
-            <label htmlFor="date">Data Base</label>
-          </span>
-        </div>
-        <div className="col">
-          <span className="p-float-label">
-            <InputText
-              value={reference}
-              onChange={(e) => setReference(e.target.value)}
-            />
-            <label htmlFor="reference">Referencia</label>
-          </span>
-        </div>
-      </div>
-      <div className="grid" style={{ marginTop: "2%" }}>
-        <div className="col">
-          <span className="p-float-label">
-            <Dropdown
-              value={selectedType}
-              onChange={(e: DropdownChangeEvent) => setSelectedType(e.value)}
-              options={[
-                { label: "Cobrança", value: "BILLING" },
-                { label: "Pagamento", value: "PAYMENT" },
-              ]}
-              optionLabel="label"
-              optionValue="value"
-              editable
-              placeholder="Selecione um tipo"
-              className="w-full md:w-14rem"
-            />
-            <label htmlFor="type">Tipo</label>
-          </span>
-        </div>
-      </div>
-      <Button
-        label="Salvar"
-        onClick={asyncNewInterWallet}
-        style={{ marginTop: "10%" }}
-      />
-    </div>
+    </form>
   );
 }

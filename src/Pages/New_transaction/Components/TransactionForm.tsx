@@ -64,7 +64,6 @@ export default function TransactionForm({
     validate: (data) => {
       let errors: any = {};
 
-
         !data.reference ? (
           (errors.reference = data?.reference?.length === 0)
         ) : <></>
@@ -78,8 +77,6 @@ export default function TransactionForm({
           (errors.selectedType = data?.selectedType?.length === 0)
         ) : <></>
 
-
-
       return errors;
     },
     onSubmit: (data) => {
@@ -89,7 +86,6 @@ export default function TransactionForm({
   });
 
   const isFormFieldInvalid = (fieldName: string) => {
-    // formik.touched[fieldName] && formik.errors[fieldName])
     const formikToucheds: any = formik.touched;
     const formikError: any = formik.errors;
     return !!formikToucheds[fieldName] && !!formikError[fieldName];
@@ -275,6 +271,7 @@ export default function TransactionForm({
                   index={index}
                   key={index}
                   onHandleUpdate={onUpdateItem}
+                  onError={onError}
                 ></InstallmentForm>
               );
             })}
