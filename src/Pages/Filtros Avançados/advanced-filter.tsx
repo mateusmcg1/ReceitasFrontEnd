@@ -1,4 +1,3 @@
-import { Slider, SliderChangeEvent } from 'primereact/slider';
 import './advanced-filter.css'
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
@@ -12,6 +11,8 @@ export default function AdvancedFilter() {
     let navigate = useNavigate()
     const [value1, setValue1] = useState("");
     const [value2, setValue2] = useState("");
+    const [value3, setValue3] = useState("");
+    const [value4, setValue4] = useState("");
     const [range, setRange] = useState<any>([0, 100]);
     const [checked1, setChecked1] = useState<boolean>(false);
     const [checked2, setChecked2] = useState<boolean>(false);
@@ -27,32 +28,41 @@ export default function AdvancedFilter() {
                 <div id='enquadramento'>
                     <div className='inputs'>
 
-                        <span style={{ marginBottom: '1%' }}> Período</span>
-                        <div className='card flex justify-content-center'>
-                            <InputText value={value1} onChange={(e) => setValue1(e.target.value)} />
-                        </div>
+                        <span className="p-float-label" style={{ marginTop: '6%', fontSize: '90%' }}>
 
-                        <span style={{ marginBottom: '1%' }}>Nome da Referência</span>
-                        <div className='card flex justify-content-center'>
-                            <InputText value={value2} onChange={(e) => setValue2(e.target.value)} />
-                        </div>
+                            <InputText id='value1' value={value1} onChange={(e) => setValue1(e.target.value)} />
+                            <label htmlFor="value1">Período</label>
+                                
+                        </span>
 
-                        <div id='range-title'>
-                            <span style={{ marginBottom: '1%' }}>Valor Mínimo</span>
-                            <span style={{ marginBottom: '1%' }}>Valor Máximo</span>
-                        </div>
+                        <span className="p-float-label" style={{ marginTop: '6%', fontSize: '90%' }}>
+
+                            <InputText id='value2' value={value2} onChange={(e) => setValue2(e.target.value)} />
+                            <label htmlFor="value2">Nome da Referência</label>
+
+                        </span>
+
+
+                        {/* <div id='range-title'>
+                            
+                           
+                        </div> */}
 
                         <div id='range'>
-
-                            <InputText value={value2} onChange={(e) => setValue2(e.target.value)} />
-
-                            <InputText value={value2} onChange={(e) => setValue2(e.target.value)} />
+                            <span className="p-float-label" style={{ width: '48%', marginTop: '6%', fontSize: '90%' }} >
+                                <InputText id='value3' value={value3} onChange={(e) => setValue3(e.target.value)} />
+                                <label htmlFor="value3">Valor Mínimo</label>
+                            </span>
+                            <span className="p-float-label" style={{ width: '48%', marginTop: '6%', fontSize: '90%' }}>
+                                <InputText value={value4} onChange={(e) => setValue4(e.target.value)} style={{ marginTop: '1%' }} />
+                                <label htmlFor="value4">Valor Máximo</label>
+                            </span>
                         </div>
 
                     </div>
 
 
-                    <div className="card1 flex justify-content-left">
+                    <div className="card1 flex justify-content-left" style={{marginTop: '5%'}}>
                         <Checkbox inputId="pagar" onChange={e => setChecked1(e.checked!)} checked={checked1} />
                         <label htmlFor="pagar" className="ml-2">Contas a Pagar</label>
                     </div>
