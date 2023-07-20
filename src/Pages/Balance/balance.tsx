@@ -40,6 +40,27 @@ export default function Balance() {
     const [transactions, setTransactions] = useState<any[]>([]);
     const [dates, setDates] = useState<any[]>([])
 
+    const walletsBill = async () => {
+        try {
+            const result = await axios.get(`${process.env.REACT_APP_API_URL}/v1/wallets/${selectedWallet?.id}`, {
+         
+                    headers: {
+                        Authorization: `Bearer ${sessionStorage.getItem('access_token')}`
+                    }
+                    
+                })
+                setValue1(result.data.stats.walletBalance);
+                setVencidas(result.data.stats.walletExpiredBillingQuantity)
+                setValue2(result.data.stats.walletExpiredBillingAmount)
+                setValue3(result.data.stats.walletOutcomeBillingAmount)
+                setAPagar(result.data.stats.walletOutcomeBillingQuantity)
+                setAReceber(result.data.stats.walletIncomeBillingQuantity)
+                setValue4(result.data.stats.walletIncomeBillingAmount)
+                console.log(result.data)
+        } catch (err) {
+            alert(err);
+        }
+    }
 
     const fetchWallets = async () => {
         try {
@@ -70,7 +91,7 @@ export default function Balance() {
                 });
                 
                 setTransactions(result.data)
-
+    
 
             } catch (err) {
                 alert(err);
@@ -87,7 +108,7 @@ export default function Balance() {
                 });
                 
                 setTransactions(result.data)
-                console.log(result.data)
+                
             } catch (err) {
                 alert(err);
             }
@@ -95,13 +116,15 @@ export default function Balance() {
     }
     useEffect(() => {
         fetchWallets();
+        
     }, []);
 
     useEffect(() => {
         if (selectedWallet) {
-            console.log('selecionada: ', selectedWallet);
+            // console.log('selecionada: ', selectedWallet);
             setWalletName(selectedWallet?.name!);
             fetchTransactions();
+            walletsBill();
         }
     }, [selectedWallet])
 
@@ -133,15 +156,15 @@ export default function Balance() {
                         </div>
                         <div className='finantial-framework'>
                             <label htmlFor="value2">Vencidas ({vencidas})</label>
-                            <span>R$ {vencidas}</span>
+                            <span>{value2.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>
                         </div>
                         <div className='finantial-framework'>
                             <label htmlFor="value3">A pagar ({aPagar})</label>
-                            <span>R$ {aPagar}</span>
+                            <span>{value3.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>
                         </div>
                         <div className='finantial-framework'>
                             <label htmlFor="value4">A receber ({aReceber})</label>
-                            <span>R$ {aReceber}</span>
+                            <span>{value4.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>
                         </div>
 
                     </div>
@@ -200,7 +223,7 @@ export default function Balance() {
                 <Dialog header="Nova Transação" visible={showIncludeTransaction} style={{ width: '50vw' }} onHide={() => setShowIncludeTransaction(false)}>
                     <NewTransaction walletId={selectedWallet?.id!}></NewTransaction>
                 </Dialog>
-                <Dialog header="Filtros Avançados" visible={showFilter} style={{ width: '50vw' }} onHide={() => setShowFilter(false)}>
+                <Dialog header="Filtros Avançados" className='filter-dialog' visible={showFilter} style={{ width: '50vw'}} onHide={() => setShowFilter(false)}>
                     <AdvancedFilter></AdvancedFilter>
                 </Dialog>
             </div>

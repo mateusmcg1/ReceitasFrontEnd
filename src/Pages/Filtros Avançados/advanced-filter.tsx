@@ -21,7 +21,7 @@ export default function AdvancedFilter() {
 
         <div className='filter-container'>
 
-            <h1>Filtros Avançados</h1>
+            {/* <h1>Filtros Avançados</h1> */}
 
             <div id='enquadramento-full'>
                 <div id='enquadramento'>
@@ -44,15 +44,15 @@ export default function AdvancedFilter() {
                     </div>
 
 
-                    <div className="card1 flex justify-content-center">
+                    <div className="card1 flex justify-content-left">
                         <Checkbox inputId="pagar" onChange={e => setChecked1(e.checked!)} checked={checked1} />
                         <label htmlFor="pagar" className="ml-2">Contas a Pagar</label>
                     </div>
-                    <div className="card1 flex justify-content-center">
+                    <div className="card1 flex justify-content-left">
                         <Checkbox inputId='receber' onChange={e => setChecked2(e.checked!)} checked={checked2} />
                         <label htmlFor="receber" className="ml-2">Contas a Receber</label>
                     </div>
-                    <div className="card1 flex justify-content-center">
+                    <div className="card1 flex justify-content-left">
                         <Checkbox inputId='vencidas' onChange={e => setChecked3(e.checked!)} checked={checked3} />
                         <label htmlFor="vencidas" className="ml-2">Contas Vencidas</label>
                     </div>
