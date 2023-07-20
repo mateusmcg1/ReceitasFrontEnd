@@ -1,4 +1,4 @@
-import { Slider, SliderChangeEvent  } from 'primereact/slider';
+import { Slider, SliderChangeEvent } from 'primereact/slider';
 import './advanced-filter.css'
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
@@ -12,7 +12,7 @@ export default function AdvancedFilter() {
     let navigate = useNavigate()
     const [value1, setValue1] = useState("");
     const [value2, setValue2] = useState("");
-    const [range, setRange] = useState<any>([0,100]);
+    const [range, setRange] = useState<any>([0, 100]);
     const [checked1, setChecked1] = useState<boolean>(false);
     const [checked2, setChecked2] = useState<boolean>(false);
     const [checked3, setChecked3] = useState<boolean>(false);
@@ -27,20 +27,28 @@ export default function AdvancedFilter() {
                 <div id='enquadramento'>
                     <div className='inputs'>
 
+                        <span style={{ marginBottom: '1%' }}> Período</span>
                         <div className='card flex justify-content-center'>
-                            <span>Período</span>
                             <InputText value={value1} onChange={(e) => setValue1(e.target.value)} />
                         </div>
+
+                        <span style={{ marginBottom: '1%' }}>Nome da Referência</span>
                         <div className='card flex justify-content-center'>
-                            <span>Nome da Referência</span>
                             <InputText value={value2} onChange={(e) => setValue2(e.target.value)} />
                         </div>
-                        <div className="card flex justify-content-center">
-                            <div id='range'>
-                                <span>Range de Valor</span>
-                            </div>
-                            <Slider value={range} onChange={(e: SliderChangeEvent) => setRange(e.value)} className="w-full" range />
+
+                        <div id='range-title'>
+                            <span style={{ marginBottom: '1%' }}>Valor Mínimo</span>
+                            <span style={{ marginBottom: '1%' }}>Valor Máximo</span>
                         </div>
+
+                        <div id='range'>
+
+                            <InputText value={value2} onChange={(e) => setValue2(e.target.value)} />
+
+                            <InputText value={value2} onChange={(e) => setValue2(e.target.value)} />
+                        </div>
+
                     </div>
 
 

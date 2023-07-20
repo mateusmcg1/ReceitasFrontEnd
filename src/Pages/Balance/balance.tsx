@@ -56,7 +56,7 @@ export default function Balance() {
                 setAPagar(result.data.stats.walletOutcomeBillingQuantity)
                 setAReceber(result.data.stats.walletIncomeBillingQuantity)
                 setValue4(result.data.stats.walletIncomeBillingAmount)
-                console.log(result.data)
+                
         } catch (err) {
             alert(err);
         }
