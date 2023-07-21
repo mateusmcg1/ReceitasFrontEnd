@@ -43,20 +43,20 @@ export default function Balance() {
     const walletsBill = async () => {
         try {
             const result = await axios.get(`${process.env.REACT_APP_API_URL}/v1/wallets/${selectedWallet?.id}`, {
-         
-                    headers: {
-                        Authorization: `Bearer ${sessionStorage.getItem('access_token')}`
-                    }
-                    
-                })
-                setValue1(result.data.stats.walletBalance);
-                setVencidas(result.data.stats.walletExpiredBillingQuantity)
-                setValue2(result.data.stats.walletExpiredBillingAmount)
-                setValue3(result.data.stats.walletOutcomeBillingAmount)
-                setAPagar(result.data.stats.walletOutcomeBillingQuantity)
-                setAReceber(result.data.stats.walletIncomeBillingQuantity)
-                setValue4(result.data.stats.walletIncomeBillingAmount)
-                
+
+                headers: {
+                    Authorization: `Bearer ${sessionStorage.getItem('access_token')}`
+                }
+
+            })
+            setValue1(result.data.stats.walletBalance);
+            setVencidas(result.data.stats.walletExpiredBillingQuantity)
+            setValue2(result.data.stats.walletExpiredBillingAmount)
+            setValue3(result.data.stats.walletOutcomeBillingAmount)
+            setAPagar(result.data.stats.walletOutcomeBillingQuantity)
+            setAReceber(result.data.stats.walletIncomeBillingQuantity)
+            setValue4(result.data.stats.walletIncomeBillingAmount)
+
         } catch (err) {
             alert(err);
         }
@@ -70,7 +70,7 @@ export default function Balance() {
                 },
             });
             setWallets(result.data);
-        
+
         } catch (err) {
             alert(err);
         }
@@ -89,9 +89,9 @@ export default function Balance() {
                         endDate: dates[1]
                     }
                 });
-                
+
                 setTransactions(result.data)
-    
+
 
             } catch (err) {
                 alert(err);
@@ -106,9 +106,9 @@ export default function Balance() {
                     },
 
                 });
-                
+
                 setTransactions(result.data)
-                
+
             } catch (err) {
                 alert(err);
             }
@@ -116,7 +116,7 @@ export default function Balance() {
     }
     useEffect(() => {
         fetchWallets();
-        
+
     }, []);
 
     useEffect(() => {
@@ -211,7 +211,7 @@ export default function Balance() {
 
                     <DataTable value={transactions} tableStyle={{ minWidth: '50rem' }}>
                         <Column body={(data) => {
-                            return <span>{new Date(data.createdAt).toLocaleDateString('pt-BR')}</span>
+                            return <span>{new Date(data.due_date).toLocaleDateString('pt-BR')}</span>
                         }} header="Data"></Column>
                         <Column field="reference" header="Referência"></Column>
                         <Column body={(transaction) => <span style={{ color: (transaction.type === 'BILLING' ? 'green' : 'red') }}>{Math.abs(transaction?.amount).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>} header="Valor"></Column>
@@ -223,7 +223,7 @@ export default function Balance() {
                 <Dialog header="Nova Transação" visible={showIncludeTransaction} style={{ width: '50vw' }} onHide={() => setShowIncludeTransaction(false)}>
                     <NewTransaction walletId={selectedWallet?.id!}></NewTransaction>
                 </Dialog>
-                <Dialog header="Filtros Avançados" className='filter-dialog' visible={showFilter} style={{ width: '50vw'}} onHide={() => setShowFilter(false)}>
+                <Dialog header="Filtros Avançados" className='filter-dialog' visible={showFilter} style={{ width: '50vw' }} onHide={() => setShowFilter(false)}>
                     <AdvancedFilter></AdvancedFilter>
                 </Dialog>
             </div>
