@@ -173,24 +173,25 @@ export default function Balance() {
                 <div className='filtering-data'>
 
                     <div className='period'>
-                        <label htmlFor="date">Período</label>
+
                     </div>
 
                     <div className='botoes'>
 
+                        <span className="p-float-label">
+                            <Calendar
+                                id='date'
+                                value={dates}
+                                onChange={(e: any) => {
+                                    setDates(e.value);
+                                }}
 
-                        <Calendar
-                            value={dates}
-                            onChange={(e: any) => {
-                                setDates(e.value);
-                            }}
-
-                            selectionMode="range"
-                            locale="en"
-                            dateFormat="dd/mm/yy"
-                        />
-
-
+                                selectionMode="range"
+                                locale="en"
+                                dateFormat="dd/mm/yy"
+                            />
+                            <label htmlFor="date">Período</label>
+                        </span>
 
                         {/* <InputText value={text1} onChange={(e) => setText1(e.target.value)} /> */}
 

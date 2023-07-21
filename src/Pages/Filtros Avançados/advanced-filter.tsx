@@ -5,11 +5,13 @@ import axios from "axios";
 import { InputText } from 'primereact/inputtext';
 import { Checkbox } from 'primereact/checkbox';
 import { Button } from 'primereact/button';
+import { Calendar } from 'primereact/calendar';
 
 export default function AdvancedFilter() {
 
     let navigate = useNavigate()
-    const [value1, setValue1] = useState("");
+    const [dates, setDates] = useState<any[]>([])
+    // const [value1, setValue1] = useState("");
     const [value2, setValue2] = useState("");
     const [value3, setValue3] = useState("");
     const [value4, setValue4] = useState("");
@@ -17,6 +19,7 @@ export default function AdvancedFilter() {
     const [checked1, setChecked1] = useState<boolean>(false);
     const [checked2, setChecked2] = useState<boolean>(false);
     const [checked3, setChecked3] = useState<boolean>(false);
+
 
     return (
 
@@ -30,9 +33,19 @@ export default function AdvancedFilter() {
 
                         <span className="p-float-label" style={{ marginTop: '1%', fontSize: '90%' }}>
 
-                            <InputText id='value1' value={value1} onChange={(e) => setValue1(e.target.value)} />
+                            <Calendar
+                                id='date'
+                                value={dates}
+                                onChange={(e: any) => {
+                                    setDates(e.value);
+                                }}
+
+                                selectionMode="range"
+                                locale="en"
+                                dateFormat="dd/mm/yy"
+                            />
                             <label htmlFor="value1">Período</label>
-                                
+
                         </span>
 
                         <span className="p-float-label" style={{ marginTop: '6%', fontSize: '90%' }}>
@@ -41,12 +54,6 @@ export default function AdvancedFilter() {
                             <label htmlFor="value2">Nome da Referência</label>
 
                         </span>
-
-
-                        {/* <div id='range-title'>
-                            
-                           
-                        </div> */}
 
                         <div id='range'>
                             <span className="p-float-label" style={{ width: '48%', marginTop: '6%', fontSize: '90%' }} >
@@ -62,7 +69,7 @@ export default function AdvancedFilter() {
                     </div>
 
 
-                    <div className="card1 flex justify-content-left" style={{marginTop: '5%'}}>
+                    <div className="card1 flex justify-content-left" style={{ marginTop: '5%' }}>
                         <Checkbox inputId="pagar" onChange={e => setChecked1(e.checked!)} checked={checked1} />
                         <label htmlFor="pagar" className="ml-2">Contas a Pagar</label>
                     </div>
