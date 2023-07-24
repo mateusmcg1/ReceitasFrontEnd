@@ -151,7 +151,7 @@ export default function Balance() {
                     <div className='finantial-organization'>
 
                         <div className='finantial-framework'>
-                            <label htmlFor="value1">Saldo ({selectedWallet?.currency})</label>
+                            <label htmlFor="value1" >Saldo ({selectedWallet?.currency})</label>
                             <span>{value1.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>
                         </div>
                         <div className='finantial-framework'>
