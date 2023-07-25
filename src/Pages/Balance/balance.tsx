@@ -20,9 +20,6 @@ import { WalletDto } from '../../models/wallet.dto';
 
 export default function Balance() {
 
-    let navigate = useNavigate()
-
-    const [userName, setUserName] = useState('Nome');
     const [wallets, setWallets] = useState<any[]>([]);
     const [value1, setValue1] = useState(0);
     const [value2, setValue2] = useState(0);
@@ -31,14 +28,14 @@ export default function Balance() {
     let [vencidas, setVencidas] = useState(0);
     let [aPagar, setAPagar] = useState(0);
     let [aReceber, setAReceber] = useState(0);
-    const [text1, setText1] = useState('');
     const [walletName, setWalletName] = useState('Selecionar Carteira')
     const [visible, setVisible] = useState<boolean>(false);
     const [showFilter, setShowFilter] = useState(false);
     const [showIncludeTransaction, setShowIncludeTransaction] = useState(false);
     const [selectedWallet, setSelectedWallet] = useState<WalletDto>();
-    const [transactions, setTransactions] = useState<any[]>([]);
+    const [ transactions, setTransactions] = useState<any[]>([]);
     const [dates, setDates] = useState<any[]>([])
+    
 
     const walletsBill = async () => {
         try {
@@ -78,16 +75,13 @@ export default function Balance() {
     }
     const fetchTransactions = async (params?: any) => {
 
-        if (dates) {
+        if(params){
             try {
                 var result = await axios.get(`${process.env.REACT_APP_API_URL}/v1/transactions/${selectedWallet?.id}`, {
                     headers: {
                         Authorization: `Bearer ${sessionStorage.getItem('access_token')}`,
                     },
-                    params: {
-                        startDate: dates[0],
-                        endDate: dates[1]
-                    }
+                    params
                 });
 
                 setTransactions(result.data)
@@ -97,26 +91,26 @@ export default function Balance() {
                 alert(err);
             }
         }
-
-        else {
+        
+        else{
             try {
-                result = await axios.get(`${process.env.REACT_APP_API_URL}/v1/transactions/${selectedWallet?.id}`, {
+                var result = await axios.get(`${process.env.REACT_APP_API_URL}/v1/transactions/${selectedWallet?.id}`, {
                     headers: {
                         Authorization: `Bearer ${sessionStorage.getItem('access_token')}`,
                     },
-
+              
                 });
 
                 setTransactions(result.data)
 
+
             } catch (err) {
                 alert(err);
-            }
+            } 
         }
     }
     useEffect(() => {
         fetchWallets();
-
     }, []);
 
     useEffect(() => {
@@ -126,6 +120,9 @@ export default function Balance() {
             fetchTransactions();
             walletsBill();
         }
+        // else if(!dates){
+        //     fetchTransactions();  
+        // }
     }, [selectedWallet])
 
     return (
@@ -195,7 +192,7 @@ export default function Balance() {
 
                         {/* <InputText value={text1} onChange={(e) => setText1(e.target.value)} /> */}
 
-                        {<Button label="FILTRAR" onClick={() => fetchTransactions({ reference: dates })} />}
+                        {<Button label="FILTRAR" onClick={() => dates? fetchTransactions({startDate: dates[0], endDate: dates[1]}) : fetchTransactions()} />}
 
                         {<Button id='advanced-filter' label="FILTROS AVANÇADOS" onClick={() => setShowFilter(true)} />}
 
@@ -212,7 +209,7 @@ export default function Balance() {
 
                     <DataTable value={transactions} tableStyle={{ minWidth: '50rem' }}>
                         <Column body={(data) => {
-                            return <span>{new Date(data.due_date).toLocaleDateString('pt-BR')}</span>
+                            return <span>{new Date(data.createdAt).toLocaleDateString('pt-BR')}</span>
                         }} header="Data"></Column>
                         <Column field="reference" header="Referência"></Column>
                         <Column body={(transaction) => <span style={{ color: (transaction.type === 'BILLING' ? 'green' : 'red') }}>{Math.abs(transaction?.amount).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>} header="Valor"></Column>
@@ -225,7 +222,8 @@ export default function Balance() {
                     <NewTransaction walletId={selectedWallet?.id!}></NewTransaction>
                 </Dialog>
                 <Dialog header="Filtros Avançados" className='filter-dialog' visible={showFilter} style={{ width: '50vw' }} onHide={() => setShowFilter(false)}>
-                    <AdvancedFilter></AdvancedFilter>
+                    <AdvancedFilter walletId={selectedWallet?.id!} fetch={fetchTransactions} closeDialog={() => {
+                    setShowFilter(false)}}></AdvancedFilter>
                 </Dialog>
             </div>
         </div>
