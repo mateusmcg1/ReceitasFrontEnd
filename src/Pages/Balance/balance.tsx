@@ -1,6 +1,6 @@
 import './balance.css'
 import { Menu } from 'primereact/menu';
-import { useState, useEffect, SetStateAction } from 'react';
+import { useState, useEffect, SetStateAction, useRef } from 'react';
 import 'primeicons/primeicons.css';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from "axios";
@@ -17,6 +17,10 @@ import AdvancedFilter from '../Filtros Avançados/advanced-filter'
 import NewTransaction from '../New_transaction/new_transaction';
 import { SelectWallet } from './SelectWallet/SelectWallet';
 import { WalletDto } from '../../models/wallet.dto';
+import { SplitButton } from 'primereact/splitbutton';
+import { MenuItem } from 'primereact/menuitem';
+import PaymentAction from './Components/PaymentAction';
+import { Toast, ToastMessage } from 'primereact/toast';
 
 export default function Balance() {
 
@@ -39,6 +43,22 @@ export default function Balance() {
     const [selectedWallet, setSelectedWallet] = useState<WalletDto>();
     const [transactions, setTransactions] = useState<any[]>([]);
     const [dates, setDates] = useState<any[]>([])
+    const toast = useRef<Toast>(null);
+    const [showPaymentAction, setShowPaymentAction] = useState(false)
+    const actions: MenuItem[] = [
+        {
+            label: 'Pagamento',
+            icon: 'pi pi-money-bill',
+            command: async () => {
+                console.log(selectedWallet);
+                setShowPaymentAction(true); 
+            }
+        }
+    ];
+
+    const showToast = (severity: ToastMessage["severity"], summary: string, detail: string) => {
+        toast.current?.show([{ severity, summary, detail }]);
+    };
 
     const walletsBill = async () => {
         try {
@@ -199,7 +219,9 @@ export default function Balance() {
 
                         {<Button id='advanced-filter' label="FILTROS AVANÇADOS" onClick={() => setShowFilter(true)} />}
 
-                        {<Button label="AÇÕES" style={{}} />}
+                        <SplitButton label="AÇÕES" icon="" onClick={() => {
+                            console.log('clicked');
+                        }} model={actions} />
                         {<Button label="INCLUIR" onClick={(e) => {
                             setShowIncludeTransaction(true);
                         }} /*style={{ marginTop: "10%" }}*/ />}
@@ -226,6 +248,9 @@ export default function Balance() {
                 </Dialog>
                 <Dialog header="Filtros Avançados" className='filter-dialog' visible={showFilter} style={{ width: '50vw' }} onHide={() => setShowFilter(false)}>
                     <AdvancedFilter></AdvancedFilter>
+                </Dialog>
+                <Dialog header="Pagamento" className='' visible={showPaymentAction} style={{ width: '50vw' }} onHide={() => setShowPaymentAction(false)}>
+                    <PaymentAction transactionId={''} onSuccess={showToast} onError={showToast}></PaymentAction>
                 </Dialog>
             </div>
         </div>

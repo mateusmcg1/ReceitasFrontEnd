@@ -271,7 +271,6 @@ export default function TransactionForm({
                   index={index}
                   key={index}
                   onHandleUpdate={onUpdateItem}
-                  onError={onError}
                 ></InstallmentForm>
               );
             })}
