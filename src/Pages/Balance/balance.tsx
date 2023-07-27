@@ -1,18 +1,12 @@
 import './balance.css'
-import { Menu } from 'primereact/menu';
-import { useState, useEffect, SetStateAction } from 'react';
+import { useState, useEffect } from 'react';
 import 'primeicons/primeicons.css';
-import { Link, useNavigate } from 'react-router-dom';
 import axios from "axios";
-import { InputNumber } from 'primereact/inputnumber';
-import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
-import { Avatar } from 'primereact/avatar';
 import { Dialog } from 'primereact/dialog'
-import { Dropdown } from 'primereact/dropdown';
-import { Calendar, CalendarChangeEvent } from "primereact/calendar";
+import { Calendar } from "primereact/calendar";
 import AdvancedFilter from '../Filtros Avançados/advanced-filter'
 import NewTransaction from '../New_transaction/new_transaction';
 import { SelectWallet } from './SelectWallet/SelectWallet';
@@ -169,9 +163,6 @@ export default function Balance() {
 
                 <div className='filtering-data'>
 
-                    <div className='period'>
-
-                    </div>
 
                     <div className='botoes'>
 
@@ -196,7 +187,7 @@ export default function Balance() {
 
                         {<Button id='advanced-filter' label="FILTROS AVANÇADOS" onClick={() => setShowFilter(true)} />}
 
-                        {<Button label="AÇÕES" style={{}} />}
+                        {<Button label="AÇÕES" />}
                         {<Button label="INCLUIR" onClick={(e) => {
                             setShowIncludeTransaction(true);
                         }} /*style={{ marginTop: "10%" }}*/ />}
