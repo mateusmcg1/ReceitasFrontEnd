@@ -14,7 +14,7 @@ export default function Due_Dated() {
     const [selectedWallet, setSelectedWallet] = useState<WalletDto>();
 
     return (
-        <div style={{ width: '80%' }}>
+        <div className='main-content'>
             <h1>A Receber</h1>
                 <div className='filtering' style={{ width: '80%', marginBottom:'2%'}}>
 
