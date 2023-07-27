@@ -1,20 +1,19 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { InputText } from "primereact/inputtext";
 import { InputNumber } from "primereact/inputnumber";
 import { Calendar, CalendarChangeEvent } from "primereact/calendar";
 import { Dropdown, DropdownChangeEvent } from "primereact/dropdown";
 import axios from "axios";
 import { Button } from "primereact/button";
-import { Checkbox } from "primereact/checkbox";
 import { useFormik } from "formik";
 import { classNames } from "primereact/utils";
 
 export default function PaymentAction({
-  transactionId,
+  transaction,
   onSuccess,
   onError,
 }: {
-  transactionId: string;
+  transaction: any;
   onSuccess: Function;
   onError: Function;
 }) {
@@ -23,7 +22,7 @@ export default function PaymentAction({
   const [fees, setFees] = useState<number>();
   const [fine, setFine] = useState<number>();
   const [paymentDate, setPaymentDate] = useState<string | Date | Date[] | null>(
-    [new Date()]
+    new Date()
   );
   const [reference, setReference] = useState("");
   const [selectedType, setSelectedType] = useState("");
@@ -31,10 +30,18 @@ export default function PaymentAction({
     string | Date | Date[] | null
   >([new Date()]);
 
+
+  useEffect(() => {
+    setReference(transaction?.reference!);
+    setExpirationDate(transaction?.due_date!)
+    setSelectedType(transaction?.type!)
+    setAmount(transaction?.amount!)
+}, [transaction, amount, fees, fine]);
+
   const asyncNewRecurrency = async () => {
     try {
       await axios.post(
-        `${process.env.REACT_APP_API_URL}/v1/transactions/pay/${transactionId}`,
+        `${process.env.REACT_APP_API_URL}/v1/transactions/pay/${transaction?.id}`,
         {
           fine_amount: fine,
           fee_amount: fees,
@@ -178,9 +185,6 @@ export default function PaymentAction({
               <InputNumber
                 id="finalAmount"
                 value={finalAmount}
-                onValueChange={(e) => {
-                  setFinalAmount(Number(e.value));
-                }}
                 mode="currency"
                 currency="BRL"
                 locale="pt-BR"
