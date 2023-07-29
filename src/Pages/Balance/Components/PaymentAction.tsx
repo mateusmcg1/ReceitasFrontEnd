@@ -28,15 +28,18 @@ export default function PaymentAction({
   const [selectedType, setSelectedType] = useState("");
   const [expirationDate, setExpirationDate] = useState<
     string | Date | Date[] | null
-  >([new Date()]);
-
+  >();
 
   useEffect(() => {
     setReference(transaction?.reference!);
-    setExpirationDate(transaction?.due_date!)
-    setSelectedType(transaction?.type!)
-    setAmount(transaction?.amount!)
-}, [transaction, amount, fees, fine]);
+    setExpirationDate(transaction?.due_date!);
+    setSelectedType(transaction?.type!);
+    setAmount(transaction?.amount!);
+  }, [transaction]);
+
+  useEffect(() => {
+    setFinalAmount(amount! + fees! + fine!);
+  }, [amount, fees, fine]);
 
   const asyncNewRecurrency = async () => {
     try {
@@ -45,7 +48,7 @@ export default function PaymentAction({
         {
           fine_amount: fine,
           fee_amount: fees,
-          payment_date: paymentDate
+          payment_date: paymentDate,
         },
         {
           headers: {
@@ -113,9 +116,7 @@ export default function PaymentAction({
               <Calendar
                 value={expirationDate}
                 name="expDate"
-                onChange={(e: CalendarChangeEvent) => {
-                  setExpirationDate(e.value!);
-                }}
+
                 locale="en"
                 dateFormat="dd/mm/yy"
                 disabled

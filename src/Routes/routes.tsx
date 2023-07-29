@@ -8,6 +8,7 @@ import Wallet from '../Pages/Wallet/Wallet'
 import IncludeWallet from '../Pages/Wallet/Incluir Carteira/IncludeWallet';
 import Verifying from '../Pages/Verifying/verifying'
 import { Casket } from '../Shared/Casket/Casket';
+import WalletDetail from '../Pages/Wallet/WalletDetail/WalletDetail';
 
 
 function Rotas() {
@@ -24,6 +25,7 @@ function Rotas() {
                     <Route path='/balance' element={<Balance />} />
                     <Route path='/admin' element={<Admin />} />
                     <Route path='/wallet' element={<Wallet />} />
+                    <Route path='/wallet/detail' element={<WalletDetail />} />
                  
 
                 </Route>

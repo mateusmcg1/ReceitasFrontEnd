@@ -1,4 +1,4 @@
-import './wallet.css'
+import '../wallet.css'
 import { Menu } from 'primereact/menu';
 import { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
@@ -9,17 +9,15 @@ import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 import { Avatar } from 'primereact/avatar';
 import { SplitButton } from 'primereact/splitbutton';
-import { WalletDto } from '../../models/wallet.dto';
 import { MenuItem } from 'primereact/menuitem';
 import { Dialog } from 'primereact/dialog';
-import IncludeWallet from './Incluir Carteira/IncludeWallet';
-import EditWallet from './Editar Carteira/editWallet'
-import { Toast, ToastMessage } from 'primereact/toast';
-import { FilterWalletDto } from './dtos/filter-wallet.dto';
-import DeleteWallet from './Deleta Carteira/deleteWallet';
-import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog';
 
-export default function Wallet() {
+import { Toast, ToastMessage } from 'primereact/toast';
+
+import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog';
+import { WalletDto } from '../../../models/wallet.dto';
+
+export default function WalletDetail() {
 
     const [find, setFind] = useState('')
     const [loading, setLoading] = useState(false);
@@ -29,7 +27,6 @@ export default function Wallet() {
     const [showEditWallet, setShowEditWallet] = useState(false);
     const [showDeleteWallet, setShowDeleteWallet] = useState(false);
     const toast = useRef<Toast>(null);
-    const navigate = useNavigate();
 
     const showToast = (severity: ToastMessage["severity"], summary: string, detail: string) => {
         toast.current?.show([{ severity, summary, detail }]);
@@ -45,81 +42,62 @@ export default function Wallet() {
                 //from the selected row in the table. At the moment, user needs to refresh the page to see the result.  
             }
         },
-        {
-            label: 'Deletar',
-            icon: 'pi pi-trash',
-            command: () => {
-                console.log(selectedWallet)
-                confirmDialog({
-                    message: 'Deseja deletar?',
-                    header: 'Deletar Carteira',
-                    accept: deleteWallets,
-                    reject: () => setShowDeleteWallet(false)
-                })
-            }
-        },
-        {
-            label: 'Detalhar',
-            icon: 'pi pi-book',
-            command: () => {
-                navigate('detail') 
-            }
-        }
+      
     ];
 
-    useEffect(() => {
-        fetchWallets();
-    }, []);
+    // useEffect(() => {
+    //     fetchWallets();
+    // }, []);
 
 
-    const deleteWallets = async () => {
+    // const deleteWallets = async () => {
 
-        try {
-            await axios.delete(`${process.env.REACT_APP_API_URL}/v1/wallets/${selectedWallet?.id}`, {
+    //     try {
+    //         await axios.delete(`${process.env.REACT_APP_API_URL}/v1/wallets/${selectedWallet?.id}`, {
 
-                headers: {
-                    Authorization: `Bearer ${sessionStorage.getItem('access_token')}`
-                }
-            });
-            showToast('success', 'Success', 'Deletado com sucesso.');
-            fetchWallets();
-        }
+    //             headers: {
+    //                 Authorization: `Bearer ${sessionStorage.getItem('access_token')}`
+    //             }
+    //         });
+    //         showToast('success', 'Success', 'Deletado com sucesso.');
+    //         fetchWallets();
+    //     }
 
-        catch (err: any) {
-            if (err.status = 401) {
-                showToast('error', 'Unauthorized', 'Acesso negado! O token de acesso informado é inválido.');
-            }
-        }
+    //     catch (err: any) {
+    //         if (err.status = 401) {
+    //             showToast('error', 'Unauthorized', 'Acesso negado! O token de acesso informado é inválido.');
+    //         }
+    //     }
 
 
-    }
-    const fetchWallets = async (params?: any) => {
-        try {
-            setLoading(true);
-            const result = await axios.get(`${process.env.REACT_APP_API_URL}/v1/wallets`, {
-                headers: {
-                    Authorization: `Bearer ${sessionStorage.getItem('access_token')}`
-                },
-                params
-            });
-            setLoading(false);
-            setWallets(result.data);
-        } catch (err) {
+    // }
+    // const fetchWallets = async (params?: any) => {
+    //     try {
+    //         setLoading(true);
+    //         const result = await axios.get(`${process.env.REACT_APP_API_URL}/v1/wallets`, {
+    //             headers: {
+    //                 Authorization: `Bearer ${sessionStorage.getItem('access_token')}`
+    //             },
+    //             params
+    //         });
+    //         setLoading(false);
+    //         setWallets(result.data);
+    //     } catch (err) {
 
-        }
+    //     }
 
-    }
+    // }
 
-    useEffect(() => {
-        fetchWallets();
-    }, []);
+    // useEffect(() => {
+    //     fetchWallets();
+    // }, []);
 
     return (
         <div className='wallet-container'>
             <Toast ref={toast} />
             <div className='wallet-main-content'>
 
-                <h1>Carteiras</h1>
+                <h1>Detalhar Carteira</h1>
 
                 <div className='wallet-menu'>
 
@@ -137,7 +115,7 @@ export default function Wallet() {
                         <div className="col-3 md:col-6 lg:col-3" style={{marginLeft: '5%'}}>
 
                             <Button label="FILTRAR" onClick={() => {
-                                fetchWallets({ name: find });
+                                // fetchWallets({ name: find });
                             }} />
 
                         </div>
@@ -168,7 +146,7 @@ export default function Wallet() {
                     <Column field="currency" header="Moeda"></Column>
                 </DataTable>
             </div>
-            <Dialog visible={showNewWallet} style={{ width: '50vw' }} onHide={() => {
+            {/* <Dialog visible={showNewWallet} style={{ width: '50vw' }} onHide={() => {
                 setShowNewWallet(false)
             }}>
                 <IncludeWallet closeDialog={() => {
@@ -182,7 +160,7 @@ export default function Wallet() {
                     // showToast('success', 'Success', 'Carteira editada com sucesso.');
                     fetchWallets();
                 }} onSuccess={showToast} onError={showToast}></EditWallet>
-            </Dialog>
+            </Dialog> */}
             <ConfirmDialog />
         
         </div>
