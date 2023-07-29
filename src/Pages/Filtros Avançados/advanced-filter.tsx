@@ -1,35 +1,33 @@
 import './advanced-filter.css'
 import { useEffect, useRef, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import axios from "axios";
 import { InputText } from 'primereact/inputtext';
-import { Checkbox } from 'primereact/checkbox';
 import { Button } from 'primereact/button';
 import { Calendar } from 'primereact/calendar';
-import Balance from '../Balance/balance'
 import { Toast, ToastMessage } from 'primereact/toast';
 
 export default function AdvancedFilter({ walletId, fetch, closeDialog }: { walletId: string, fetch: Function, closeDialog: any }) {
 
-    let navigate = useNavigate()
-    const [dates, setDates] = useState<any[]>([])
-    // const [value1, setValue1] = useState("");
-    const [value2, setValue2] = useState("");
+    const [dates, setDates] = useState<any[]>()
+    var [value2, setValue2] = useState("");
     const [value3, setValue3] = useState("");
     const [value4, setValue4] = useState("");
-    const [range, setRange] = useState<any>([0, 100]);
-    const [checked1, setChecked1] = useState<boolean>(false);
-    const [checked2, setChecked2] = useState<boolean>(false);
-    const [checked3, setChecked3] = useState<boolean>(false);
 
     const onSave = () => {
 
-            (dates || value2 || value3 || value4)?
-            fetch({startDate: dates[0],endDate: dates[1],reference: value2,minAmount: value3,maxAmount: value4}):
-            fetch()
+            (dates)?
+            fetch({startDate: dates[0],endDate: dates[1],reference: value2,minAmount: value3,maxAmount: value4})
+            
+        :
+            
+            fetch({reference: value2,minAmount: value3,maxAmount: value4})
             closeDialog();
+        
+            
     }
 
+    useEffect(() => {
+      
+    }, []);
     const toast = useRef<Toast>(null);
 
     const AdvFilterToast = (severity: ToastMessage["severity"], summary: string, detail: string) => {
@@ -53,6 +51,7 @@ export default function AdvancedFilter({ walletId, fetch, closeDialog }: { walle
                                 value={dates}
                                 onChange={(e: any) => {
                                     setDates(e.value);
+
                                 }}
 
                                 selectionMode="range"
@@ -65,7 +64,7 @@ export default function AdvancedFilter({ walletId, fetch, closeDialog }: { walle
 
                         <span className="p-float-label" style={{ marginTop: '6%', fontSize: '90%' }}>
 
-                            <InputText id='value2' value={value2} onChange={(e) => setValue2(e.target.value)} />
+                            <InputText id='value2' value={value2} onChange={(e) => setValue2(e.target.value) }/>
                             <label htmlFor="value2">Nome da Referência</label>
 
                         </span>
@@ -83,19 +82,6 @@ export default function AdvancedFilter({ walletId, fetch, closeDialog }: { walle
 
                     </div>
 
-
-                    {/* <div className="card1 flex justify-content-left" style={{ marginTop: '5%' }}>
-                        <Checkbox inputId="pagar" onChange={e => setChecked1(e.checked!)} checked={checked1} />
-                        <label htmlFor="pagar" className="ml-2">Contas a Pagar</label>
-                    </div>
-                    <div className="card1 flex justify-content-left">
-                        <Checkbox inputId='receber' onChange={e => setChecked2(e.checked!)} checked={checked2} />
-                        <label htmlFor="receber" className="ml-2">Contas a Receber</label>
-                    </div>
-                    <div className="card1 flex justify-content-left">
-                        <Checkbox inputId='vencidas' onChange={e => setChecked3(e.checked!)} checked={checked3} />
-                        <label htmlFor="vencidas" className="ml-2">Contas Vencidas</label>
-                    </div> */}
                 </div>
 
                 <div className='enquadramento-filtro'>
