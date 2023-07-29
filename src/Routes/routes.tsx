@@ -25,7 +25,7 @@ function Rotas() {
                     <Route path='/balance' element={<Balance />} />
                     <Route path='/admin' element={<Admin />} />
                     <Route path='/wallet' element={<Wallet />} />
-                    <Route path='/wallet/detail' element={<WalletDetail />} />
+                    <Route path='/wallet/detail/:selectedWallet' element={<WalletDetail />} />
                  
 
                 </Route>

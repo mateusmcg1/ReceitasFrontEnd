@@ -1,7 +1,7 @@
 import '../wallet.css'
 import { Menu } from 'primereact/menu';
 import { useEffect, useRef, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import axios from "axios";
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
@@ -21,7 +21,7 @@ export default function WalletDetail() {
 
     const [find, setFind] = useState('')
     const [loading, setLoading] = useState(false);
-    const [selectedWallet, setSelectedWallet] = useState<any>();
+    const {state} = useLocation();
     const [wallets, setWallets] = useState<WalletDto[]>([]);
     const [showNewWallet, setShowNewWallet] = useState(false);
     const [showEditWallet, setShowEditWallet] = useState(false);
@@ -37,7 +37,7 @@ export default function WalletDetail() {
             label: 'Editar',
             icon: 'pi pi-pencil',
             command: async () => {
-                console.log(selectedWallet);
+                // console.log(selectedWallet);
                 setShowEditWallet(true); //Basically I set this to call a dialog which invokes the editWallet component so the user can edit the infos 
                 //from the selected row in the table. At the moment, user needs to refresh the page to see the result.  
             }
@@ -136,8 +136,8 @@ export default function WalletDetail() {
                 </div>
 
 
-                <DataTable loading={loading} selectionMode='single' selection={selectedWallet} onSelectionChange={(e) => {
-                    setSelectedWallet(e.value);
+                <DataTable loading={loading} selectionMode='single'  onSelectionChange={(e) => {
+                    // setSelectedWallet(e.value);
                 }} tableStyle={{ minWidth: '50rem' }} value={wallets}>
                     <Column body={(data) => {
                         return <span>{new Date(data.createdAt).toLocaleDateString('pt-BR')}</span>

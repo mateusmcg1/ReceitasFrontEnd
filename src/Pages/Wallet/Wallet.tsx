@@ -62,7 +62,7 @@ export default function Wallet() {
             label: 'Detalhar',
             icon: 'pi pi-book',
             command: () => {
-                navigate('detail') 
+                navigate('detail', {state: {selectedWallet: selectedWallet}}) 
             }
         }
     ];
