@@ -13,17 +13,16 @@ export default function AdvancedFilter({ walletId, fetch, closeDialog }: { walle
     const [value4, setValue4] = useState("");
 
     const onSave = () => {
-
+         
             (dates)?
             fetch({startDate: dates[0],endDate: dates[1],reference: value2,minAmount: value3,maxAmount: value4})
             
         :
             
-            fetch({reference: value2,minAmount: value3,maxAmount: value4})
+            fetch({reference: value2 ,minAmount: value3,maxAmount: value4})
             closeDialog();
-        
-            
-    }
+        }
+
 
     useEffect(() => {
       
@@ -85,7 +84,7 @@ export default function AdvancedFilter({ walletId, fetch, closeDialog }: { walle
                 </div>
 
                 <div className='enquadramento-filtro'>
-                    {<Button label="FILTRAR" onClick={() => walletId? onSave() : AdvFilterToast('warn', 'Atenção!', 'Selecione uma carteira.')} /*style={{ marginTop: "10%"}}*/ />}
+                    {<Button label="FILTRAR" onClick={() => walletId? onSave() : AdvFilterToast('warn', 'Atenção!', 'Selecione uma carteira.')} />}
                 </div>
 
             </div>
