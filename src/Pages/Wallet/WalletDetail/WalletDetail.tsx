@@ -1,168 +1,230 @@
-import '../wallet.css'
-import { Menu } from 'primereact/menu';
-import { useEffect, useRef, useState } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import "../wallet.css";
+import { useEffect, useRef, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { DataTable } from 'primereact/datatable';
-import { Column } from 'primereact/column';
-import { InputText } from 'primereact/inputtext';
-import { Button } from 'primereact/button';
-import { Avatar } from 'primereact/avatar';
-import { SplitButton } from 'primereact/splitbutton';
-import { MenuItem } from 'primereact/menuitem';
-import { Dialog } from 'primereact/dialog';
+import { DataTable } from "primereact/datatable";
+import { Column } from "primereact/column";
+import { InputText } from "primereact/inputtext";
+import { Button } from "primereact/button";
+import { Avatar } from "primereact/avatar";
+import { SplitButton } from "primereact/splitbutton";
+import { MenuItem } from "primereact/menuitem";
+import { Dialog } from "primereact/dialog";
+import { Chart } from "primereact/chart";
 
-import { Toast, ToastMessage } from 'primereact/toast';
+import { Toast, ToastMessage } from "primereact/toast";
 
-import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog';
-import { WalletDto } from '../../../models/wallet.dto';
+import { ConfirmDialog, confirmDialog } from "primereact/confirmdialog";
+import { WalletDto } from "../../../models/wallet.dto";
+import IncludeGroup from "./Dialogs/IncludeGroup";
 
 export default function WalletDetail() {
+  const [loading, setLoading] = useState(false);
+  const [wallets, setWallets] = useState<WalletDto[]>([]);
+  const [showNewGroup, setShowNewGroup] = useState(false);
+  const [showEditWallet, setShowEditWallet] = useState(false);
+  const [showDeleteWallet, setShowDeleteWallet] = useState(false);
+  const toast = useRef<Toast>(null);
+  const { state } = useLocation();
+  const { selectedWallet } = state;
+  const [chartData, setChartData] = useState({});
+  const [chartOptions, setChartOptions] = useState({});
+  const [chart, setChart] = useState<any[]>([]);
+  const [transactionVolume, setTransactionVolume] = useState(0)
+  const [balance, setBalance] = useState(0)
 
-    const [find, setFind] = useState('')
-    const [loading, setLoading] = useState(false);
-    const {state} = useLocation();
-    const [wallets, setWallets] = useState<WalletDto[]>([]);
-    const [showNewWallet, setShowNewWallet] = useState(false);
-    const [showEditWallet, setShowEditWallet] = useState(false);
-    const [showDeleteWallet, setShowDeleteWallet] = useState(false);
-    const toast = useRef<Toast>(null);
+  const showToast = (
+    severity: ToastMessage["severity"],
+    summary: string,
+    detail: string
+  ) => {
+    toast.current?.show([{ severity, summary, detail }]);
+  };
 
-    const showToast = (severity: ToastMessage["severity"], summary: string, detail: string) => {
-        toast.current?.show([{ severity, summary, detail }]);
+  const fetchCharts = async (params?: any) => {
+    try {
+      const result = await axios.get(
+        `${process.env.REACT_APP_API_URL}/v1/charts/cashflow`,
+        {
+          headers: {
+            Authorization: `Bearer ${sessionStorage.getItem("access_token")}`,
+          },
+          params,
+        }
+      );
+      setChart(result.data);
+    } catch (err) {
+      alert(err);
+    }
+  };
+
+  const walletsInfo = async () => {
+    try {
+      const result = await axios.get(
+        `${process.env.REACT_APP_API_URL}/v1/wallets/${selectedWallet?.id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${sessionStorage.getItem("access_token")}`,
+          },
+        }
+      );
+      setTransactionVolume(result.data.stats.walletTransactionsVolume);
+      setBalance(result.data.stats.walletBalance);
+    } catch (err) {
+      alert(err);
+    }
+  };
+
+  useEffect(() => {
+    fetchCharts({ wallet_id: selectedWallet.id });
+    walletsInfo();
+  }, []);
+
+  useEffect(() => {
+    const documentStyle = getComputedStyle(document.documentElement);
+    const textColor = documentStyle.getPropertyValue("--text-color");
+    const textColorSecondary = documentStyle.getPropertyValue(
+      "--text-color-secondary"
+    );
+    const surfaceBorder = documentStyle.getPropertyValue("--surface-border");
+    const data = {
+      labels: chart.map((p, index) => {
+        return new Date(p.x).toLocaleDateString("pt-BR");
+      }),
+      datasets: [
+        {
+          label: selectedWallet?.name!,
+          data: chart.map((p, index) => {
+            return p.y;
+          }),
+          fill: false,
+          borderColor: documentStyle.getPropertyValue("--blue-500"),
+          tension: 0.4,
+        },
+      ],
+    };
+    const options = {
+      maintainAspectRatio: false,
+      aspectRatio: 0.6,
+      plugins: {
+        legend: {
+          labels: {
+            color: textColor,
+          },
+        },
+      },
+      scales: {
+        x: {
+          ticks: {
+            color: textColorSecondary,
+          },
+          grid: {
+            color: surfaceBorder,
+          },
+        },
+        y: {
+          ticks: {
+            color: textColorSecondary,
+          },
+          grid: {
+            color: surfaceBorder,
+          },
+        },
+      },
     };
 
-    const actions: MenuItem[] = [
-        {
-            label: 'Editar',
-            icon: 'pi pi-pencil',
-            command: async () => {
-                // console.log(selectedWallet);
-                setShowEditWallet(true); //Basically I set this to call a dialog which invokes the editWallet component so the user can edit the infos 
-                //from the selected row in the table. At the moment, user needs to refresh the page to see the result.  
-            }
-        },
-      
-    ];
+    setChartData(data);
+    setChartOptions(options);
+  }, [chart]);
 
-    // useEffect(() => {
-    //     fetchWallets();
-    // }, []);
+  const actions: MenuItem[] = [
+    {
+      label: "Editar",
+      icon: "pi pi-pencil",
+      command: async () => {
+        setShowEditWallet(true);
+      },
+    },
+  ];
 
+  return (
+    <div className="wallet-container">
+      <Toast ref={toast} />
+      <div className="wallet-main-content">
+        <h1>Detalhar Carteira - {selectedWallet?.name!}</h1>
 
-    // const deleteWallets = async () => {
-
-    //     try {
-    //         await axios.delete(`${process.env.REACT_APP_API_URL}/v1/wallets/${selectedWallet?.id}`, {
-
-    //             headers: {
-    //                 Authorization: `Bearer ${sessionStorage.getItem('access_token')}`
-    //             }
-    //         });
-    //         showToast('success', 'Success', 'Deletado com sucesso.');
-    //         fetchWallets();
-    //     }
-
-    //     catch (err: any) {
-    //         if (err.status = 401) {
-    //             showToast('error', 'Unauthorized', 'Acesso negado! O token de acesso informado é inválido.');
-    //         }
-    //     }
-
-
-    // }
-    // const fetchWallets = async (params?: any) => {
-    //     try {
-    //         setLoading(true);
-    //         const result = await axios.get(`${process.env.REACT_APP_API_URL}/v1/wallets`, {
-    //             headers: {
-    //                 Authorization: `Bearer ${sessionStorage.getItem('access_token')}`
-    //             },
-    //             params
-    //         });
-    //         setLoading(false);
-    //         setWallets(result.data);
-    //     } catch (err) {
-
-    //     }
-
-    // }
-
-    // useEffect(() => {
-    //     fetchWallets();
-    // }, []);
-
-    return (
-        <div className='wallet-container'>
-            <Toast ref={toast} />
-            <div className='wallet-main-content'>
-
-                <h1>Detalhar Carteira</h1>
-
-                <div className='wallet-menu'>
-
-                    <div className="col-3 md:col-3 lg:col-3">
-
-                        <span className="p-float-label" >
-                            <InputText id='text1' value={find} onChange={(e) => setFind(e.target.value)} />
-                            <label htmlFor="text1">Nome</label>
-                        </span>
-
-                    </div>
-
-                    <div className='wallet-buttons'>
-
-                        <div className="col-3 md:col-6 lg:col-3" style={{marginLeft: '5%'}}>
-
-                            <Button label="FILTRAR" onClick={() => {
-                                // fetchWallets({ name: find });
-                            }} />
-
-                        </div>
-                    </div>
-                    <div style={{ width: '40%' }}>
-
-                        <SplitButton label="AÇÕES" icon="" onClick={() => {
-                            console.log('clicked');
-                        }} model={actions} />
-
-                    </div>
-
-                    <div style={{  height:'100%' }}>
-
-                        <Button id='inclusao' label="INCLUIR" onClick={() => setShowNewWallet(true)} />
-
-                    </div>
-                </div>
-
-
-                <DataTable loading={loading} selectionMode='single'  onSelectionChange={(e) => {
-                    // setSelectedWallet(e.value);
-                }} tableStyle={{ minWidth: '50rem' }} value={wallets}>
-                    <Column body={(data) => {
-                        return <span>{new Date(data.createdAt).toLocaleDateString('pt-BR')}</span>
-                    }} header="Data de Criação"></Column>
-                    <Column field="name" header="Nome"></Column>
-                    <Column field="currency" header="Moeda"></Column>
-                </DataTable>
+        <div className="grid" style={{ marginTop: "2%" }}>
+          <div className="col-8">
+            <div className="card">
+              <Chart type="line" data={chartData} options={chartOptions} />
             </div>
-            {/* <Dialog visible={showNewWallet} style={{ width: '50vw' }} onHide={() => {
-                setShowNewWallet(false)
+          </div>
+          <div className="col-2" style={{ marginLeft: "1%" }}>
+            <h5>Volume: {transactionVolume} transações</h5>
+            <h5 style={{ marginTop: "10%" }}>Saldo: {balance.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</h5>
+          </div>
+        </div>
+
+        <div className="wallet-menu" style={{ marginTop: "2%" }}>
+          <div className="wallet-buttons"></div>
+          <div style={{ width: "40%" }}>
+            <SplitButton
+              label="AÇÕES"
+              icon=""
+              onClick={() => {
+                console.log("clicked");
+              }}
+              model={actions}
+            />
+          </div>
+
+          <div style={{ height: "100%" }}>
+            <Button
+              id="inclusao"
+              label="INCLUIR"
+              onClick={() => setShowNewGroup(true)}
+            />
+          </div>
+        </div>
+
+        <DataTable
+          loading={loading}
+          selectionMode="single"
+          onSelectionChange={(e) => {
+            // setSelectedWallet(e.value);
+          }}
+          tableStyle={{ minWidth: "50rem" }}
+          value={wallets}
+        >
+          <Column
+            body={(data) => {
+              return (
+                <span>
+                  {new Date(data.createdAt).toLocaleDateString("pt-BR")}
+                </span>
+              );
+            }}
+            header="Data de Criação"
+          ></Column>
+          <Column field="name" header="Nome"></Column>
+          <Column field="currency" header="Moeda"></Column>
+        </DataTable>
+      </div>
+      <Dialog visible={showNewGroup} style={{ width: '50vw' }} onHide={() => {
+                setShowNewGroup(false)
             }}>
-                <IncludeWallet closeDialog={() => {
-                    setShowNewWallet(false);
-                    fetchWallets();
-                }} onSuccess={showToast} onError={showToast}></IncludeWallet>
+                <IncludeGroup closeDialog={() => {
+                  setShowNewGroup(false);
+              } } onSuccess={showToast} onError={showToast} walletId={selectedWallet?.id!}></IncludeGroup>
             </Dialog>
-            <Dialog visible={showEditWallet} style={{ width: '50vw' }} onHide={() => setShowEditWallet(false)}>
+            {/* <Dialog visible={showEditWallet} style={{ width: '50vw' }} onHide={() => setShowEditWallet(false)}>
                 <EditWallet wallet={selectedWallet} closeDialog={() => {
                     setShowEditWallet(false);
                     // showToast('success', 'Success', 'Carteira editada com sucesso.');
                     fetchWallets();
                 }} onSuccess={showToast} onError={showToast}></EditWallet>
             </Dialog> */}
-            <ConfirmDialog />
-        
-        </div>
-    )
+      <ConfirmDialog />
+    </div>
+  );
 }
