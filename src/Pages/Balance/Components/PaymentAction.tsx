@@ -38,16 +38,19 @@ export default function PaymentAction({
   }, [transaction]);
 
   useEffect(() => {
-    setFinalAmount(amount! + fees! + fine!);
+    selectedType === "PAYMENT"
+      ? setFinalAmount(amount! + fees! * -1 + fine! * -1)
+      : setFinalAmount(amount! + fees! + fine!);
   }, [amount, fees, fine]);
 
   const asyncNewRecurrency = async () => {
     try {
-      await axios.post(
+      await axios.put(
         `${process.env.REACT_APP_API_URL}/v1/transactions/pay/${transaction?.id}`,
         {
-          fine_amount: fine,
-          fee_amount: fees,
+          
+          fine_amount: selectedType === "PAYMENT" ? fine!*-1 : fine,
+          fee_amount: selectedType === "PAYMENT" ? fees!*-1 : fees,
           payment_date: paymentDate,
         },
         {
@@ -116,7 +119,6 @@ export default function PaymentAction({
               <Calendar
                 value={expirationDate}
                 name="expDate"
-
                 locale="en"
                 dateFormat="dd/mm/yy"
                 disabled
@@ -169,7 +171,7 @@ export default function PaymentAction({
             <span className="p-float-label">
               <InputNumber
                 id="amount"
-                value={amount}
+                value={selectedType === "PAYMENT" ? amount! * -1 : amount}
                 onValueChange={(e) => {
                   setAmount(Number(e.value));
                 }}
@@ -185,7 +187,7 @@ export default function PaymentAction({
             <span className="p-float-label">
               <InputNumber
                 id="finalAmount"
-                value={finalAmount}
+                value={selectedType === "PAYMENT" ? finalAmount! * -1 : finalAmount}
                 mode="currency"
                 currency="BRL"
                 locale="pt-BR"
