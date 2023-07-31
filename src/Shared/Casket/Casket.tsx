@@ -25,13 +25,13 @@ export function Casket({ children }: { children?: any }) {
                     label: 'Total', icon: 'pi pi-dollar', command: () => { navigate('balance') },
                 },
                 {
-                    label: 'Vencidas', icon: 'pi pi-dollar', command: () => { },
+                    label: 'Vencidas', icon: 'pi pi-dollar', command: () => { navigate('due_dated') },
                 },
                 {
-                    label: 'A Pagar', icon: 'pi pi-dollar', command: () => { },
+                    label: 'A Pagar', icon: 'pi pi-dollar', command: () => { navigate('payable')},
                 },
                 {
-                    label: 'A Receber', icon: 'pi pi-dollar', command: () => { },
+                    label: 'A Receber', icon: 'pi pi-dollar', command: () => { navigate('receivable')},
                 }
             ]
         },
