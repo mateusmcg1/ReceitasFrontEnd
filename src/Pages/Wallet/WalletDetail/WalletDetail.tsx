@@ -222,21 +222,11 @@ export default function WalletDetail() {
           tableStyle={{ minWidth: "50rem" }}
           value={groups}
         >
-          <Column
-            body={(data) => {
-              return (
-                <span>
-                  {new Date(data.createdAt).toLocaleDateString("pt-BR")}
-                </span>
-              );
-            }}
-            header="Data de Criação"
-          ></Column>
           <Column field="name" header="Nome"></Column>
           <Column field="label" header="Label"></Column>
           <Column field="color" header="Cor" body={(data) =>{
             return (
-                <div style={{ backgroundColor: `#${data.color}`, width: '30px', height: '30px', borderRadius: '10%', margin: 'auto' }}></div>
+                <div style={{ backgroundColor: `#${data.color}`, width: '27px', height: '27px', borderRadius: '10%' }}></div>
               );
           }}></Column>
         </DataTable>
