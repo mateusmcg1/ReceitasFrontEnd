@@ -17,10 +17,10 @@ import { Toast, ToastMessage } from "primereact/toast";
 import { ConfirmDialog, confirmDialog } from "primereact/confirmdialog";
 import { WalletDto } from "../../../models/wallet.dto";
 import IncludeGroup from "./Dialogs/IncludeGroup";
+import { GroupDTO } from "../../../models/GroupDTO";
 
 export default function WalletDetail() {
   const [loading, setLoading] = useState(false);
-  const [wallets, setWallets] = useState<WalletDto[]>([]);
   const [showNewGroup, setShowNewGroup] = useState(false);
   const [showEditWallet, setShowEditWallet] = useState(false);
   const [showDeleteWallet, setShowDeleteWallet] = useState(false);
@@ -30,8 +30,10 @@ export default function WalletDetail() {
   const [chartData, setChartData] = useState({});
   const [chartOptions, setChartOptions] = useState({});
   const [chart, setChart] = useState<any[]>([]);
-  const [transactionVolume, setTransactionVolume] = useState(0)
-  const [balance, setBalance] = useState(0)
+  const [transactionVolume, setTransactionVolume] = useState(0);
+  const [balance, setBalance] = useState(0);
+  const [selectedGroup, setSelectedGroup] = useState<any>();
+  const [groups, setGroups] = useState<GroupDTO[]>([]);
 
   const showToast = (
     severity: ToastMessage["severity"],
@@ -75,8 +77,25 @@ export default function WalletDetail() {
     }
   };
 
+  const fetchGroups = async () => {
+    try {
+      setLoading(true);
+      const result = await axios.get(
+        `${process.env.REACT_APP_API_URL}/v1/groups/${selectedWallet?.id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${sessionStorage.getItem("access_token")}`,
+          },
+        }
+      );
+      setLoading(false);
+      setGroups(result.data);
+    } catch (err) {}
+  };
+
   useEffect(() => {
     fetchCharts({ wallet_id: selectedWallet.id });
+    fetchGroups();
     walletsInfo();
   }, []);
 
@@ -137,6 +156,7 @@ export default function WalletDetail() {
     setChartOptions(options);
   }, [chart]);
 
+
   const actions: MenuItem[] = [
     {
       label: "Editar",
@@ -161,7 +181,13 @@ export default function WalletDetail() {
           </div>
           <div className="col-2" style={{ marginLeft: "1%" }}>
             <h5>Volume: {transactionVolume} transações</h5>
-            <h5 style={{ marginTop: "10%" }}>Saldo: {balance.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</h5>
+            <h5 style={{ marginTop: "10%" }}>
+              Saldo:{" "}
+              {balance.toLocaleString("pt-BR", {
+                style: "currency",
+                currency: "BRL",
+              })}
+            </h5>
           </div>
         </div>
 
@@ -191,10 +217,10 @@ export default function WalletDetail() {
           loading={loading}
           selectionMode="single"
           onSelectionChange={(e) => {
-            // setSelectedWallet(e.value);
+            setSelectedGroup(e.value);
           }}
           tableStyle={{ minWidth: "50rem" }}
-          value={wallets}
+          value={groups}
         >
           <Column
             body={(data) => {
@@ -207,17 +233,31 @@ export default function WalletDetail() {
             header="Data de Criação"
           ></Column>
           <Column field="name" header="Nome"></Column>
-          <Column field="currency" header="Moeda"></Column>
+          <Column field="label" header="Label"></Column>
+          <Column field="color" header="Cor" body={(data) =>{
+            return (
+                <div style={{ backgroundColor: `#${data.color}`, width: '30px', height: '30px', borderRadius: '10%', margin: 'auto' }}></div>
+              );
+          }}></Column>
         </DataTable>
       </div>
-      <Dialog visible={showNewGroup} style={{ width: '50vw' }} onHide={() => {
-                setShowNewGroup(false)
-            }}>
-                <IncludeGroup closeDialog={() => {
-                  setShowNewGroup(false);
-              } } onSuccess={showToast} onError={showToast} walletId={selectedWallet?.id!}></IncludeGroup>
-            </Dialog>
-            {/* <Dialog visible={showEditWallet} style={{ width: '50vw' }} onHide={() => setShowEditWallet(false)}>
+      <Dialog
+        visible={showNewGroup}
+        style={{ width: "50vw" }}
+        onHide={() => {
+          setShowNewGroup(false);
+        }}
+      >
+        <IncludeGroup
+          closeDialog={() => {
+            setShowNewGroup(false);
+          }}
+          onSuccess={showToast}
+          onError={showToast}
+          walletId={selectedWallet?.id!}
+        ></IncludeGroup>
+      </Dialog>
+      {/* <Dialog visible={showEditWallet} style={{ width: '50vw' }} onHide={() => setShowEditWallet(false)}>
                 <EditWallet wallet={selectedWallet} closeDialog={() => {
                     setShowEditWallet(false);
                     // showToast('success', 'Success', 'Carteira editada com sucesso.');

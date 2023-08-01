@@ -143,10 +143,9 @@ export default function Wallet() {
                         </div>
                     </div>
                     <div style={{ width: '40%' }}>
-
-                        <SplitButton label="AÇÕES" icon="" onClick={() => {
+                            {selectedWallet === undefined ? <SplitButton label="AÇÕES" disabled /> : <SplitButton label="AÇÕES" icon=""  onClick={() => {
                             console.log('clicked');
-                        }} model={actions} />
+                        }} model={actions} />}
 
                     </div>
 
