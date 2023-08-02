@@ -18,8 +18,8 @@ export default function InstallmentForm({
   onError: Function;
   walletCurrency: CurrencyEnum
 }) {
-  const [amount, setAmount] = useState(0);
-  const [date, setDate] = useState<Date>(new Date());
+  const [amount, setAmount] = useState(0)
+  const [date, setDate] = useState<Date>();
   const [paid, setPaid] = useState(false);
 
   useEffect(() => {
@@ -60,7 +60,7 @@ export default function InstallmentForm({
                 setDate(e.value!);
               }}
               locale="en"
-              className={date === null ? "p-invalid" : ""}
+              className={date === undefined ? "p-invalid" : ""}
               dateFormat="dd/mm/yy"
             />
             <label htmlFor="date">Data *</label>
