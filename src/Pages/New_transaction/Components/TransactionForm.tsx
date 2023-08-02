@@ -26,7 +26,7 @@ export default function TransactionForm({
   walletCurrency: CurrencyEnum
 }) {
   const [value, setValue] = useState(0);
-  const [date, setDate] = useState<string | Date | Date[] | null>([new Date()]);
+  const [date, setDate] = useState<string | Date | Date[] | null>([]);
   const [reference, setReference] = useState("");
   const [selectedType, setSelectedType] = useState("");
   const [installmentNumber, setInstallmentNumber] = useState(0);
@@ -39,7 +39,7 @@ export default function TransactionForm({
         `${process.env.REACT_APP_API_URL}/v1/transactions`,
         {
           reference: reference,
-          due_date: installmentNumber > 0 ? selectedDate : date,
+          due_date: installmentNumber > 0 ? selectedDate : date!,
           installments: installmentNumber > 0 ? installments : null,
           type: selectedType,
           amount: value,

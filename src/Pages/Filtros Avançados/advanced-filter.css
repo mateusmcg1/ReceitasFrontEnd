@@ -23,6 +23,15 @@
     width: 70%;
 }
 
+#pr_id_4_header{
+    font-size: 45px;
+    padding: 0% 5%;
+}
+
+.inputs{
+    display: flex;
+    flex-direction: column;
+}
 .filter-container h1 {
     font-size: 45px;
     margin-bottom: 3%;
@@ -38,7 +47,13 @@
 }
 
 #range {
-    margin-bottom: 2%;
+    display: flex;
+    justify-content:space-between;
+    width: 100%;
+}
+
+#range .p-inputtext{
+    width: 100%;
 }
 
 .filter-container .card1 {

@@ -29,6 +29,7 @@ export default function Wallet() {
     const [showEditWallet, setShowEditWallet] = useState(false);
     const [showDeleteWallet, setShowDeleteWallet] = useState(false);
     const toast = useRef<Toast>(null);
+    const navigate = useNavigate();
 
     const showToast = (severity: ToastMessage["severity"], summary: string, detail: string) => {
         toast.current?.show([{ severity, summary, detail }]);
@@ -55,6 +56,13 @@ export default function Wallet() {
                     accept: deleteWallets,
                     reject: () => setShowDeleteWallet(false)
                 })
+            }
+        },
+        {
+            label: 'Detalhar',
+            icon: 'pi pi-book',
+            command: () => {
+                navigate('detail/'+selectedWallet.id, {state: {selectedWallet: selectedWallet}}) 
             }
         }
     ];
@@ -113,24 +121,41 @@ export default function Wallet() {
 
                 <h1>Carteiras</h1>
 
+                <div className='wallet-menu'>
 
-                <label htmlFor="text1">Nome</label>
+                    <div className="col-3 md:col-3 lg:col-3">
 
-                <div id='label-input-frame'>
+                        <span className="p-float-label" >
+                            <InputText id='text1' value={find} onChange={(e) => setFind(e.target.value)} />
+                            <label htmlFor="text1">Nome</label>
+                        </span>
 
-                    <InputText value={find} onChange={(e) => setFind(e.target.value)} />
+                    </div>
 
-                    <Button label="FILTRAR" style={{ marginLeft: "-1%" }} onClick={() => {
-                        fetchWallets({ name: find });
-                    }} />
+                    <div className='wallet-buttons'>
 
-                    <SplitButton label="AÇÕES" icon="pi pi-plus" onClick={() => {
-                        console.log('clicked');
-                    }} model={actions} />
-                    {/* {<Button label="AÇÕES" style={{ marginRight: "-5%", marginLeft: "10%" }} />} */}
+                        <div className="col-3 md:col-6 lg:col-3" style={{marginLeft: '5%'}}>
 
-                    <Button id='inclusao' label="INCLUIR" onClick={() => setShowNewWallet(true)} />
+                            <Button label="FILTRAR" onClick={() => {
+                                fetchWallets({ name: find });
+                            }} />
+
+                        </div>
+                    </div>
+                    <div style={{ width: '40%' }}>
+                            {selectedWallet === undefined ? <SplitButton label="AÇÕES" disabled /> : <SplitButton label="AÇÕES" icon=""  onClick={() => {
+                            console.log('clicked');
+                        }} model={actions} />}
+
+                    </div>
+
+                    <div style={{  height:'100%' }}>
+
+                        <Button id='inclusao' label="INCLUIR" onClick={() => setShowNewWallet(true)} />
+
+                    </div>
                 </div>
+
 
                 <DataTable loading={loading} selectionMode='single' selection={selectedWallet} onSelectionChange={(e) => {
                     setSelectedWallet(e.value);
@@ -158,12 +183,7 @@ export default function Wallet() {
                 }} onSuccess={showToast} onError={showToast}></EditWallet>
             </Dialog>
             <ConfirmDialog />
-            {/* <Dialog visible={showDeleteWallet} style={{ width: '50vw' }} onHide={() => setShowDeleteWallet(false)}>
-                <DeleteWallet closeDialog={() => {
-                    setShowDeleteWallet(false);
-                    fetchWallets();
-                }}></DeleteWallet>
-            </Dialog> */}
+        
         </div>
     )
 }

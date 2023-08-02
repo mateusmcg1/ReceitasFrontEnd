@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { InputNumber } from "primereact/inputnumber";
-import { Calendar, CalendarChangeEvent } from "primereact/calendar";
+import { Calendar } from "primereact/calendar";
 import { Checkbox } from "primereact/checkbox";
 import { Installment } from "../../../models/Installment";
 import { useFormik } from "formik";
@@ -32,47 +32,19 @@ export default function InstallmentForm({
     onHandleUpdate(i, index);
   }, [amount, date, paid]);
 
-  const formik = useFormik({
-    initialValues: {
-      amount: null,
-      date: [],
-    },
-    validate: (data) => {
-      let errors: any = {};
-
-      !data.amount ? (errors.amount = data?.amount === null) : <></>;
-      !data.date ? (errors.date = data?.date === null) : <></>;
-
-      return errors;
-    },
-    onSubmit: (data) => {
-      data && onError(data);
-      formik.resetForm();
-    },
-  });
-
-  const isFormFieldInvalid = (fieldName: string) => {
-    const formikToucheds: any = formik.touched;
-    const formikError: any = formik.errors;
-    return !!formikToucheds[fieldName] && !!formikError[fieldName];
-  };
-
   return (
-    <form onSubmit={formik.handleSubmit}>
+    <form>
       <div className="formgrid grid" style={{ marginTop: "2%" }}>
         <div className="field col">
           <span className="p-float-label">
             <InputNumber
               id="amount"
               name="amount"
-              value={formik.values.amount}
+              value={amount}
               onValueChange={(e) => {
                 setAmount(Number(e.value));
-                formik.setFieldValue("amount", e.value);
               }}
-              inputClassName={classNames({
-                "p-invalid": isFormFieldInvalid("amount"),
-              })}
+              className={amount === 0 ? "p-invalid" : ""}
               mode="currency"
               currency={walletCurrency}
               locale="pt-BR"
@@ -83,15 +55,12 @@ export default function InstallmentForm({
         <div className="field col">
           <span className="p-float-label">
             <Calendar
-              value={formik.values.date}
+              value={date}
               onChange={(e: any) => {
                 setDate(e.value!);
-                formik.setFieldValue("date", e.value);
               }}
-              className={classNames({
-                "p-invalid": isFormFieldInvalid("date"),
-              })}
               locale="en"
+              className={date === null ? "p-invalid" : ""}
               dateFormat="dd/mm/yy"
             />
             <label htmlFor="date">Data *</label>
