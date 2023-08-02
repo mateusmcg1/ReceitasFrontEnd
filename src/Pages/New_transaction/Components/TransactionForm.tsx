@@ -10,15 +10,20 @@ import { Button } from "primereact/button";
 import { Checkbox } from "primereact/checkbox";
 import { useFormik } from "formik";
 import { classNames } from "primereact/utils";
+import { CurrencyEnum } from "../../../Shared/enums/CurrencyEnum";
 
 export default function TransactionForm({
   walletId,
   onSuccess,
   onError,
+  closeDialog,
+  walletCurrency
 }: {
   walletId: string;
   onSuccess: Function;
   onError: Function;
+  closeDialog: any
+  walletCurrency: CurrencyEnum
 }) {
   const [value, setValue] = useState(0);
   const [date, setDate] = useState<string | Date | Date[] | null>([new Date()]);
@@ -48,6 +53,7 @@ export default function TransactionForm({
         }
       );
       onSuccess("success", "Successo", "Transação incluida com sucesso");
+      closeDialog();
     } catch (err) {
       err = 400
         ? onError("error", "Erro", "Preencha os campos obrigatórios")
@@ -58,7 +64,7 @@ export default function TransactionForm({
     initialValues: {
       reference: "",
       value: null,
-      date: new Date(),
+      date: [],
       selectedType: '',
     },
     validate: (data) => {
@@ -159,7 +165,7 @@ export default function TransactionForm({
                   "p-invalid": isFormFieldInvalid("value"),
                 })}
                 mode="currency"
-                currency="BRL"
+                currency= {walletCurrency}
                 locale="pt-BR"
               />
               <label htmlFor="amount">Valor *</label>
@@ -272,6 +278,7 @@ export default function TransactionForm({
                   key={index}
                   onHandleUpdate={onUpdateItem}
                   onError={onError}
+                  walletCurrency={walletCurrency}
                 ></InstallmentForm>
               );
             })}
