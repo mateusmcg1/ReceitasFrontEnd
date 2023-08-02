@@ -3,13 +3,20 @@ import { InputNumber } from "primereact/inputnumber";
 import { Calendar } from "primereact/calendar";
 import { Checkbox } from "primereact/checkbox";
 import { Installment } from "../../../models/Installment";
+import { useFormik } from "formik";
+import { classNames } from "primereact/utils";
+import { CurrencyEnum } from "../../../Shared/enums/CurrencyEnum";
 
 export default function InstallmentForm({
   index,
   onHandleUpdate,
+  onError,
+  walletCurrency
 }: {
   index: number;
   onHandleUpdate: any;
+  onError: Function;
+  walletCurrency: CurrencyEnum
 }) {
   const [amount, setAmount] = useState(0);
   const [date, setDate] = useState<Date>(new Date());
@@ -20,7 +27,7 @@ export default function InstallmentForm({
       amount: amount,
       due_date: date!,
       paid: paid,
-      number: index + 1,
+      number: (index+1),
     };
     onHandleUpdate(i, index);
   }, [amount, date, paid]);
@@ -39,7 +46,7 @@ export default function InstallmentForm({
               }}
               className={amount === 0 ? "p-invalid" : ""}
               mode="currency"
-              currency="BRL"
+              currency={walletCurrency}
               locale="pt-BR"
             />
             <label htmlFor="amount">Valor (Parcela {index + 1}) *</label>
