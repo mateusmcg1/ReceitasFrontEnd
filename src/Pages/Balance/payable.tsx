@@ -1,18 +1,69 @@
 import { Column } from 'primereact/column'
 import './style.css'
 import { DataTable } from 'primereact/datatable'
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Calendar } from 'primereact/calendar';
 import { Dropdown } from 'primereact/dropdown';
 import { WalletDto } from '../../models/wallet.dto';
 import { Button } from 'primereact/button';
+import axios from 'axios';
 
 export default function Due_Dated() {
 
+    const [wallets, setWallets] = useState<WalletDto[]>([]);
     const [transactions, setTransactions] = useState<any[]>([]);
     const [dates, setDates] = useState<any[]>([])
     const [selectedWallet, setSelectedWallet] = useState<WalletDto>();
 
+    const fetchWallets = async () => {
+        try {
+          const result = await axios.get(
+            `${process.env.REACT_APP_API_URL}/v1/wallets`,
+            {
+              headers: {
+                Authorization: `Bearer ${sessionStorage.getItem("access_token")!}`,
+              },
+            }
+          );
+          setWallets(result.data);
+          
+        } catch (err) {
+          alert(err);
+        }
+      };
+
+      useEffect(() => {
+        fetchWallets();
+        console.log(selectedWallet)
+      }, []);
+
+      useEffect(() => {
+        if (selectedWallet) {
+          fetchTransactions();
+        }
+      }, [selectedWallet]);
+      const fetchTransactions = async (params?:any) => {
+
+        
+          try {
+            var result = await axios.get(`${process.env.REACT_APP_API_URL}/v1/transactions/${selectedWallet?.id}`, {
+              headers: {
+                Authorization: `Bearer ${sessionStorage.getItem('access_token')}`,
+              },
+              params:{
+                category: 'PAYABLE'
+              }
+            });
+            
+            setTransactions(result.data)
+            console.log(transactions, result.data)
+    
+    
+          } catch (err) {
+            alert(err);
+          }
+      }
+    
     return (
         <div className='main-content'>
             <h1>A Pagar</h1>
@@ -20,7 +71,7 @@ export default function Due_Dated() {
 
                     <div className='filtering-inputs' style={{ width: '50%' }}>
                     <span className="p-float-label" style={{ width: '45%'}}>
-                        <Dropdown value={selectedWallet} onChange={(e) => setSelectedWallet(e.value)} />
+                        <Dropdown value={selectedWallet} onChange={(e) => (setSelectedWallet(e.value))} options={wallets} optionLabel="name"/>
                         <label htmlFor="date">Carteira</label>
                     </span>
 
@@ -52,7 +103,7 @@ export default function Due_Dated() {
                 </div>
             <div className='data-table'>
 
-                <DataTable value={transactions} tableStyle={{ minWidth: '50rem' }}>
+                <DataTable value={transactions} tableStyle={{ minWidth: '50rem' }} selectionMode='single' selection={selectedWallet}>
                     <Column body={(data) => {
                         return <span>{new Date(data.createdAt).toLocaleDateString('pt-BR')}</span>
                     }} header="Data"></Column>

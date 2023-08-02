@@ -23,9 +23,8 @@ import PaymentAction from "./Components/PaymentAction";
 import { Toast, ToastMessage } from "primereact/toast";
 
 export default function Balance() {
+  
   let navigate = useNavigate();
-
-  const [userName, setUserName] = useState("Nome");
   const [wallets, setWallets] = useState<any[]>([]);
   const [value1, setValue1] = useState(0);
   const [value2, setValue2] = useState(0);
@@ -34,14 +33,12 @@ export default function Balance() {
   let [vencidas, setVencidas] = useState(0);
   let [aPagar, setAPagar] = useState(0);
   let [aReceber, setAReceber] = useState(0);
-  const [text1, setText1] = useState("");
   const [walletName, setWalletName] = useState("Selecionar Carteira");
   const [visible, setVisible] = useState<boolean>(false);
   const [showFilter, setShowFilter] = useState(false);
   const [showIncludeTransaction, setShowIncludeTransaction] = useState(false);
   const [selectedWallet, setSelectedWallet] = useState<WalletDto>();
   const [transactions, setTransactions] = useState<any[]>([]);
-  const [selectedTransaction, setSelectedTransaction] = useState<any>();
   const [dates, setDates] = useState<any[]>([]);
   const toast = useRef<Toast>(null);
   const [showPaymentAction, setShowPaymentAction] = useState(false);
