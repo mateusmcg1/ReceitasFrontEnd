@@ -39,7 +39,7 @@ export default function Due_Dated() {
 
       useEffect(() => {
         if (selectedWallet) {
-          fetchTransactions();
+          fetchTransactions({category: 'RECEIVABLE'});
         }
       }, [selectedWallet]);
       const fetchTransactions = async (params?:any) => {
@@ -50,9 +50,7 @@ export default function Due_Dated() {
               headers: {
                 Authorization: `Bearer ${sessionStorage.getItem('access_token')}`,
               },
-              params:{
-                category: 'RECEIVABLE'
-              }
+              params
             });
             
             setTransactions(result.data)
@@ -92,7 +90,16 @@ export default function Due_Dated() {
                     </div>
 
                     <div className='buttons' style={{ width: '50%' }}>
-                        <Button label="FILTRAR" style={{ width: '25%' }}/>
+                        <Button label="FILTRAR" style={{ width: '25%' }}
+                         onClick={() =>
+                          dates ?
+                            fetchTransactions({
+                              category: 'RECEIVABLE',
+                              startDate: dates[0],
+                              endDate: dates[1]
+                            }) : fetchTransactions({category: 'RECEIVABLE'})
+                        } 
+                        />
 
                         <Button label="AÇÕES" style={{ width: '25%' }}/>
 

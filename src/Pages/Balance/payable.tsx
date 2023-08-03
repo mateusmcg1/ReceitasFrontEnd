@@ -10,112 +10,120 @@ import axios from 'axios';
 
 export default function Due_Dated() {
 
-    const [wallets, setWallets] = useState<WalletDto[]>([]);
-    const [transactions, setTransactions] = useState<any[]>([]);
-    const [dates, setDates] = useState<any[]>([])
-    const [selectedWallet, setSelectedWallet] = useState<WalletDto>();
+  const [wallets, setWallets] = useState<WalletDto[]>([]);
+  const [transactions, setTransactions] = useState<any[]>([]);
+  const [dates, setDates] = useState<any[]>([])
+  const [selectedWallet, setSelectedWallet] = useState<WalletDto>();
 
-    const fetchWallets = async () => {
-        try {
-          const result = await axios.get(
-            `${process.env.REACT_APP_API_URL}/v1/wallets`,
-            {
-              headers: {
-                Authorization: `Bearer ${sessionStorage.getItem("access_token")!}`,
-              },
-            }
-          );
-          setWallets(result.data);
-          
-        } catch (err) {
-          alert(err);
+  const fetchWallets = async () => {
+    try {
+      const result = await axios.get(
+        `${process.env.REACT_APP_API_URL}/v1/wallets`,
+        {
+          headers: {
+            Authorization: `Bearer ${sessionStorage.getItem("access_token")!}`,
+          },
         }
-      };
+      );
+      setWallets(result.data);
 
-      useEffect(() => {
-        fetchWallets();
-        console.log(selectedWallet)
-      }, []);
+    } catch (err) {
+      alert(err);
+    }
+  };
 
-      useEffect(() => {
-        if (selectedWallet) {
-          fetchTransactions();
-        }
-      }, [selectedWallet]);
-      const fetchTransactions = async (params?:any) => {
+  useEffect(() => {
+    fetchWallets();
+    console.log(selectedWallet)
+  }, []);
 
-        
-          try {
-            var result = await axios.get(`${process.env.REACT_APP_API_URL}/v1/transactions/${selectedWallet?.id}`, {
-              headers: {
-                Authorization: `Bearer ${sessionStorage.getItem('access_token')}`,
-              },
-              params:{
-                category: 'PAYABLE'
-              }
-            });
-            
-            setTransactions(result.data)
-            console.log(transactions, result.data)
+  useEffect(() => {
+    if (selectedWallet) {
+      fetchTransactions({category: 'PAYABLE'});
+    }
+  }, [selectedWallet]);
+
+  const fetchTransactions = async (params?: any) => {
     
-    
-          } catch (err) {
-            alert(err);
-          }
+      try {
+        var result = await axios.get(`${process.env.REACT_APP_API_URL}/v1/transactions/${selectedWallet?.id}`, {
+          headers: {
+            Authorization: `Bearer ${sessionStorage.getItem('access_token')}`,
+          },
+          params
+        });
+
+        setTransactions(result.data)
+        console.log(transactions, result.data)
+
+
+      } catch (err) {
+        alert(err);
       }
     
-    return (
-        <div className='main-content'>
-            <h1>A Pagar</h1>
-                <div className='filtering' style={{ width: '80%', marginBottom:'2%'}}>
-
-                    <div className='filtering-inputs' style={{ width: '50%' }}>
-                    <span className="p-float-label" style={{ width: '45%'}}>
-                        <Dropdown value={selectedWallet} onChange={(e) => (setSelectedWallet(e.value))} options={wallets} optionLabel="name"/>
-                        <label htmlFor="date">Carteira</label>
-                    </span>
+  }
 
 
-                    <span className="p-float-label" style={{ width: '45%' }}>
-                        <Calendar
-                            id='date'
-                            value={dates}
-                            onChange={(e: any) => {
-                                setDates(e.value);
-                            }}
+  return (
+    <div className='main-content'>
+      <h1>A Pagar</h1>
+      <div className='filtering' style={{ width: '80%', marginBottom: '2%' }}>
 
-                            selectionMode="range"
-                            locale="en"
-                            dateFormat="dd/mm/yy"
-                        />
-                        <label htmlFor="date">Período</label>
-                    </span>
-                    </div>
+        <div className='filtering-inputs' style={{ width: '50%' }}>
+          <span className="p-float-label" style={{ width: '45%' }}>
+            <Dropdown value={selectedWallet} onChange={(e) => (setSelectedWallet(e.value))} options={wallets} optionLabel="name" />
+            <label htmlFor="date">Carteira</label>
+          </span>
 
-                    <div className='buttons' style={{ width: '50%' }}>
-                        <Button label="FILTRAR" style={{ width: '25%' }}/>
 
-                        <Button label="AÇÕES" style={{ width: '25%' }}/>
+          <span className="p-float-label" style={{ width: '45%' }}>
+            <Calendar
+              id='date'
+              value={dates}
+              onChange={(e: any) => {
+                setDates(e.value);
+              }}
 
-                        <Button label="INCLUIR" style={{ width: '25%' }}/>
-
-                    </div>
-                </div>
-            <div className='data-table'>
-
-                <DataTable value={transactions} tableStyle={{ minWidth: '50rem' }} selectionMode='single' selection={selectedWallet}>
-                    <Column body={(data) => {
-                        return <span>{new Date(data.due_date).toLocaleDateString('pt-BR')}</span>
-                    }} header="Data"></Column>
-                    <Column field="reference" header="Referência"></Column>
-                    <Column body={(transaction) => <span style={{ color: (transaction.type === 'BILLING' ? 'green' : 'red') }}>{Math.abs(transaction?.amount).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>} header="Valor"></Column>
-                    <Column field="observation" header="Observação"></Column>
-                    <Column field="fees" header="Juros"></Column>
-                    <Column field="assessment" header="Multa"></Column>
-                </DataTable>
-
-            </div>
+              selectionMode="range"
+              locale="en"
+              dateFormat="dd/mm/yy"
+            />
+            <label htmlFor="date">Período</label>
+          </span>
         </div>
 
-    )
+        <div className='buttons' style={{ width: '50%' }}>
+          <Button label="FILTRAR" style={{ width: '25%' }}
+            onClick={() =>
+              dates ?
+                fetchTransactions({
+                  category: 'PAYABLE',
+                  startDate: dates[0],
+                  endDate: dates[1]
+                }) : fetchTransactions({category: 'PAYABLE'})
+            } />
+
+          <Button label="AÇÕES" style={{ width: '25%' }} />
+
+          <Button label="INCLUIR" style={{ width: '25%' }} />
+
+        </div>
+      </div>
+      <div className='data-table'>
+
+        <DataTable value={transactions} tableStyle={{ minWidth: '50rem' }} selectionMode='single' selection={selectedWallet}>
+          <Column body={(data) => {
+            return <span>{new Date(data.due_date).toLocaleDateString('pt-BR')}</span>
+          }} header="Data"></Column>
+          <Column field="reference" header="Referência"></Column>
+          <Column body={(transaction) => <span style={{ color: (transaction.type === 'BILLING' ? 'green' : 'red') }}>{Math.abs(transaction?.amount).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>} header="Valor"></Column>
+          <Column field="observation" header="Observação"></Column>
+          <Column field="fees" header="Juros"></Column>
+          <Column field="assessment" header="Multa"></Column>
+        </DataTable>
+
+      </div>
+    </div>
+
+  )
 }

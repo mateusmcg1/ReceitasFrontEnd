@@ -1,6 +1,5 @@
 import "./balance.css";
-
-import { useState, useEffect, SetStateAction } from "react";
+import { useState, useEffect, SetStateAction, useRef } from "react";
 import "primeicons/primeicons.css";
 import axios from "axios";
 import { Button } from "primereact/button";
@@ -17,10 +16,8 @@ import { MenuItem } from "primereact/menuitem";
 import { SplitButton } from "primereact/splitbutton";
 import PaymentAction from "./Components/PaymentAction";
 
-
 export default function Balance() {
 
-  const [userName, setUserName] = useState("Nome");
   const [wallets, setWallets] = useState<any[]>([]);
   const [value1, setValue1] = useState(0);
   const [value2, setValue2] = useState(0);
@@ -35,6 +32,51 @@ export default function Balance() {
   const [showIncludeTransaction, setShowIncludeTransaction] = useState(false);
   const [selectedWallet, setSelectedWallet] = useState<WalletDto>();
   const [transactions, setTransactions] = useState<any[]>([]);
+  const [selectedTransaction, setSelectedTransaction] = useState<any>();
+  const [dates, setDates] = useState<any[]>([]);
+  const toast = useRef<Toast>(null);
+  const [showPaymentAction, setShowPaymentAction] = useState(false);
+
+  const actions: MenuItem[] = [
+    {
+      label: "Pagamento",
+      icon: "pi pi-money-bill",
+      command: async () => {
+        console.log(selectedWallet);
+        setShowPaymentAction(true);
+      },
+    },
+  ];
+
+  const showToast = (
+    severity: ToastMessage["severity"],
+    summary: string,
+    detail: string
+  ) => {
+    toast.current?.show([{ severity, summary, detail }]);
+  };
+
+  const walletsBill = async () => {
+    try {
+      const result = await axios.get(
+        `${process.env.REACT_APP_API_URL}/v1/wallets/${selectedWallet?.id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${sessionStorage.getItem("access_token")}`,
+          },
+        }
+      );
+      setValue1(result.data.stats.walletBalance);
+      setVencidas(result.data.stats.walletExpiredBillingQuantity);
+      setValue2(result.data.stats.walletExpiredBillingAmount);
+      setValue3(result.data.stats.walletOutcomeBillingAmount);
+      setAPagar(result.data.stats.walletOutcomeBillingQuantity);
+      setAReceber(result.data.stats.walletIncomeBillingQuantity);
+      setValue4(result.data.stats.walletIncomeBillingAmount);
+    } catch (err) {
+      alert(err);
+    }
+  };
 
   const fetchWallets = async () => {
     try {
@@ -312,9 +354,4 @@ export default function Balance() {
       </div>
     </div>
   );
-}
-q
-
-function walletsBill() {
-  throw new Error("Function not implemented.");
 }
