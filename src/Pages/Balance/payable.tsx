@@ -105,7 +105,7 @@ export default function Due_Dated() {
 
                 <DataTable value={transactions} tableStyle={{ minWidth: '50rem' }} selectionMode='single' selection={selectedWallet}>
                     <Column body={(data) => {
-                        return <span>{new Date(data.createdAt).toLocaleDateString('pt-BR')}</span>
+                        return <span>{new Date(data.due_date).toLocaleDateString('pt-BR')}</span>
                     }} header="Data"></Column>
                     <Column field="reference" header="Referência"></Column>
                     <Column body={(transaction) => <span style={{ color: (transaction.type === 'BILLING' ? 'green' : 'red') }}>{Math.abs(transaction?.amount).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>} header="Valor"></Column>
