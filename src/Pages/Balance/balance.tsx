@@ -225,7 +225,7 @@ export default function Balance() {
               body={(data) => {
                 return (
                   <span>
-                    {new Date(data.createdAt).toLocaleDateString("pt-BR")}
+                    {new Date(data.due_date).toLocaleDateString("pt-BR")}
                   </span>
                 );
               }}
