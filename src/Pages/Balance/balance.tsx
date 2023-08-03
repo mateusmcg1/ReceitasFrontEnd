@@ -1,7 +1,6 @@
 import "./balance.css";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, SetStateAction, useRef } from "react";
 import "primeicons/primeicons.css";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Button } from "primereact/button";
 import { DataTable } from "primereact/datatable";
@@ -12,15 +11,13 @@ import AdvancedFilter from "../Filtros Avançados/advanced-filter";
 import NewTransaction from "../New_transaction/new_transaction";
 import { SelectWallet } from "./SelectWallet/SelectWallet";
 import { WalletDto } from "../../models/wallet.dto";
-import { SplitButton } from "primereact/splitbutton";
-import { MenuItem } from "primereact/menuitem";
-import PaymentAction from "./Components/PaymentAction";
 import { Toast, ToastMessage } from "primereact/toast";
+import { MenuItem } from "primereact/menuitem";
+import { SplitButton } from "primereact/splitbutton";
+import PaymentAction from "./Components/PaymentAction";
 
 export default function Balance() {
-  let navigate = useNavigate();
 
-  const [userName, setUserName] = useState("Nome");
   const [wallets, setWallets] = useState<any[]>([]);
   const [value1, setValue1] = useState(0);
   const [value2, setValue2] = useState(0);
@@ -29,7 +26,6 @@ export default function Balance() {
   let [vencidas, setVencidas] = useState(0);
   let [aPagar, setAPagar] = useState(0);
   let [aReceber, setAReceber] = useState(0);
-  const [text1, setText1] = useState("");
   const [walletName, setWalletName] = useState("Selecionar Carteira");
   const [visible, setVisible] = useState<boolean>(false);
   const [showFilter, setShowFilter] = useState(false);
@@ -97,7 +93,6 @@ export default function Balance() {
       alert(err);
     }
   };
-
   const fetchTransactions = async (params?: any) => {
     if (params) {
       try {
@@ -138,8 +133,12 @@ export default function Balance() {
   }, []);
 
   useEffect(() => {
+    setSelectedWallet(wallets[0])
+  }, [wallets])
+
+  useEffect(() => {
     if (selectedWallet) {
-      // console.log('selecionada: ', selectedWallet);
+      console.log("selecionada: ", selectedWallet);
       setWalletName(selectedWallet?.name!);
       fetchTransactions();
       walletsBill();
@@ -170,14 +169,14 @@ export default function Balance() {
             </Dialog>
             {/*  */}
           </div>
-
-          <div className="finantial-organization">
+          
+          {selectedWallet ? <div className="finantial-organization">
             <div className="finantial-framework">
               <label htmlFor="value1">Saldo ({selectedWallet?.currency})</label>
               <span>
                 {value1.toLocaleString("pt-BR", {
                   style: "currency",
-                  currency: "BRL",
+                  currency: `${selectedWallet?.currency!}`,
                 })}
               </span>
             </div>
@@ -186,7 +185,7 @@ export default function Balance() {
               <span>
                 {value2.toLocaleString("pt-BR", {
                   style: "currency",
-                  currency: "BRL",
+                  currency: `${selectedWallet?.currency!}`,
                 })}
               </span>
             </div>
@@ -195,7 +194,7 @@ export default function Balance() {
               <span>
                 {value3.toLocaleString("pt-BR", {
                   style: "currency",
-                  currency: "BRL",
+                  currency: `${selectedWallet?.currency!}`,
                 })}
               </span>
             </div>
@@ -204,11 +203,12 @@ export default function Balance() {
               <span>
                 {value4.toLocaleString("pt-BR", {
                   style: "currency",
-                  currency: "BRL",
+                  currency: `${selectedWallet?.currency!}`,
                 })}
               </span>
             </div>
-          </div>
+          </div>: <></> }
+          
         </div>
 
         <div className="filtering-data">
@@ -223,14 +223,9 @@ export default function Balance() {
                 selectionMode="range"
                 locale="en"
                 dateFormat="dd/mm/yy"
-              />
-              <label htmlFor="date">Período</label>
+              ></Calendar>
             </span>
-
-            {/* <InputText value={text1} onChange={(e) => setText1(e.target.value)} /> */}
-
-            {
-              <Button
+            <Button
                 label="FILTRAR"
                 onClick={() =>
                   dates
@@ -241,8 +236,6 @@ export default function Balance() {
                     : fetchTransactions()
                 }
               />
-            }
-
             {
               <Button
                 id="advanced-filter"
@@ -250,7 +243,6 @@ export default function Balance() {
                 onClick={() => setShowFilter(true)}
               />
             }
-
             <SplitButton
               label="AÇÕES"
               icon=""
@@ -259,22 +251,21 @@ export default function Balance() {
               }}
               model={actions}
             />
-
             {
               <Button
                 label="INCLUIR"
                 onClick={(e) => {
                   setShowIncludeTransaction(true);
-                }} /*style={{ marginTop: "10%" }}*/
+                }} 
               />
             }
           </div>
         </div>
 
         <div className="data-table">
-        <DataTable
+          <DataTable
             value={transactions}
-            selectionMode='single'
+            selectionMode="single"
             selection={selectedTransaction}
             onSelectionChange={(e) => {
               setSelectedTransaction(e.value);
@@ -301,7 +292,7 @@ export default function Balance() {
                 >
                   {Math.abs(transaction?.amount).toLocaleString("pt-BR", {
                     style: "currency",
-                    currency: "BRL",
+                    currency: `${selectedWallet?.currency!}`,
                   })}
                 </span>
               )}
@@ -322,7 +313,14 @@ export default function Balance() {
           style={{ width: "50vw" }}
           onHide={() => setShowIncludeTransaction(false)}
         >
-          <NewTransaction walletId={selectedWallet?.id!}></NewTransaction>
+          <NewTransaction
+            closeDialog={() => {
+              setShowIncludeTransaction(false);
+              fetchTransactions();
+            }}
+            walletId={selectedWallet?.id!}
+            walletCurrency={selectedWallet?.currency!}
+          ></NewTransaction>
         </Dialog>
         <Dialog
           header="Filtros Avançados"
@@ -339,6 +337,7 @@ export default function Balance() {
             }}
           ></AdvancedFilter>
         </Dialog>
+
         <Dialog
           header="Pagamento"
           className=""

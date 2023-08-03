@@ -8,15 +8,20 @@ import { Button } from "primereact/button";
 import { WalletDto } from "../../../models/wallet.dto";
 import { useFormik } from "formik";
 import { classNames } from "primereact/utils";
+import { CurrencyEnum } from "../../../Shared/enums/CurrencyEnum";
 
 export default function InterForm({
   walletId,
   onSuccess,
   onError,
+  closeDialog,
+  walletCurrency,
 }: {
   walletId: string;
   onSuccess: Function;
   onError: Function;
+  closeDialog: any;
+  walletCurrency: CurrencyEnum;
 }) {
   const [amount, setAmount] = useState<number>();
   const [baseDate, setBaseDate] = useState<string | Date | Date[] | null>([
@@ -66,6 +71,7 @@ export default function InterForm({
         }
       );
       onSuccess("success", "Successo", "Transação incluida com sucesso.");
+      closeDialog();
     } catch (err) {
       {
         err = 400
@@ -81,7 +87,7 @@ export default function InterForm({
       amount: null,
       baseDate: new Date(),
       selectedType: "",
-      selectedWallet: ''
+      selectedWallet: "",
     },
     validate: (data) => {
       let errors: any = {};
@@ -132,8 +138,7 @@ export default function InterForm({
                   formik.setFieldValue("selectedWallet", e.value);
                 }}
                 className={classNames({
-                  "p-invalid":
-                    isFormFieldInvalid("selectedWallet"),
+                  "p-invalid": isFormFieldInvalid("selectedWallet"),
                 })}
                 options={wallets}
                 optionLabel="name"
@@ -155,7 +160,7 @@ export default function InterForm({
                   "p-invalid": isFormFieldInvalid("amount"),
                 })}
                 mode="currency"
-                currency="BRL"
+                currency={walletCurrency}
                 locale="pt-BR"
               />
               <label htmlFor="amount">Valor</label>

@@ -8,15 +8,20 @@ import { Button } from "primereact/button";
 import { Checkbox } from "primereact/checkbox";
 import { useFormik } from "formik";
 import { classNames } from "primereact/utils";
+import { CurrencyEnum } from "../../../Shared/enums/CurrencyEnum";
 
 export default function RecurrencyForm({
   walletId,
   onSuccess,
   onError,
+  closeDialog,
+  walletCurrency,
 }: {
   walletId: string;
   onSuccess: Function;
   onError: Function;
+  closeDialog: any;
+  walletCurrency: CurrencyEnum;
 }) {
   const [amount, setAmount] = useState<number>();
   const [baseDate, setBaseDate] = useState<string | Date | Date[] | null>([
@@ -46,6 +51,7 @@ export default function RecurrencyForm({
         }
       );
       onSuccess("success", "Successo", "Transação incluida com sucesso.");
+      closeDialog();
     } catch (err) {
       {
         err = 400
@@ -59,7 +65,7 @@ export default function RecurrencyForm({
     initialValues: {
       reference: "",
       amount: null,
-      baseDate: new Date(),
+      baseDate: [],
       selectedType: "",
       frequency: "",
     },
@@ -141,7 +147,7 @@ export default function RecurrencyForm({
                   "p-invalid": isFormFieldInvalid("amount"),
                 })}
                 mode="currency"
-                currency="BRL"
+                currency={walletCurrency}
                 locale="pt-BR"
               />
               <label htmlFor="amount">Valor</label>
@@ -189,7 +195,7 @@ export default function RecurrencyForm({
               <Dropdown
                 value={formik.values.frequency}
                 onChange={(e: DropdownChangeEvent) => {
-                  setSelectedType(e.value);
+                  setSelectedFrequency(e.value);
                   formik.setFieldValue("frequency", e.value);
                 }}
                 className={classNames({
