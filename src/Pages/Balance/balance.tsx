@@ -1,18 +1,13 @@
 import "./balance.css";
-import { Menu } from "primereact/menu";
-import { useState, useEffect, SetStateAction, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import "primeicons/primeicons.css";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { InputNumber } from "primereact/inputnumber";
-import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
-import { Avatar } from "primereact/avatar";
 import { Dialog } from "primereact/dialog";
-import { Dropdown } from "primereact/dropdown";
-import { Calendar, CalendarChangeEvent } from "primereact/calendar";
+import { Calendar } from "primereact/calendar";
 import AdvancedFilter from "../Filtros Avançados/advanced-filter";
 import NewTransaction from "../New_transaction/new_transaction";
 import { SelectWallet } from "./SelectWallet/SelectWallet";
@@ -45,6 +40,7 @@ export default function Balance() {
   const [dates, setDates] = useState<any[]>([]);
   const toast = useRef<Toast>(null);
   const [showPaymentAction, setShowPaymentAction] = useState(false);
+
   const actions: MenuItem[] = [
     {
       label: "Pagamento",
@@ -103,41 +99,39 @@ export default function Balance() {
   };
 
   const fetchTransactions = async (params?: any) => {
-
     if (params) {
       try {
-        var result = await axios.get(`${process.env.REACT_APP_API_URL}/v1/transactions/${selectedWallet?.id}`, {
-          headers: {
-            Authorization: `Bearer ${sessionStorage.getItem('access_token')}`,
-          },
-          params
-        });
+        var result = await axios.get(
+          `${process.env.REACT_APP_API_URL}/v1/transactions/${selectedWallet?.id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${sessionStorage.getItem("access_token")}`,
+            },
+            params,
+          }
+        );
 
-        setTransactions(result.data)
-
-
+        setTransactions(result.data);
       } catch (err) {
         alert(err);
       }
-    }
-
-    else {
+    } else {
       try {
-        var result = await axios.get(`${process.env.REACT_APP_API_URL}/v1/transactions/${selectedWallet?.id}`, {
-          headers: {
-            Authorization: `Bearer ${sessionStorage.getItem('access_token')}`,
-          },
+        var result = await axios.get(
+          `${process.env.REACT_APP_API_URL}/v1/transactions/${selectedWallet?.id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${sessionStorage.getItem("access_token")}`,
+            },
+          }
+        );
 
-        });
-
-        setTransactions(result.data)
-
-
+        setTransactions(result.data);
       } catch (err) {
         alert(err);
       }
     }
-  }
+  };
 
   useEffect(() => {
     fetchWallets();
@@ -153,60 +147,79 @@ export default function Balance() {
   }, [selectedWallet]);
 
   return (
-
     <div className="balance-container">
       <div className="main-content">
         <h1>Balanço</h1>
 
-        <div className='finantial-balance'>
-
-          <div className='wallet-name'>
+        <div className="finantial-balance">
+          <div className="wallet-name">
             <Button label={walletName} onClick={() => setVisible(true)} />
-            <Dialog header="Selecionar Carteira" visible={visible} style={{ width: '50vw' }} onHide={() => setVisible(false)}>
-              <SelectWallet wallets={wallets} onUpdate={(selectedWallet: WalletDto) => {
-                setSelectedWallet(selectedWallet);
-                setVisible(false);
-              }}></SelectWallet>
-
+            <Dialog
+              header="Selecionar Carteira"
+              visible={visible}
+              style={{ width: "50vw" }}
+              onHide={() => setVisible(false)}
+            >
+              <SelectWallet
+                wallets={wallets}
+                onUpdate={(selectedWallet: WalletDto) => {
+                  setSelectedWallet(selectedWallet);
+                  setVisible(false);
+                }}
+              ></SelectWallet>
             </Dialog>
             {/*  */}
           </div>
 
-          <div className='finantial-organization'>
-
-            <div className='finantial-framework'>
-              <label htmlFor="value1" >Saldo ({selectedWallet?.currency})</label>
-              <span>{value1.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>
+          <div className="finantial-organization">
+            <div className="finantial-framework">
+              <label htmlFor="value1">Saldo ({selectedWallet?.currency})</label>
+              <span>
+                {value1.toLocaleString("pt-BR", {
+                  style: "currency",
+                  currency: "BRL",
+                })}
+              </span>
             </div>
-            <div className='finantial-framework'>
+            <div className="finantial-framework">
               <label htmlFor="value2">Vencidas ({vencidas})</label>
-              <span>{value2.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>
+              <span>
+                {value2.toLocaleString("pt-BR", {
+                  style: "currency",
+                  currency: "BRL",
+                })}
+              </span>
             </div>
-            <div className='finantial-framework'>
+            <div className="finantial-framework">
               <label htmlFor="value3">A pagar ({aPagar})</label>
-              <span>{value3.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>
+              <span>
+                {value3.toLocaleString("pt-BR", {
+                  style: "currency",
+                  currency: "BRL",
+                })}
+              </span>
             </div>
-            <div className='finantial-framework'>
+            <div className="finantial-framework">
               <label htmlFor="value4">A receber ({aReceber})</label>
-              <span>{value4.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>
+              <span>
+                {value4.toLocaleString("pt-BR", {
+                  style: "currency",
+                  currency: "BRL",
+                })}
+              </span>
             </div>
-
           </div>
         </div>
 
-        <div className='filtering-data'>
-
-
-          <div className='botoes'>
-
+        <div className="filtering-data">
+          <div className="botoes">
             <span className="p-float-label">
               <Calendar
-                id='date'
+                id="date"
                 value={dates}
                 onChange={(e: any) => {
                   setDates(e.value);
                 }}
-
                 selectionMode="range"
                 locale="en"
                 dateFormat="dd/mm/yy"
@@ -216,41 +229,130 @@ export default function Balance() {
 
             {/* <InputText value={text1} onChange={(e) => setText1(e.target.value)} /> */}
 
-            {<Button label="FILTRAR" onClick={() => dates ? fetchTransactions({ startDate: dates[0], endDate: dates[1] }) : fetchTransactions()} />}
+            {
+              <Button
+                label="FILTRAR"
+                onClick={() =>
+                  dates
+                    ? fetchTransactions({
+                        startDate: dates[0],
+                        endDate: dates[1],
+                      })
+                    : fetchTransactions()
+                }
+              />
+            }
 
-            {<Button id='advanced-filter' label="FILTROS AVANÇADOS" onClick={() => setShowFilter(true)} />}
+            {
+              <Button
+                id="advanced-filter"
+                label="FILTROS AVANÇADOS"
+                onClick={() => setShowFilter(true)}
+              />
+            }
 
-            {<Button label="AÇÕES" />}
-            {<Button label="INCLUIR" onClick={(e) => {
-              setShowIncludeTransaction(true);
-            }} /*style={{ marginTop: "10%" }}*/ />}
+            <SplitButton
+              label="AÇÕES"
+              icon=""
+              onClick={() => {
+                console.log("clicked");
+              }}
+              model={actions}
+            />
 
+            {
+              <Button
+                label="INCLUIR"
+                onClick={(e) => {
+                  setShowIncludeTransaction(true);
+                }} /*style={{ marginTop: "10%" }}*/
+              />
+            }
           </div>
-
         </div>
 
-        <div className='data-table'>
-
-          <DataTable value={transactions} tableStyle={{ minWidth: '50rem' }}>
-            <Column body={(data) => {
-              return <span>{new Date(data.createdAt).toLocaleDateString('pt-BR')}</span>
-            }} header="Data"></Column>
+        <div className="data-table">
+        <DataTable
+            value={transactions}
+            selectionMode='single'
+            selection={selectedTransaction}
+            onSelectionChange={(e) => {
+              setSelectedTransaction(e.value);
+            }}
+            tableStyle={{ minWidth: "50rem" }}
+          >
+            <Column
+              body={(data) => {
+                return (
+                  <span>
+                    {new Date(data.createdAt).toLocaleDateString("pt-BR")}
+                  </span>
+                );
+              }}
+              header="Data"
+            ></Column>
             <Column field="reference" header="Referência"></Column>
-            <Column body={(transaction) => <span style={{ color: (transaction.type === 'BILLING' ? 'green' : 'red') }}>{Math.abs(transaction?.amount).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>} header="Valor"></Column>
-            <Column body={(transaction) => <span>{transaction.paid ? 'Pago' : 'Não Pago'}</span>} header="Pago"></Column>
+            <Column
+              body={(transaction) => (
+                <span
+                  style={{
+                    color: transaction.type === "BILLING" ? "green" : "red",
+                  }}
+                >
+                  {Math.abs(transaction?.amount).toLocaleString("pt-BR", {
+                    style: "currency",
+                    currency: "BRL",
+                  })}
+                </span>
+              )}
+              header="Valor"
+            ></Column>
+            <Column
+              body={(transaction) => (
+                <span>{transaction.paid ? "Pago" : "Não Pago"}</span>
+              )}
+              header="Pago"
+            ></Column>
             <Column field="observation" header="Observação"></Column>
           </DataTable>
-
         </div>
-        <Dialog header="Nova Transação" visible={showIncludeTransaction} style={{ width: '50vw' }} onHide={() => setShowIncludeTransaction(false)}>
+        <Dialog
+          header="Nova Transação"
+          visible={showIncludeTransaction}
+          style={{ width: "50vw" }}
+          onHide={() => setShowIncludeTransaction(false)}
+        >
           <NewTransaction walletId={selectedWallet?.id!}></NewTransaction>
         </Dialog>
-        <Dialog header="Filtros Avançados" className='filter-dialog' visible={showFilter} style={{ width: '50vw' }} onHide={() => setShowFilter(false)}>
-          <AdvancedFilter walletId={selectedWallet?.id!} fetch={fetchTransactions} closeDialog={() => {
-            setShowFilter(false)
-          }}></AdvancedFilter>
+        <Dialog
+          header="Filtros Avançados"
+          className="filter-dialog"
+          visible={showFilter}
+          style={{ width: "50vw" }}
+          onHide={() => setShowFilter(false)}
+        >
+          <AdvancedFilter
+            walletId={selectedWallet?.id!}
+            fetch={fetchTransactions}
+            closeDialog={() => {
+              setShowFilter(false);
+            }}
+          ></AdvancedFilter>
+        </Dialog>
+        <Dialog
+          header="Pagamento"
+          className=""
+          visible={showPaymentAction}
+          style={{ width: "50vw" }}
+          onHide={() => setShowPaymentAction(false)}
+        >
+          <PaymentAction
+            transaction={selectedTransaction}
+            onSuccess={showToast}
+            onError={showToast}
+          ></PaymentAction>
         </Dialog>
       </div>
     </div>
-  )
+  );
 }
