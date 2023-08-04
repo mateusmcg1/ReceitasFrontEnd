@@ -83,7 +83,7 @@ export default function Due_Dated() {
                             }}
 
                             selectionMode="range"
-                           
+                            maxDate={new Date()}
                             locale="en"
                             dateFormat="dd/mm/yy"
                         />
