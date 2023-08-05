@@ -303,7 +303,7 @@ export default function Balance() {
                 <span>{transaction.paid ? "Pago" : "Não Pago"}</span>
               )}
               header="Pago"
-            ></Column>
+            ></Column> 
             <Column field="observation" header="Observação"></Column>
           </DataTable>
         </div>
