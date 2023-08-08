@@ -6,6 +6,7 @@ import { Password } from 'primereact/password';
 import { Button } from 'primereact/button';
 import axios from "axios";
 import { Toast, ToastMessage } from 'primereact/toast'
+import SVGLogo from '../../Shared/img/LogoSVG'
 
 export default function Login() {
 
@@ -59,19 +60,19 @@ export default function Login() {
 
         <div className="container">
             <Toast ref={toast} />
-            {/* <div className="fitting">
+            <div className="fitting">
 
-                <video width="100%" height="100%" style={{objectFit: "cover"}} loop autoPlay muted >
+                {/* <video width="100%" height="100%" style={{objectFit: "cover"}} loop autoPlay muted >
                     <source src={Video} type="video/mp4" />
-                </video>
-            </div> */}
+                </video> */}
+            </div>
 
             <div className="login">
                 <div className="pull-everybody">
 
-                    {/* <div className="logo">
-                        <SVGLogo fill="#2B2B2B" width={250} height={250} />
-                    </div> */}
+                    <div className="logo">
+                        <SVGLogo fill="#2B2B2B" width={200} height={200} />
+                    </div>
                     <div className="login-user" style={{ width: "100%" }}>
 
                         <label>Usuário</label>

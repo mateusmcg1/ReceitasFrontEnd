@@ -34,7 +34,7 @@
     justify-content: center;
 }
 
-.pull-everybody {
+.register-pull-everybody {
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -44,7 +44,7 @@
 
 }
 
-.pull-everybody label {
+.register-pull-everybody label {
     color: #2B2B2B;
     font-family: Roboto;
     margin: 1.5% 0;
