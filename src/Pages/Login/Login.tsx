@@ -7,6 +7,7 @@ import { Button } from 'primereact/button';
 import axios from "axios";
 import { Toast, ToastMessage } from 'primereact/toast'
 import SVGLogo from '../../Shared/img/LogoSVG'
+import Video from '../../Shared/img/PeopleBusiness.mp4'
 
 export default function Login() {
 
@@ -62,16 +63,16 @@ export default function Login() {
             <Toast ref={toast} />
             <div className="fitting">
 
-                {/* <video width="100%" height="100%" style={{objectFit: "cover"}} loop autoPlay muted >
+                <video width="100%" height="100%" style={{objectFit: "cover"}} loop autoPlay muted >
                     <source src={Video} type="video/mp4" />
-                </video> */}
+                </video>
             </div>
 
             <div className="login">
                 <div className="pull-everybody">
 
                     <div className="logo">
-                        <SVGLogo fill="#2B2B2B" width={200} height={200} />
+                        <SVGLogo fill="#2B2B2B" width={250} height={250} />
                     </div>
                     <div className="login-user" style={{ width: "100%" }}>
 
@@ -85,7 +86,7 @@ export default function Login() {
                     </div>
 
                     <Button label="Entrar" onClick={LogUser} style={{ marginTop: "10%" }} />
-                    {/* <button onClick={logUser}>Entrar</button> */}
+                  
                     <div className="Register" style={{ marginTop: "5%" }}>
                         <Link to={`/register`}>Não possuo conta</Link>
                     </div>
