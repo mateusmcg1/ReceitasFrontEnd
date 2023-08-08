@@ -53,7 +53,7 @@ export default function Due_Dated() {
         }
       );
       setWallets(result.data);
-
+      setSelectedWallet(result.data[0])
     } catch (err) {
       alert(err);
     }
@@ -61,7 +61,7 @@ export default function Due_Dated() {
 
   useEffect(() => {
     fetchWallets();
-    console.log(selectedWallet)
+    
   }, []);
 
   useEffect(() => {
