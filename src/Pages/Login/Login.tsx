@@ -58,21 +58,29 @@ export default function Login() {
     return (
 
         <div className="container">
-            <div className="fitting" />
+            <Toast ref={toast} />
+            {/* <div className="fitting">
+
+                <video width="100%" height="100%" style={{objectFit: "cover"}} loop autoPlay muted >
+                    <source src={Video} type="video/mp4" />
+                </video>
+            </div> */}
+
             <div className="login">
                 <div className="pull-everybody">
-                    <Toast ref={toast} />
-                    <div style={{ marginTop: "2%", width: "100%" }}>
+
+                    {/* <div className="logo">
+                        <SVGLogo fill="#2B2B2B" width={250} height={250} />
+                    </div> */}
+                    <div className="login-user" style={{ width: "100%" }}>
+
                         <label>Usuário</label>
                         <InputText value={user} onChange={(e) => setUser(e.target.value)} />
-                        {/* <input type="email" value={user}
-                            onChange={(e) => setUser(e.target.value)} /> */}
                     </div>
                     <div style={{ marginTop: "1%", width: "100%" }}>
                         <label>Senha</label>
                         <Password value={senha} onChange={(e) => setSenha(e.target.value)} feedback={false} />
-                        {/* <input value={senha}
-                            onChange={(e) => setSenha(e.target.value)} /> */}
+
                     </div>
 
                     <Button label="Entrar" onClick={LogUser} style={{ marginTop: "10%" }} />
