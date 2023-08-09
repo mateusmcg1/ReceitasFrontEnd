@@ -86,11 +86,7 @@ export default function Login() {
                     </div>
 
                     <Button label="Entrar" onClick={LogUser} style={{ marginTop: "10%" }} />
-<<<<<<< HEAD
-                    
-=======
                   
->>>>>>> b6775aea261f00d5f73829ce57c21d978afa6b41
                     <div className="Register" style={{ marginTop: "5%" }}>
                         <Link to={`/register`}>Não possuo conta</Link>
                     </div>
