@@ -1,4 +1,4 @@
-import "./Register.css"
+import "./RegisterStep1.css"
 import { useState, useRef } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 import { InputText } from 'primereact/inputtext';
@@ -6,7 +6,8 @@ import { Password } from 'primereact/password';
 import { Button } from 'primereact/button';
 import { Toast, ToastMessage } from 'primereact/toast'
 import axios from "axios";
-
+import SVGLogo from '../../Shared/img/LogoSVG'
+import Video from '../../Shared/img/PeopleBusiness.mp4'
 
 
 function Register() {
@@ -67,39 +68,42 @@ function Register() {
     return (
 
         <div className="container">
-            <div className="fitting" />
-
-            <div className="reg">
-                <div className="register-pull-everybody" >
-                    <Toast ref={toast} />
-
-                    <label>Email</label>
-                    <InputText value={user} onChange={(e) => setUser(e.target.value)} />
-
-                    <label>Senha</label>
-                    <Password value={password} onChange={(e) => setPassword(e.target.value)} feedback={false} />
-
-                    <label>Confirmar Senha</label>
-                    <Password value={confirmationPassword} onChange={(e) => setConfirmationPassword(e.target.value)} feedback={false} />
-
-                    <label>Primeiro Nome</label>
-                    <InputText value={firstName} onChange={(e) => setFirstName(e.target.value)} />
-
-                    <label>Segundo Nome</label>
-                    <InputText value={lastName} onChange={(e) => setLastName(e.target.value)} />
-
-                    <Button label="Registrar" onClick={novoUsuario} style={{ marginTop: "10%" }} />
-
-                    <div className="go-to-login" style={{ marginTop: "5%" }}>
-                        <Link to={`/login`}>Já possuo conta</Link>
-
-
-                    </div>
-                </div>
+            <Toast ref={toast} />
+            <div className="fitting">
+                <video width="100%" height="100%" style={{ objectFit: "cover" }} loop autoPlay muted >
+                    <source src={Video} type="video/mp4" />
+                </video>
             </div>
 
+            <div className="reg_step1">
 
+                <div className="logo">
+                    <SVGLogo fill="#2B2B2B" width={200} height={250} />
+                </div>
+
+                <div className="step1-content">
+                    <div className="email-content">
+                        <Button style={{ backgroundColor: 'white', color: '#54D0F6', textTransform: 'uppercase', fontSize: '85%', fontWeight: 'bold' }} label="Registar utilizando email" onClick={() => navigate('/email_register')}/>
+                        <div className="fit-email-content">
+                            <div className="trace"></div>
+                            <span>ou</span>
+                            <div className="trace"></div>
+                        </div>
+                    </div>
+
+                    <div className="socialMidia-register">
+
+                        <Button style={{ backgroundColor: 'white', color: '#54D0F6', textTransform: 'uppercase', fontSize: '85%', fontWeight: 'bold', marginTop:'8%'  }} label="Registar com Google" />
+                        <Button style={{ backgroundColor: 'white', color: '#54D0F6', textTransform: 'uppercase', fontSize: '85%', fontWeight: 'bold', marginTop:'3%' }} label="Registar com Facebook" />
+                        <Button style={{ backgroundColor: 'white', color: '#54D0F6', textTransform: 'uppercase', fontSize: '85%', fontWeight: 'bold', marginTop:'3%' }} label="Registar com Instagram" />
+
+                    </div>
+
+
+                </div>
+            </div>
         </div>
+
     );
 }
 
