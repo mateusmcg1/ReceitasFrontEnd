@@ -54,6 +54,8 @@ export default function Due_Dated() {
         }
       );
       setWallets(result.data);
+      // setSelectedWallet(result.data)
+      setSelectedWallet(result.data[0])
 
     } catch (err) {
       alert(err);

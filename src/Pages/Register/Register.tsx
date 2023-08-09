@@ -70,7 +70,7 @@ function Register() {
             <div className="fitting" />
 
             <div className="reg">
-                <div className="pull-everybody" >
+                <div className="register-pull-everybody" >
                     <Toast ref={toast} />
 
                     <label>Email</label>
