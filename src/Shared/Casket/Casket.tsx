@@ -62,9 +62,7 @@ export function Casket({ children }: { children?: any }) {
                 </div>
             </div>
             <div className="column-order">
-                {/* <div className='menu'>
-                    <Menu model={items} />
-                </div> */}
+              
                 <div style={{ width: '15%', backgroundColor: '#2b2b2b' }}>
                     <div style={{ height: '100px' }}></div>
                     {items.map((menuItem, index) => {

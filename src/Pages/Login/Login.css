@@ -53,6 +53,10 @@
     margin: 1.5% 0;
 }
 
+form{
+    width: 100%;
+}
+
 .p-inputtext{
     width: 100%;
 

@@ -24,10 +24,9 @@ function EmailRegister() {
         toast.current?.show({ severity, summary, detail });
     };
 
-    const novoUsuario = async () => {
+    const novoUsuario = async (e:any) => {
 
-
-
+        e.preventDefault();
         if (user !== '' && password !== '' && firstName !== "" && lastName !== '' && confirmationPassword !== '') {
 
             if (password === confirmationPassword) {
@@ -47,7 +46,7 @@ function EmailRegister() {
 
                 catch (err: any) {
                     console.log(err);
-                   
+
                     show('error', 'Error', err.response.data.message);
                 }
             }
@@ -77,28 +76,29 @@ function EmailRegister() {
                 <div className="register-pull-everybody" >
                     <Toast ref={toast} />
 
-                    <label>Email</label>
-                    <InputText value={user} onChange={(e) => setUser(e.target.value)} />
+                    <form onSubmit={(e) => novoUsuario(e)}>
+                        <label>Email</label>
+                        <InputText value={user} onChange={(e) => setUser(e.target.value)} />
 
-                    <label>Senha</label>
-                    <Password value={password} onChange={(e) => setPassword(e.target.value)} feedback={false} />
+                        <label>Senha</label>
+                        <Password value={password} onChange={(e) => setPassword(e.target.value)} feedback={false} />
 
-                    <label>Confirmar Senha</label>
-                    <Password value={confirmationPassword} onChange={(e) => setConfirmationPassword(e.target.value)} feedback={false} />
+                        <label>Confirmar Senha</label>
+                        <Password value={confirmationPassword} onChange={(e) => setConfirmationPassword(e.target.value)} feedback={false} />
 
-                    <label>Primeiro Nome</label>
-                    <InputText value={firstName} onChange={(e) => setFirstName(e.target.value)} />
+                        <label>Primeiro Nome</label>
+                        <InputText value={firstName} onChange={(e) => setFirstName(e.target.value)} />
 
-                    <label>Segundo Nome</label>
-                    <InputText value={lastName} onChange={(e) => setLastName(e.target.value)} />
+                        <label>Segundo Nome</label>
+                        <InputText value={lastName} onChange={(e) => setLastName(e.target.value)} />
 
-                    <Button label="Registrar" onClick={novoUsuario} style={{ marginTop: "10%" }} />
+                        <Button label="Registrar" onClick={(e) => novoUsuario(e)} style={{ marginTop: "10%" }} />
 
-                    <div className="go-to-login" style={{ marginTop: "5%" }}>
-                        <Link to={`/login`}>Já possuo conta</Link>
+                        <div className="go-to-login" style={{ marginTop: "5%" }}>
+                            <Link to={`/login`}>Já possuo conta</Link>
+                        </div>
 
-
-                    </div>
+                    </form>
                 </div>
             </div>
 
