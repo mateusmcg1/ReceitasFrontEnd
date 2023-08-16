@@ -1,3 +1,17 @@
+@media screen and (max-width: 700px){
+  .wallet-name{
+    min-width: 30%
+  }
+  .main-content h1{
+    font-size: 35px !important;
+  }
+  .filtering-data{
+    min-width: 100%;
+  }
+  .finantial-organization{
+    min-width: 70%;
+  }
+}
 .balance-container {
   width: 100%;
   height: 90vh;

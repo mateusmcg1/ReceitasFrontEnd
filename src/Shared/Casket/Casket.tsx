@@ -5,6 +5,7 @@ import './Casket.css';
 import { Avatar } from "primereact/avatar";
 import { useEffect, useState } from "react";
 import jwtDecode from 'jwt-decode';
+import SVGLogo from "../img/LogoSVG";
 
 export function Casket({ children }: { children?: any }) {
     const [userName, setUserName] = useState('User');
@@ -28,10 +29,10 @@ export function Casket({ children }: { children?: any }) {
                     label: 'Vencidas', icon: 'pi pi-dollar', command: () => { navigate('due_dated') },
                 },
                 {
-                    label: 'A Pagar', icon: 'pi pi-dollar', command: () => { navigate('payable')},
+                    label: 'A Pagar', icon: 'pi pi-dollar', command: () => { navigate('payable') },
                 },
                 {
-                    label: 'A Receber', icon: 'pi pi-dollar', command: () => { navigate('receivable')},
+                    label: 'A Receber', icon: 'pi pi-dollar', command: () => { navigate('receivable') },
                 }
             ]
         },
@@ -62,35 +63,37 @@ export function Casket({ children }: { children?: any }) {
                 </div>
             </div>
             <div className="column-order">
-              
-                <div style={{ width: '15%', backgroundColor: '#2b2b2b' }}>
-                    <div style={{ height: '100px' }}></div>
-                    {items.map((menuItem, index) => {
-                        return <div>
-                            <div className="menu-item" key={index} onClick={() => {
-                                setActiveMenuItem(menuItem);
-                                menuItem?.command!()
-                            }}>
-                                <div className="menu-item-display" style={{ color: activeMenuItem?.label === menuItem.label ? '#fff' : '#d2d2d2', fontWeight: activeMenuItem?.label === menuItem.label ? 'bolder' : 'normal' }}>
-                                    <a className={menuItem.icon} style={{ marginLeft: 15 }}></a>
-                                    <span style={{ marginLeft: 10, fontSize: '14px' }}>{menuItem.label}</span>
-                                </div>
-                            </div>
-                            {menuItem?.items?.map((subItem, index) => {
-                                return <div className="submenu-item" onClick={() => {
+
+                <div className="menu-container" style={{backgroundColor: '#2b2b2b' }}>
+                    <div className="logoBar">
+                        <SVGLogo fill="#2B2B2B" width={200} height={200} />
+                    </div>
+                        {items.map((menuItem, index) => {
+                            return <div className="menu-option">
+                                <div className="menu-item" key={index} onClick={() => {
                                     setActiveMenuItem(menuItem);
-                                    subItem.command!();
+                                    menuItem?.command!()
                                 }}>
-                                    <div className="submenu-item-display">
-                                        <a className={subItem.icon} style={{ marginLeft: 15 }}></a>
-                                        <span style={{ marginLeft: 10, fontSize: '14px' }}>{subItem.label}</span>
+                                    <div className="menu-item-display" style={{ color: activeMenuItem?.label === menuItem.label ? '#fff' : '#d2d2d2', fontWeight: activeMenuItem?.label === menuItem.label ? 'bolder' : 'normal' }}>
+                                        <a className={menuItem.icon} style={{ marginLeft: 15 }}></a>
+                                        <span style={{ marginLeft: 10, fontSize: '14px' }}>{menuItem.label}</span>
                                     </div>
-
                                 </div>
-                            })}
-                        </div>
-                    })}
+                                {menuItem?.items?.map((subItem, index) => {
+                                    return <div className="submenu-item" onClick={() => {
+                                        setActiveMenuItem(menuItem);
+                                        subItem.command!();
+                                    }}>
+                                        <div className="submenu-item-display">
+                                            <a className={subItem.icon} style={{ marginLeft: 15 }}></a>
+                                            <span style={{ marginLeft: 10, fontSize: '14px' }}>{subItem.label}</span>
+                                        </div>
 
+                                    </div>
+                                })}
+                            </div>
+                        })}
+           
                 </div>
                 <div className="main-content">
                     <Outlet></Outlet>

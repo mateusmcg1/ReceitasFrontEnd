@@ -1,3 +1,17 @@
+@media screen and (max-width: 700px){
+  .menu-container{
+    min-width: 0%;
+    
+  }
+  .margin{
+    background-color: #d4d4d4 !important;
+  }
+  .main-content{
+    padding:0;
+    min-width: 100%;
+  }
+}
+
 .casket-container {
   width: 100%;
 }
@@ -50,6 +64,11 @@
   font-size: 14px;
 }
 
+.logoBar{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 /* .menu {
   display: flex;
   flex-direction: column;
@@ -57,7 +76,9 @@
   margin-top: 10%;
   width: 15%;
 } */
-
+.menu-container{
+  width: 15%;
+}
 .menu-item {
   background-color: #333;
   height: 48px;
