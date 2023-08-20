@@ -36,6 +36,7 @@ export default function Balance() {
   const [dates, setDates] = useState<any[]>([]);
   const toast = useRef<Toast>(null);
   const [showPaymentAction, setShowPaymentAction] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const actions: MenuItem[] = [
     {
@@ -96,6 +97,7 @@ export default function Balance() {
   const fetchTransactions = async (params?: any) => {
     if (params) {
       try {
+        setLoading(true);
         var result = await axios.get(
           `${process.env.REACT_APP_API_URL}/v1/transactions/${selectedWallet?.id}`,
           {
@@ -105,13 +107,14 @@ export default function Balance() {
             params,
           }
         );
-
+        setLoading(false);
         setTransactions(result.data);
       } catch (err) {
         alert(err);
       }
     } else {
       try {
+        setLoading(true);
         var result = await axios.get(
           `${process.env.REACT_APP_API_URL}/v1/transactions/${selectedWallet?.id}`,
           {
@@ -120,7 +123,7 @@ export default function Balance() {
             },
           }
         );
-
+        setLoading(false);
         setTransactions(result.data);
       } catch (err) {
         alert(err);
@@ -169,7 +172,7 @@ export default function Balance() {
             </Dialog>
             {/*  */}
           </div>
-          
+
           {selectedWallet ? <div className="finantial-organization">
             <div className="finantial-framework">
               <label htmlFor="value1">Saldo ({selectedWallet?.currency})</label>
@@ -207,8 +210,8 @@ export default function Balance() {
                 })}
               </span>
             </div>
-          </div>: <></> }
-          
+          </div> : <></>}
+
         </div>
 
         <div className="filtering-data">
@@ -226,16 +229,16 @@ export default function Balance() {
               ></Calendar>
             </span>
             <Button
-                label="FILTRAR"
-                onClick={() =>
-                  dates
-                    ? fetchTransactions({
-                        startDate: dates[0],
-                        endDate: dates[1],
-                      })
-                    : fetchTransactions()
-                }
-              />
+              label="FILTRAR"
+              onClick={() =>
+                dates
+                  ? fetchTransactions({
+                    startDate: dates[0],
+                    endDate: dates[1],
+                  })
+                  : fetchTransactions()
+              }
+            />
             {
               <Button
                 id="advanced-filter"
@@ -256,7 +259,7 @@ export default function Balance() {
                 label="INCLUIR"
                 onClick={(e) => {
                   setShowIncludeTransaction(true);
-                }} 
+                }}
               />
             }
           </div>
@@ -264,6 +267,7 @@ export default function Balance() {
 
         <div className="data-table">
           <DataTable
+            loading={loading}
             value={transactions}
             selectionMode="single"
             selection={selectedTransaction}
@@ -303,7 +307,7 @@ export default function Balance() {
                 <span>{transaction.paid ? "Pago" : "Não Pago"}</span>
               )}
               header="Pago"
-            ></Column> 
+            ></Column>
             <Column field="observation" header="Observação"></Column>
           </DataTable>
         </div>
