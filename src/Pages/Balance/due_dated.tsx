@@ -94,7 +94,7 @@ export default function Due_Dated() {
   return (
     <div className='main-content'>
       <h1>Vencidas</h1>
-      <div className='filtering' style={{ width: '80%', marginBottom: '2%' }}>
+      <div className='filtering' style={{marginBottom: '2%' }}>
 
         <div className='filtering-inputs' style={{ width: '50%' }}>
           <span className="p-float-label" style={{ width: '45%' }}>
@@ -120,7 +120,7 @@ export default function Due_Dated() {
           </span>
         </div>
 
-        <div className='buttons' style={{ width: '50%' }}>
+        <div className='buttons'>
           <Button label="FILTRAR" style={{ width: '25%' }}
             onClick={() =>
               dates ?

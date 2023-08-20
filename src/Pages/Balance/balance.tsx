@@ -145,6 +145,7 @@ export default function Balance() {
       setWalletName(selectedWallet?.name!);
       fetchTransactions();
       walletsBill();
+     
     }
   }, [selectedWallet]);
 
@@ -227,6 +228,7 @@ export default function Balance() {
                 locale="en"
                 dateFormat="dd/mm/yy"
               ></Calendar>
+               <label htmlFor="date">Período</label>
             </span>
             <Button
               label="FILTRAR"
