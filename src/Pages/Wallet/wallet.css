@@ -6,7 +6,7 @@
 
 .wallet-main-content {
   padding: 2% 5%;
-  width: 80%;
+  min-width: 100%;
 }
 .wallet-main-content h1 {
   font-size: 42px;
@@ -34,6 +34,6 @@
 }
 .wallet-main-content button {
   height:70%;
-  font-size: 14px;
+  font-size: 15px;
   font-weight: bold;
 }

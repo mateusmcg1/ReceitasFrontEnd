@@ -127,7 +127,7 @@ export default function Wallet() {
 
                         <span className="p-float-label" >
                             <InputText id='text1' value={find} onChange={(e) => setFind(e.target.value)} />
-                            <label htmlFor="text1">Nome</label>
+                           <label htmlFor="text1">Nome</label> 
                         </span>
 
                     </div>

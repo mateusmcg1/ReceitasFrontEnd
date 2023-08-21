@@ -147,7 +147,7 @@ export default function Balance() {
 
   return (
     <div className="balance-container">
-      <div className="main-content">
+      <div className="balance-main-content">
         <h1>Balanço</h1>
 
         <div className="finantial-balance">
@@ -223,7 +223,9 @@ export default function Balance() {
                 selectionMode="range"
                 locale="en"
                 dateFormat="dd/mm/yy"
+                
               ></Calendar>
+              <label htmlFor="date">Período</label> 
             </span>
             <Button
                 label="FILTRAR"
