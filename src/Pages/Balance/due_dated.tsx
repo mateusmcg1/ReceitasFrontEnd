@@ -120,7 +120,7 @@ export default function Due_Dated() {
           </span>
         </div>
 
-        <div className='buttons'>
+        <div className='due-buttons'>
           <Button label="FILTRAR" style={{ width: '25%' }}
             onClick={() =>
               dates ?

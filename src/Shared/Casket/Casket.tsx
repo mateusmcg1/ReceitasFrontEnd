@@ -71,7 +71,7 @@ export function Casket({ children }: { children?: any }) {
                     </ul>
                 </div>
             </div>
-            <div className="column-order">
+            <div>
 
                 <Sidebar visible={showMenu} onHide={() => { setShowMenu(false) }} style={{ backgroundColor: '#2b2b2b' }}>
                     <div style={{ width: '100%', backgroundColor: '#2b2b2b' }}>
