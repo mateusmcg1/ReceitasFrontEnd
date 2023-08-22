@@ -1,23 +1,90 @@
-.main-content{
-    padding: 2% 5%;
-}
-.filtering{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-}
-.filtering-inputs{
-    display: flex;
-    justify-content: space-between;
-    flex-direction: row;
-    align-items: center;
+@media screen and (max-width: 670px) {
+
+    .due-main-content {
+        width: 100% !important;
+    }
+    .due-main-content h1 {
+        font-size: 35px !important;
+        margin-bottom: 12% !important;
+    }
+
+    .due-buttons .p-button {
+        font-size: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .due-buttons .p-icon{
+        height: 10px !important;
+    }
+    .due-buttons .p-button {
+    
+    }
+
+    .due-buttons .p-splitbutton {
+        font-size: 10px;
+        width: 30%;
+      
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .due-buttons {
+       
+    }
+
+   
 }
 
-.buttons{
+
+
+.due-main-content {
+    padding: 2% 5%;
+    width: 85%;
+}
+
+.due-main-content h1 {
+    margin-bottom: 5%;
+    font-size: 45px;
+}
+
+
+.due-filtering {
     display: flex;
-    justify-content: space-between;
     flex-direction: row;
+}
+
+.due-filter {
+    display: flex;
+    width: 50%;
+    justify-content: space-between;
+}
+
+.due-buttons {
+    display: flex;
+    width: 50%;
+    justify-content: space-between;
     align-items: center;
-    margin-left: 5%;
+    height: 100%;
+    
+}   
+
+
+.button01 {
+    width: 40%;
+    height: 100%;
+}
+
+.button01 .p-dropdown {
+    height: 100% !important;
+}
+
+.button02 {
+    width: 50%;
+}
+
+.button02 .p-calendar {
+    width: 80%;
 }

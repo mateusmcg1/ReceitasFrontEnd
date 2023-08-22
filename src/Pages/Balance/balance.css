@@ -1,4 +1,62 @@
+@media screen and (max-width: 670px){
 
+  .balance-main-content h1{
+    margin-bottom: 8% !important;
+  }
+
+  .wallet-name{
+    width: 40% !important;
+   
+  }
+  .wallet-name .p-button {
+
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .finantial-balance {
+    
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .finantial-organization {
+    display: flex;
+    height: 143px;
+    font-size: 16px;
+    width: 100% !important;
+  }
+
+  .finantial-framework{
+    margin-top: 2%;
+    margin-right: 2%;
+  }
+  .finantial-framework span{
+    font-size: 10px !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .filtering-data .p-button{
+    font-size: 10px;
+  }
+
+  .filtering-data #advanced-filter{
+    width: 40%;
+  }
+
+  .filtering-data .p-button-icon-only{
+    width: 20%;
+  
+  }
+
+  .filtering-data .p-splitbutton{
+    width: 20%;
+    
+  }
+}
 
 .balance-container {
   width: 100%;
@@ -13,7 +71,6 @@
 .balance-main-content {
   padding: 2% 5%;
   width: 100%;
-  height: 95vh;
 }
 
 .balance-main-content h1 {
@@ -30,14 +87,14 @@
 
 .finantial-balance {
   display: flex;
-  width: 100%;
   margin-bottom: 5%;
+
 }
 
 .wallet-name {
   display: flex;
   background-color: #d9d9d9;
-
+  width: 15%;
   border-radius: 20px;
   height: 143px;
   text-transform: uppercase;
@@ -66,15 +123,13 @@
   margin-left: 2%;
   height: 143px;
   font-size: 16px;
-  width: 50%;
+  width: 60%;
   align-items: center;
   justify-content: space-between;
 }
 .finantial-framework {
   display: flex;
   flex-direction: column;
-  margin-right: 4%;
-  margin-bottom: 2%;
 }
 .finantial-framework label {
   font-weight: bold;
@@ -89,7 +144,7 @@
   height: 10%;
   margin-bottom: 5%;
   flex-direction: column;
-  width: 80%;
+
 }
 .filtering-data .label {
   margin-bottom: 0.5%;
@@ -108,15 +163,23 @@
 
 .filtering-data .p-inputtext {
   width: 25%;
-  margin-right: -5%;
+ 
 }
 
 .filtering-data button {
   font-size: 12px;
   width: 10%;
   font-weight: bold;
-  /* margin-left: -12%; */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
+/* .filtering-data .p-splitbutton {
+  font-size: 12px;
+  width: 12%;
+  font-weight: bold;
+  
+} */
 
 #pr_id_111_header{
   font-size: 45px;
@@ -132,6 +195,3 @@
   box-shadow: 0px 10px 14px -3px rgba(0, 0, 0, 0.1);
 }
 
-.data-table {
-  width: 80%;
-}
