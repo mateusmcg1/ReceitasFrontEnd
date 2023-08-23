@@ -1,25 +1,25 @@
-@media screen and (max-width: 430px){
-  .wallet-main-content{
-    padding: 0 !important;
-  }
+@media screen and (max-width: 670px){
 
-  /* .wallet-main-content h1{
-    font-size:25px !important;
-  } */
+
+  .wallet-container{
+    width: 100% !important;
+  }
   .wallet-buttons-container{
     width: 75% !important;
   }
   .wallet-buttons-container .p-button {
-    width: 75%;
+
     display: flex;
     align-items: center;
     justify-content: center;
+    font-size: 10px;
   }
   .wallet-buttons-container .p-splitbutton {
     width: 75%;
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-left: 12%;
   }
   
   .wallet-text{
@@ -40,7 +40,7 @@
 }
 
 .wallet-container {
-  width: 100%;
+  width: 85%;
   height: 90vh;
   display: flex;
 }
