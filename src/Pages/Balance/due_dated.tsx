@@ -127,7 +127,7 @@ export default function Due_Dated() {
 
         <div className='due-buttons'>
 
-          <div style={{ width: '25%' }}>
+          <div className='due-botao' style={{ width: '25%' }}>
             <Button label="FILTRAR"
               onClick={() =>
                 dates ?
@@ -152,7 +152,7 @@ export default function Due_Dated() {
     
 
 
-          <div style={{ width: '25%' }}>
+          <div className='due-botao' style={{ width: '25%' }}>
             <Button label="INCLUIR" />
           </div>
 
