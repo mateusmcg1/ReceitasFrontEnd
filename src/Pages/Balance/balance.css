@@ -1,20 +1,81 @@
-@media screen and (max-width: 700px){
+@media screen and (max-width: 670px){
+
+  .balance-main-content h1{
+    margin-bottom: 8% !important;
+  }
+
   .wallet-name{
-    min-width: 30%
+    width: 40% !important;
+   
   }
-  .main-content h1{
-    font-size: 35px;
+  .wallet-name .p-button {
+
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
-  .filtering-data{
-    min-width: 100%;
+
+  .finantial-balance {
+    
+    flex-direction: column;
+    align-items: center;
   }
-  .finantial-organization{
-    min-width: 70%;
+
+  .finantial-organization {
+    display: flex;
+    height: 143px;
+    font-size: 16px;
+    width: 100% !important;
+  }
+
+  .finantial-framework{
+    margin-top: 2%;
+    margin-right: 2%;
+  }
+  .finantial-framework span{
+    font-size: 10px !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .due-filter .p-float-label{
+    height: 85% !important;
+  }
+  .split-botoes{
+    height: 100%;
+    margin-bottom: 2%;
+    width: 100% !important;
+  }
+
+  .filtering-data {
+    flex-direction: column !important;
+  
+  }
+  .filtering-data .p-button{
+    font-size: 10px;
+    width: 20%;
+  }
+
+  .filtering-data #advanced-filter{
+    width: 30%;
+  }
+
+  .filtering-data .p-button-icon-only{
+    width: 20%;
+  
+  }
+
+  .filtering-data .p-splitbutton{
+    width: 20%;
+    
   }
 }
+
 .balance-container {
   width: 100%;
-  height: 90vh;
+  height: 100vh;
 }
 
 .margin-left {
@@ -22,12 +83,12 @@
   background-color: #2b2b2b;
 }
 
-.main-content {
+.balance-main-content {
   padding: 2% 5%;
-  width: 85%;
+  width: 100%;
 }
 
-.main-content h1 {
+.balance-main-content h1 {
   margin-bottom: 3%;
   font-size: 45px;
 }
@@ -41,14 +102,14 @@
 
 .finantial-balance {
   display: flex;
-  width: 100%;
   margin-bottom: 5%;
+
 }
 
 .wallet-name {
   display: flex;
   background-color: #d9d9d9;
-  width: 20%;
+  width: 15%;
   border-radius: 20px;
   height: 143px;
   text-transform: uppercase;
@@ -77,15 +138,13 @@
   margin-left: 2%;
   height: 143px;
   font-size: 16px;
-  width: 50%;
+  width: 60%;
   align-items: center;
   justify-content: space-between;
 }
 .finantial-framework {
   display: flex;
   flex-direction: column;
-  margin-right: 4%;
-  margin-bottom: 2%;
 }
 .finantial-framework label {
   font-weight: bold;
@@ -99,8 +158,8 @@
   display: flex;
   height: 10%;
   margin-bottom: 5%;
-  flex-direction: column;
-  width: 80%;
+  flex-direction: row;
+
 }
 .filtering-data .label {
   margin-bottom: 0.5%;
@@ -113,20 +172,31 @@
   justify-content: space-between;
 }
 
+.split-botoes{
+  margin-right: 5%;
+  width: 19%;
+}
+
+.due-botao .p-button{
+  justify-content: center;
+ 
+}
 .botoes .p-calendar{
   height: 100%;
 }
 
 .filtering-data .p-inputtext {
   width: 25%;
-  margin-right: -5%;
+ 
 }
 
 .filtering-data button {
   font-size: 12px;
   width: 10%;
   font-weight: bold;
-  /* margin-left: -12%; */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 #pr_id_111_header{
@@ -136,13 +206,14 @@
   padding: 2% 5%;
 }
 #advanced-filter {
-  width: 20%;
+  width: 15%;
   background-color: white;
   color: #009be7;
   border: none;
   box-shadow: 0px 10px 14px -3px rgba(0, 0, 0, 0.1);
 }
 
-.data-table {
-  width: 80%;
+.p-calendar{
+  min-width: 100%;
+  height: 100%;
 }

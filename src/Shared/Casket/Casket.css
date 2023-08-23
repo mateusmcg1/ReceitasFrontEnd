@@ -6,6 +6,7 @@
   background-color: #fff;
   overflow-x: hidden;
   overflow-y: auto;
+  height: 95vh;
 }
 
 .A {
@@ -49,14 +50,6 @@
   font-weight: bold;
   font-size: 14px;
 }
-
-/* .menu {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  margin-top: 10%;
-  width: 15%;
-} */
 
 .menu-item {
   background-color: #333;
@@ -123,3 +116,10 @@
   width: 100%;
 }
 
+.column-order {
+  padding: 0;
+  /* display: flex;
+  flex-direction: row; */
+  /* background-color: #2b2b2b; */
+  height: 95vh;
+}

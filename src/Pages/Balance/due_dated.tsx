@@ -22,7 +22,7 @@ export default function Due_Dated() {
   const [selectedTransaction, setSelectedTransaction] = useState<any>();
   const [showPaymentAction, setShowPaymentAction] = useState(false);
   const toast = useRef<Toast>(null);
-  
+
   const actions: MenuItem[] = [
     {
       label: "Pagamento",
@@ -42,7 +42,7 @@ export default function Due_Dated() {
     toast.current?.show([{ severity, summary, detail }]);
   };
 
-  
+
   const fetchWallets = async () => {
     try {
       const result = await axios.get(
@@ -92,45 +92,55 @@ export default function Due_Dated() {
   }
 
   return (
-    <div className='main-content'>
+    <div className='due-main-content'>
       <h1>Vencidas</h1>
-      <div className='filtering' style={{marginBottom: '2%' }}>
-
-        <div className='filtering-inputs' style={{ width: '50%' }}>
-          <span className="p-float-label" style={{ width: '45%' }}>
-            <Dropdown value={selectedWallet} onChange={(e) => setSelectedWallet(e.value)} options={wallets} optionLabel="name" />
-            <label htmlFor="date">Carteira</label>
-          </span>
 
 
-          <span className="p-float-label" style={{ width: '45%' }}>
-            <Calendar
-              id='date'
-              value={dates}
-              onChange={(e: any) => {
-                setDates(e.value);
-              }}
+      <div className='due-filtering' style={{ marginBottom: '2%' }}>
 
-              selectionMode="range"
-              maxDate={new Date()}
-              locale="en"
-              dateFormat="dd/mm/yy"
-            />
-            <label htmlFor="date">Período</label>
-          </span>
+        <div className='due-filter'>
+          <div className='button01'>
+            <span className="p-float-label" >
+              <Dropdown value={selectedWallet} onChange={(e) => setSelectedWallet(e.value)} options={wallets} optionLabel="name" />
+              <label htmlFor="date">Carteira</label>
+            </span>
+          </div>
+
+          <div className='button02'>
+            <span className="p-float-label">
+              <Calendar
+                id='date'
+                value={dates}
+                onChange={(e: any) => {
+                  setDates(e.value);
+                }}
+
+                selectionMode="range"
+                maxDate={new Date()}
+                locale="en"
+                dateFormat="dd/mm/yy"
+              />
+              <label htmlFor="date">Período</label>
+            </span>
+          </div>
         </div>
 
         <div className='due-buttons'>
-          <Button label="FILTRAR" style={{ width: '25%' }}
-            onClick={() =>
-              dates ?
-                fetchTransactions({
-                  category: 'DUE_DATED',
-                  startDate: dates[0],
-                  endDate: dates[1]
-                }) : fetchTransactions({ category: 'DUE_DATED' })
-            }
-          />
+
+          <div className='due-botao' style={{ width: '25%' }}>
+            <Button label="FILTRAR"
+              onClick={() =>
+                dates ?
+                  fetchTransactions({
+                    category: 'DUE_DATED',
+                    startDate: dates[0],
+                    endDate: dates[1]
+                  }) : fetchTransactions({ category: 'DUE_DATED' })
+              }
+            />
+          </div>
+
+
           <SplitButton
             label="AÇÕES"
             icon=""
@@ -139,9 +149,12 @@ export default function Due_Dated() {
             }}
             model={actions}
           />
-          {/* <Button label="AÇÕES" style={{ width: '25%' }} /> */}
+    
 
-          <Button label="INCLUIR" style={{ width: '25%' }} />
+
+          <div className='due-botao' style={{ width: '25%' }}>
+            <Button label="INCLUIR" />
+          </div>
 
         </div>
       </div>

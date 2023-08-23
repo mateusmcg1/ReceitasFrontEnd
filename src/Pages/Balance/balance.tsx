@@ -36,7 +36,6 @@ export default function Balance() {
   const [dates, setDates] = useState<any[]>([]);
   const toast = useRef<Toast>(null);
   const [showPaymentAction, setShowPaymentAction] = useState(false);
-  const [loading, setLoading] = useState(false);
 
   const actions: MenuItem[] = [
     {
@@ -97,7 +96,6 @@ export default function Balance() {
   const fetchTransactions = async (params?: any) => {
     if (params) {
       try {
-        setLoading(true);
         var result = await axios.get(
           `${process.env.REACT_APP_API_URL}/v1/transactions/${selectedWallet?.id}`,
           {
@@ -107,14 +105,13 @@ export default function Balance() {
             params,
           }
         );
-        setLoading(false);
+
         setTransactions(result.data);
       } catch (err) {
         alert(err);
       }
     } else {
       try {
-        setLoading(true);
         var result = await axios.get(
           `${process.env.REACT_APP_API_URL}/v1/transactions/${selectedWallet?.id}`,
           {
@@ -123,7 +120,7 @@ export default function Balance() {
             },
           }
         );
-        setLoading(false);
+
         setTransactions(result.data);
       } catch (err) {
         alert(err);
@@ -145,13 +142,12 @@ export default function Balance() {
       setWalletName(selectedWallet?.name!);
       fetchTransactions();
       walletsBill();
-     
     }
   }, [selectedWallet]);
 
   return (
     <div className="balance-container">
-      <div className="main-content">
+      <div className="balance-main-content">
         <h1>Balanço</h1>
 
         <div className="finantial-balance">
@@ -216,60 +212,67 @@ export default function Balance() {
         </div>
 
         <div className="filtering-data">
+        <div className="split-botoes">
+              <span className="p-float-label">
+                <Calendar
+                  id="date"
+                  value={dates}
+                  onChange={(e: any) => {
+                    setDates(e.value);
+                  }}
+                  selectionMode="range"
+                  locale="en"
+                  dateFormat="dd/mm/yy"
+
+                ></Calendar>
+                <label htmlFor="date">Período</label>
+              </span>
+            </div>
           <div className="botoes">
-            <span className="p-float-label">
-              <Calendar
-                id="date"
-                value={dates}
-                onChange={(e: any) => {
-                  setDates(e.value);
-                }}
-                selectionMode="range"
-                locale="en"
-                dateFormat="dd/mm/yy"
-              ></Calendar>
-               <label htmlFor="date">Período</label>
-            </span>
-            <Button
-              label="FILTRAR"
-              onClick={() =>
-                dates
-                  ? fetchTransactions({
-                    startDate: dates[0],
-                    endDate: dates[1],
-                  })
-                  : fetchTransactions()
+
+            
+          
+              <Button
+                label="FILTRAR"
+                onClick={() =>
+                  dates
+                    ? fetchTransactions({
+                      startDate: dates[0],
+                      endDate: dates[1],
+                    })
+                    : fetchTransactions()
+                }
+              />
+              {
+                <Button
+                  id="advanced-filter"
+                  label="FILTROS AVANÇADOS"
+                  onClick={() => setShowFilter(true)}
+                />
               }
-            />
-            {
-              <Button
-                id="advanced-filter"
-                label="FILTROS AVANÇADOS"
-                onClick={() => setShowFilter(true)}
-              />
-            }
-            <SplitButton
-              label="AÇÕES"
-              icon=""
-              onClick={() => {
-                console.log("clicked");
-              }}
-              model={actions}
-            />
-            {
-              <Button
-                label="INCLUIR"
-                onClick={(e) => {
-                  setShowIncludeTransaction(true);
+              <SplitButton
+                label="AÇÕES"
+                icon=""
+                onClick={() => {
+                  console.log("clicked");
                 }}
+                model={actions}
               />
-            }
+              {
+                <Button
+                  label="INCLUIR"
+                  onClick={(e) => {
+                    setShowIncludeTransaction(true);
+                  }}
+                />
+              }
+       
+
           </div>
         </div>
 
         <div className="data-table">
           <DataTable
-            loading={loading}
             value={transactions}
             selectionMode="single"
             selection={selectedTransaction}

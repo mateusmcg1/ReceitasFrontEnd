@@ -61,7 +61,7 @@ export default function Due_Dated() {
 
   useEffect(() => {
     fetchWallets();
-    
+
   }, []);
 
   useEffect(() => {
@@ -89,44 +89,50 @@ export default function Due_Dated() {
     }
   }
   return (
-    <div className='main-content'>
+    <div className='due-main-content'>
       <h1>A Receber</h1>
-      <div className='filtering' style={{ width: '80%', marginBottom: '2%' }}>
+      <div className='due-filtering' style={{ marginBottom: '2%' }}>
 
-        <div className='filtering-inputs' style={{ width: '50%' }}>
-          <span className="p-float-label" style={{ width: '45%' }}>
-            <Dropdown value={selectedWallet} onChange={(e) => (setSelectedWallet(e.value))} options={wallets} optionLabel="name" />
-            <label htmlFor="date">Carteira</label>
-          </span>
+        <div className='due-filter'>
+          <div className='button01'>
+            <span className="p-float-label">
+              <Dropdown value={selectedWallet} onChange={(e) => (setSelectedWallet(e.value))} options={wallets} optionLabel="name" />
+              <label htmlFor="date">Carteira</label>
+            </span>
+          </div>
 
+          <div className='button02'>
+            <span className="p-float-label">
+              <Calendar
+                id='date'
+                value={dates}
+                onChange={(e: any) => {
+                  setDates(e.value);
+                }}
 
-          <span className="p-float-label" style={{ width: '45%' }}>
-            <Calendar
-              id='date'
-              value={dates}
-              onChange={(e: any) => {
-                setDates(e.value);
-              }}
-
-              selectionMode="range"
-              locale="en"
-              dateFormat="dd/mm/yy"
-            />
-            <label htmlFor="date">Período</label>
-          </span>
+                selectionMode="range"
+                locale="en"
+                dateFormat="dd/mm/yy"
+              />
+              <label htmlFor="date">Período</label>
+            </span>
+          </div>
         </div>
 
-        <div className='due-buttons' style={{ width: '50%' }}>
-          <Button label="FILTRAR" style={{ width: '25%' }}
-            onClick={() =>
-              dates ?
-                fetchTransactions({
-                  category: 'RECEIVABLE',
-                  startDate: dates[0],
-                  endDate: dates[1]
-                }) : fetchTransactions({ category: 'RECEIVABLE' })
-            }
-          />
+        <div className='due-buttons'>
+
+          <div style={{ width: '25%' }}>
+            <Button label="FILTRAR"
+              onClick={() =>
+                dates ?
+                  fetchTransactions({
+                    category: 'RECEIVABLE',
+                    startDate: dates[0],
+                    endDate: dates[1]
+                  }) : fetchTransactions({ category: 'RECEIVABLE' })
+              }
+            />
+          </div>
 
           <SplitButton
             label="AÇÕES"
@@ -137,8 +143,10 @@ export default function Due_Dated() {
             model={actions}
           />
 
-          <Button label="INCLUIR" style={{ width: '25%' }} />
-
+          <div style={{ width: '25%' }}>
+            <Button label="INCLUIR" />
+          </div>
+          
         </div>
       </div>
       <div className='data-table'>
