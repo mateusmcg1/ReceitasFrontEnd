@@ -25,19 +25,12 @@
     .due-buttons .p-splitbutton {
         font-size: 10px;
         width: 30%;
-      
         display: flex;
         justify-content: center;
         align-items: center;
     }
-
-    .due-buttons {
-       
-    }
-
    
 }
-
 
 
 .due-main-content {
@@ -68,7 +61,7 @@
     justify-content: space-between;
     align-items: center;
     height: 100%;
-    
+    margin-left: 3%;
 }   
 
 

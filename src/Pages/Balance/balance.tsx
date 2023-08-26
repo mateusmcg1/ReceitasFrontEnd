@@ -169,7 +169,7 @@ export default function Balance() {
             </Dialog>
             {/*  */}
           </div>
-          
+
           {selectedWallet ? <div className="finantial-organization">
             <div className="finantial-framework">
               <label htmlFor="value1">Saldo ({selectedWallet?.currency})</label>
@@ -207,60 +207,67 @@ export default function Balance() {
                 })}
               </span>
             </div>
-          </div>: <></> }
-          
+          </div> : <></>}
+
         </div>
 
         <div className="filtering-data">
+        <div className="split-botoes">
+              <span className="p-float-label">
+                <Calendar
+                  id="date"
+                  value={dates}
+                  onChange={(e: any) => {
+                    setDates(e.value);
+                  }}
+                  selectionMode="range"
+                  locale="en"
+                  dateFormat="dd/mm/yy"
+
+                ></Calendar>
+                <label htmlFor="date">Período</label>
+              </span>
+            </div>
           <div className="botoes">
-            <span className="p-float-label">
-              <Calendar
-                id="date"
-                value={dates}
-                onChange={(e: any) => {
-                  setDates(e.value);
-                }}
-                selectionMode="range"
-                locale="en"
-                dateFormat="dd/mm/yy"
-                
-              ></Calendar>
-              <label htmlFor="date">Período</label> 
-            </span>
-            <Button
+
+            
+          
+              <Button
                 label="FILTRAR"
                 onClick={() =>
                   dates
                     ? fetchTransactions({
-                        startDate: dates[0],
-                        endDate: dates[1],
-                      })
+                      startDate: dates[0],
+                      endDate: dates[1],
+                    })
                     : fetchTransactions()
                 }
               />
-            {
-              <Button
-                id="advanced-filter"
-                label="FILTROS AVANÇADOS"
-                onClick={() => setShowFilter(true)}
+              {
+                <Button
+                  id="advanced-filter"
+                  label="FILTROS AVANÇADOS"
+                  onClick={() => setShowFilter(true)}
+                />
+              }
+              <SplitButton
+                label="AÇÕES"
+                icon=""
+                onClick={() => {
+                  console.log("clicked");
+                }}
+                model={actions}
               />
-            }
-            <SplitButton
-              label="AÇÕES"
-              icon=""
-              onClick={() => {
-                console.log("clicked");
-              }}
-              model={actions}
-            />
-            {
-              <Button
-                label="INCLUIR"
-                onClick={(e) => {
-                  setShowIncludeTransaction(true);
-                }} 
-              />
-            }
+              {
+                <Button
+                  label="INCLUIR"
+                  onClick={(e) => {
+                    setShowIncludeTransaction(true);
+                  }}
+                />
+              }
+       
+
           </div>
         </div>
 
@@ -305,7 +312,7 @@ export default function Balance() {
                 <span>{transaction.paid ? "Pago" : "Não Pago"}</span>
               )}
               header="Pago"
-            ></Column> 
+            ></Column>
             <Column field="observation" header="Observação"></Column>
           </DataTable>
         </div>
