@@ -108,7 +108,7 @@ export default function WalletDetail() {
     const surfaceBorder = documentStyle.getPropertyValue("--surface-border");
     const data = {
       labels: chart.map((p, index) => {
-        return new Date(p.x).toLocaleDateString("pt-BR", { timeZone: "America/New_York" });
+        return new Date(p.x).toLocaleDateString("pt-BR", { timeZone: "UTC" });
       }),
       datasets: [
         {
