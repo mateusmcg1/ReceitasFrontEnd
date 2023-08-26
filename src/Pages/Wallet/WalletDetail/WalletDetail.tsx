@@ -90,11 +90,11 @@ export default function WalletDetail() {
       );
       setLoading(false);
       setGroups(result.data);
-    } catch (err) {}
+    } catch (err) { }
   };
 
   useEffect(() => {
-    fetchCharts({ wallet_id: selectedWallet.id });
+    fetchCharts({ wallet_id: selectedWallet.id, days_gone: 365 });
     fetchGroups();
     walletsInfo();
   }, []);
@@ -108,7 +108,7 @@ export default function WalletDetail() {
     const surfaceBorder = documentStyle.getPropertyValue("--surface-border");
     const data = {
       labels: chart.map((p, index) => {
-        return new Date(p.x).toLocaleDateString("pt-BR");
+        return new Date(p.x).toLocaleDateString("pt-BR", { timeZone: "America/New_York" });
       }),
       datasets: [
         {
@@ -224,10 +224,10 @@ export default function WalletDetail() {
         >
           <Column field="name" header="Nome"></Column>
           <Column field="label" header="Label"></Column>
-          <Column field="color" header="Cor" body={(data) =>{
+          <Column field="color" header="Cor" body={(data) => {
             return (
-                <div style={{ backgroundColor: `#${data.color}`, width: '27px', height: '27px', borderRadius: '10%' }}></div>
-              );
+              <div style={{ backgroundColor: `#${data.color}`, width: '27px', height: '27px', borderRadius: '10%' }}></div>
+            );
           }}></Column>
         </DataTable>
       </div>
