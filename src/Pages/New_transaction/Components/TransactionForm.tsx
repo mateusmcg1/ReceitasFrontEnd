@@ -33,7 +33,7 @@ export default function TransactionForm({
   const [installments, setInstallments] = useState<Installment[]>([]);
   const [paid, setPaid] = useState(false);
   const [groups, setGroups] = useState([]);
-  const [selectedGroup, setSelectedGroup] = useState('');
+  const [selectedGroup, setSelectedGroup] = useState<any>({});
 
   const asyncNewTransaction = async () => {
     try {
@@ -47,6 +47,7 @@ export default function TransactionForm({
           amount: value,
           wallet_id: walletId,
           paid: paid,
+          group_id: selectedGroup
         },
         {
           headers: {
