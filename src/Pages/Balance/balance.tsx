@@ -15,6 +15,8 @@ import { Toast, ToastMessage } from "primereact/toast";
 import { MenuItem } from "primereact/menuitem";
 import { SplitButton } from "primereact/splitbutton";
 import PaymentAction from "./Components/PaymentAction";
+import { ConfirmDialog, confirmDialog } from "primereact/confirmdialog";
+
 
 export default function Balance() {
 
@@ -36,6 +38,7 @@ export default function Balance() {
   const [dates, setDates] = useState<any[]>([]);
   const toast = useRef<Toast>(null);
   const [showPaymentAction, setShowPaymentAction] = useState(false);
+  const [showDeleteWallet, setShowDeleteTransaction] = useState(false);
 
   const actions: MenuItem[] = [
     {
@@ -46,7 +49,41 @@ export default function Balance() {
         setShowPaymentAction(true);
       },
     },
+    {
+      label: "Invalidar",
+      icon: 'pi pi-trash',
+      command: () => {
+        console.log(selectedWallet)
+        confirmDialog({
+          message: 'Deseja deletar?',
+          header: 'Deletar Carteira',
+          accept: deleteTransaction,
+          reject: () => setShowDeleteTransaction(false)
+        })
+      }
+    },
   ];
+
+  const deleteTransaction = async () => {
+
+    try {
+      await axios.delete(`${process.env.REACT_APP_API_URL}/v1/transactions/${selectedTransaction.id}`, {
+
+        headers: {
+          Authorization: `Bearer ${sessionStorage.getItem('access_token')}`
+        }
+      });
+      showToast('success', 'Success', 'Deletado com sucesso.');
+      fetchWallets();
+    }
+
+    catch (err: any) {
+      if (err.status = 401) {
+        showToast('error', 'Unauthorized', 'Acesso negado! O token de acesso informado é inválido.');
+      }
+    }
+
+  }
 
   const showToast = (
     severity: ToastMessage["severity"],
@@ -147,6 +184,7 @@ export default function Balance() {
 
   return (
     <div className="balance-container">
+      <Toast ref={toast} />
       <div className="balance-main-content">
         <h1>Balanço</h1>
 
@@ -212,61 +250,61 @@ export default function Balance() {
         </div>
 
         <div className="filtering-data">
-        <div className="split-botoes">
-              <span className="p-float-label">
-                <Calendar
-                  id="date"
-                  value={dates}
-                  onChange={(e: any) => {
-                    setDates(e.value);
-                  }}
-                  selectionMode="range"
-                  locale="en"
-                  dateFormat="dd/mm/yy"
+          <div className="split-botoes">
+            <span className="p-float-label">
+              <Calendar
+                id="date"
+                value={dates}
+                onChange={(e: any) => {
+                  setDates(e.value);
+                }}
+                selectionMode="range"
+                locale="en"
+                dateFormat="dd/mm/yy"
 
-                ></Calendar>
-                <label htmlFor="date">Período</label>
-              </span>
-            </div>
+              ></Calendar>
+              <label htmlFor="date">Período</label>
+            </span>
+          </div>
           <div className="botoes">
 
-            
-          
+
+
+            <Button
+              label="FILTRAR"
+              onClick={() =>
+                dates
+                  ? fetchTransactions({
+                    startDate: dates[0],
+                    endDate: dates[1],
+                  })
+                  : fetchTransactions()
+              }
+            />
+            {
               <Button
-                label="FILTRAR"
-                onClick={() =>
-                  dates
-                    ? fetchTransactions({
-                      startDate: dates[0],
-                      endDate: dates[1],
-                    })
-                    : fetchTransactions()
-                }
+                id="advanced-filter"
+                label="FILTROS AVANÇADOS"
+                onClick={() => setShowFilter(true)}
               />
-              {
-                <Button
-                  id="advanced-filter"
-                  label="FILTROS AVANÇADOS"
-                  onClick={() => setShowFilter(true)}
-                />
-              }
-              <SplitButton
-                label="AÇÕES"
-                icon=""
-                onClick={() => {
-                  console.log("clicked");
+            }
+            <SplitButton
+              label="AÇÕES"
+              icon=""
+              onClick={() => {
+                console.log("clicked");
+              }}
+              model={actions}
+            />
+            {
+              <Button
+                label="INCLUIR"
+                onClick={(e) => {
+                  setShowIncludeTransaction(true);
                 }}
-                model={actions}
               />
-              {
-                <Button
-                  label="INCLUIR"
-                  onClick={(e) => {
-                    setShowIncludeTransaction(true);
-                  }}
-                />
-              }
-       
+            }
+
 
           </div>
         </div>
@@ -323,6 +361,7 @@ export default function Balance() {
           onHide={() => setShowIncludeTransaction(false)}
         >
           <NewTransaction
+            toast={toast}
             closeDialog={() => {
               setShowIncludeTransaction(false);
               fetchTransactions();
@@ -361,6 +400,9 @@ export default function Balance() {
             onError={showToast}
           ></PaymentAction>
         </Dialog>
+
+        <ConfirmDialog />
+
       </div>
     </div>
   );

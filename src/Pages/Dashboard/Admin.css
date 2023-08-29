@@ -1,4 +1,17 @@
+@media screen and (max-width: 950px){
 
+  .flux-data{
+    flex-direction: row;
+    align-items: center;
+    
+  }
+  .flux{
+    margin-bottom: 2%;
+    width: 45% !important;
+    height: 12vh !important;
+    font-size: 1em !important;
+  }
+}
 .container .menu {
   width: 10%;
   display: flex;
@@ -24,18 +37,19 @@
 .flux{
   display: flex;
   border: 1px solid #ABABAB;
-  width: 18%;
-  height: 8vh;
+  width: 16%;
+  height: 10vh;
   margin-right: 2%;
   border-radius: 10px;
   padding: 1%;
   justify-content: center;
   flex-direction: column;
+  font-size: 1.1em;
   
 }
 
 .flux h4{
-  margin-bottom: 10%;
+  margin-bottom: 13%;
 }
 
 .group-flux{

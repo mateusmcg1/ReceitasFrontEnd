@@ -15,8 +15,6 @@ import { Dialog } from 'primereact/dialog';
 import IncludeWallet from './Incluir Carteira/IncludeWallet';
 import EditWallet from './Editar Carteira/editWallet'
 import { Toast, ToastMessage } from 'primereact/toast';
-import { FilterWalletDto } from './dtos/filter-wallet.dto';
-import DeleteWallet from './Deleta Carteira/deleteWallet';
 import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog';
 
 export default function Wallet() {

@@ -116,27 +116,27 @@ export default function Dashboard() {
         }
     };
 
-const fetchCurrencyStats =  async (params?: any) => {
-    try {
-        const result = await axios.get(
-            `${process.env.REACT_APP_API_URL}/v1/charts/currency-stats`,
-            {
-                headers: {
-                    Authorization: `Bearer ${sessionStorage.getItem("access_token")}`,
-                },
-                params,
-            }
-        );
-        
-        setCashIn(result.data.cashinAmount)
-        setCashOut(result.data.cashoutAmount)
-        setFutureCashIn(result.data.futureCashin)
-        setFutureCashOut(result.data.futureCashout)
-            
-    } catch (err) {
-        alert(err);
-    }
-};
+    const fetchCurrencyStats = async (params?: any) => {
+        try {
+            const result = await axios.get(
+                `${process.env.REACT_APP_API_URL}/v1/charts/currency-stats`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${sessionStorage.getItem("access_token")}`,
+                    },
+                    params,
+                }
+            );
+
+            setCashIn(result.data.cashinAmount)
+            setCashOut(result.data.cashoutAmount)
+            setFutureCashIn(result.data.futureCashin)
+            setFutureCashOut(result.data.futureCashout)
+
+        } catch (err) {
+            alert(err);
+        }
+    };
 
     const chartCashOut = (currency: CurrencyEnum, period: number, co: any[]) => {
         const documentStyle = getComputedStyle(document.documentElement);
@@ -186,7 +186,7 @@ const fetchCurrencyStats =  async (params?: any) => {
                         documentStyle.getPropertyValue('--blue-400'),
                         documentStyle.getPropertyValue('--yellow-400'),
                         documentStyle.getPropertyValue('--green-400')
-                    ]                    
+                    ]
                 }
             ]
         };
@@ -203,11 +203,11 @@ const fetchCurrencyStats =  async (params?: any) => {
         const textColor = documentStyle.getPropertyValue('--text-color');
         const textColorSecondary = documentStyle.getPropertyValue('--text-color-secondary');
         const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
-        
+
         const data = {
             labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
             datasets: Object.keys(p).map((keyName: any, index: number) => {
-             
+
                 return {
                     label: keyName,
                     backgroundColor: documentStyle.getPropertyValue('--blue-500'),
@@ -330,8 +330,8 @@ const fetchCurrencyStats =  async (params?: any) => {
 
     useEffect(() => {
 
-        fetchCurrencyStats({ currency: CurrencyEnum.BRL, days_gone: 30})
-        fetchProfitability({ currency: CurrencyEnum.BRL, year: 2023});
+        fetchCurrencyStats({ currency: CurrencyEnum.BRL, days_gone: 30 })
+        fetchProfitability({ currency: CurrencyEnum.BRL, year: 2023 });
         fetchCashflow({ currency: CurrencyEnum.BRL, days_gone: 30 })
         fetchCashOut({ currency: CurrencyEnum.BRL, days_gone: 30 })
         fetchCashIn({ currency: CurrencyEnum.BRL, days_gone: 30 })
@@ -349,15 +349,14 @@ const fetchCurrencyStats =  async (params?: any) => {
                             <TabPanel header="Fluxo de Caixa">
 
                                 <div className="grid">
-
-                                    <div className="col-2">
+                                    <div className="col-12 md: col-6 lg:col-2">
                                         <span className="p-float-label" style={{ marginTop: '7%' }}>
                                             <Dropdown value={selectedCurrency} onChange={(e) => {
                                                 setSelectedCurrency(e.value);
-                                           
+
                                                 fetchCashOut({ currency: e.value, days_gone: selectedPeriod });
                                                 fetchCashIn({ currency: e.value, days_gone: selectedPeriod });
-                                                fetchCurrencyStats({ currency: e.value, days_gone: selectedPeriod})
+                                                fetchCurrencyStats({ currency: e.value, days_gone: selectedPeriod })
                                                 fetchCashflow({ currency: e.value, period: selectedPeriod })
                                                 // chartProfitability(e.value, selectedPeriod);
                                                 // fetchProfitability({ currency: e.value, year: selectedYear})
@@ -366,13 +365,13 @@ const fetchCurrencyStats =  async (params?: any) => {
                                             <label htmlFor="date">Moeda</label>
                                         </span>
                                     </div>
-                                    <div className="col-2">
+                                    <div className="col-12 md: col-6 lg:col-2">
                                         <span className="p-float-label" style={{ marginTop: '7%' }}>
                                             <Dropdown value={selectedPeriod} onChange={(e) => {
                                                 setSelectedPeriod(e.value)
                                                 // chartCashOut(selectedCurrency, e.value);
                                                 // chartCashIn(selectedCurrency, e.value);
-                                                fetchCurrencyStats({ currency: selectedCurrency, days_gone: e.value})
+                                                fetchCurrencyStats({ currency: selectedCurrency, days_gone: e.value })
                                                 fetchCashOut({ currency: selectedCurrency, days_gone: e.value });
                                                 fetchCashIn({ currency: selectedCurrency, days_gone: e.value });
                                                 fetchCashflow({ currency: selectedCurrency, days_gone: e.value })
@@ -386,7 +385,7 @@ const fetchCurrencyStats =  async (params?: any) => {
 
                                 <div className="grid" style={{ marginTop: "2%", marginLeft: '' }}>
                                     <h5 style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>Fluxo de Caixa</h5>
-                                    <div className="col-12">
+                                    <div className="col-12 md: col-12 lg:col-12">
 
                                         <Chart type="line"
                                             data={chartData} options={chartOptions}
@@ -421,25 +420,25 @@ const fetchCurrencyStats =  async (params?: any) => {
                                     <div className='flux'>
                                         <h4 style={{ color: '#A5A5A5' }}>Futuro</h4>
                                         <h5 style={{ color: '#A5A5A5' }}>Entrada: {FutureCashIn.toLocaleString("pt-BR", {
-                                                style: "currency",
-                                                currency: selectedCurrency,
-                                            })}</h5>
+                                            style: "currency",
+                                            currency: selectedCurrency,
+                                        })}</h5>
                                         <h5 style={{ color: '#A5A5A5' }}>Saída: {FutureCashOut.toLocaleString("pt-BR", {
-                                                style: "currency",
-                                                currency: selectedCurrency,
-                                            })}</h5>
+                                            style: "currency",
+                                            currency: selectedCurrency,
+                                        })}</h5>
                                     </div>
                                 </div>
 
                                 <div className='grid' style={{ marginTop: '5%', display: 'flex', justifyContent: 'center' }}>
-                                    <div className="col-lg-6 col-sm-12">
+                                    <div className="col-12 md: col-6 lg:col-5">
                                         <div className="cash-chart">
                                             <label htmlFor="group-cashout">Cash-Out por Grupo</label>
                                             <Chart type="doughnut" data={chartData3} options={chartOptions3} className="w-full md:w-30rem" />
                                         </div>
 
                                     </div>
-                                    <div className="col-lg-6 col-sm-12">
+                                    <div className="col-12 md: col-6 lg:col-5">
                                         <div className="cash-chart">
                                             <label htmlFor="group-cashin">Cash-In por Grupo</label>
                                             <Chart type="doughnut" data={chartData4} options={chartOptions4} className="w-full md:w-30rem" />
@@ -452,21 +451,21 @@ const fetchCurrencyStats =  async (params?: any) => {
                             <TabPanel header="Lucratividade">
                                 <div className="grid">
 
-                                    <div className="col-2">
+                                    <div className="col-12 md: col-6 lg:col-2">
                                         <span className="p-float-label" style={{ marginTop: '7%' }}>
                                             <Dropdown value={selectedCurrency} onChange={(e) => {
                                                 setSelectedCurrency(e.value);
-                                                fetchProfitability({ currency: e.value, year: selectedYear})
+                                                fetchProfitability({ currency: e.value, year: selectedYear })
                                             }} options={currencyTypes}
                                             />
                                             <label htmlFor="date">Moeda</label>
                                         </span>
                                     </div>
-                                    <div className="col-2">
+                                    <div className="col-12 md: col-6 lg:col-2">
                                         <span className="p-float-label" style={{ marginTop: '7%' }}>
                                             <Dropdown value={selectedYear} onChange={(e) => {
                                                 setSelectedYear(e.value);
-                                                fetchProfitability({ currency: selectedCurrency, year: e.value})
+                                                fetchProfitability({ currency: selectedCurrency, year: e.value })
                                             }} options={Year}
                                             />
                                             <label htmlFor="date">Período</label>
