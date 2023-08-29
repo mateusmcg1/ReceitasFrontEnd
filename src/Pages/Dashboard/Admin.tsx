@@ -30,8 +30,6 @@ export default function Dashboard() {
     const [chartIn, setChartIn] = useState<any[]>([]);
     const [cashflow, setCashflow] = useState<any[]>([]);
     const [profitability, setProfitability] = useState<any>({});
-    const [users, setUsers] = useState('');
-    const [dates, setDates] = useState<any[]>([]);
     const [selectedCurrency, setSelectedCurrency] = useState(CurrencyEnum.BRL);
     const [selectedPeriod, setSelectedPeriod] = useState(30);
     const [selectedYear, setSelectedYear] = useState(2023);
@@ -118,39 +116,27 @@ export default function Dashboard() {
         }
     };
 
-    // const fetchUsers = async () => {
-    //     try {
-    //         const result = await axios.get(
-    //             `${process.env.REACT_APP_API_URL}/v1/users/logged-in`,
-    //             {
-    //                 headers: {
-    //                     'Authorization': `Bearer ${sessionStorage.getItem("access_token")}`
-    //                 }
-    //             });
-    //         // Successful response
-    //         setUsers(result.data);
-    //         console.log(result.data)
-    //     } catch (err: any) {
-    //         // Unauthorized because of invalid token (expired)
-    //         if (err.status === 403) {
-    //             try {
-    //                 // Avoid using same name 'result' again, because of shadowed names of variables
-    //                 const resultRefresh = await axios.post(`$https://dev-api.pjx.f3ssoftware.com/v1/refresh-token`,
-    //                     {
-    //                         refresh_token: sessionStorage.getItem('refresh_token')
-    //                     })
-    //                 sessionStorage.setItem("access_token", resultRefresh.data.access_token);
-    //                 // Call again 
-    //                 fetchUsers();
-    //             } catch (error) { // Avoid using 'err' name again, because of shadowed variable
-    //                 // Any error response here indicates refresh token can't do your job
-    //                 // redirect your user to login page again
-    //                 navigate('/');
-    //             }
-    //         }
-    //     }
-
-    // }
+const fetchCurrencyStats =  async (params?: any) => {
+    try {
+        const result = await axios.get(
+            `${process.env.REACT_APP_API_URL}/v1/charts/currency-stats`,
+            {
+                headers: {
+                    Authorization: `Bearer ${sessionStorage.getItem("access_token")}`,
+                },
+                params,
+            }
+        );
+        
+        setCashIn(result.data.cashinAmount)
+        setCashOut(result.data.cashoutAmount)
+        setFutureCashIn(result.data.futureCashin)
+        setFutureCashOut(result.data.futureCashout)
+            
+    } catch (err) {
+        alert(err);
+    }
+};
 
     const chartCashOut = (currency: CurrencyEnum, period: number, co: any[]) => {
         const documentStyle = getComputedStyle(document.documentElement);
@@ -221,7 +207,7 @@ export default function Dashboard() {
         const data = {
             labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
             datasets: Object.keys(p).map((keyName: any, index: number) => {
-                // console.log('DATA: >>>>', Object.keys(p[keyName]).map((month) => p[keyName][month]));
+             
                 return {
                     label: keyName,
                     backgroundColor: documentStyle.getPropertyValue('--blue-500'),
@@ -342,26 +328,9 @@ export default function Dashboard() {
     };
 
 
-    // useEffect(() => {
-
-    //     fetchCashOut({ currency: selectedCurrency, days_gone: selectedPeriod })
-    //     fetchCashIn({ currency: selectedCurrency, days_gone: selectedPeriod })
-    //     fetchCashflow({ currency: selectedCurrency, days_gone: selectedPeriod })
-    //     fetchProfitability({ currency: selectedCurrency, year: selectedYear })
-
-    // }, [selectedCurrency, selectedPeriod, selectedYear]);
-
-
-    // useEffect(() => {
-
-    //     chartCashOut(selectedCurrency, selectedPeriod);
-    //     chartCashIn(selectedCurrency, selectedPeriod);
-    //     chartCashflow();
-    //     chartProfitability(selectedCurrency, selectedYear);
-    // }, [chartOut, chartIn, cashflow, chartDataProfit]);
-
     useEffect(() => {
 
+        fetchCurrencyStats({ currency: CurrencyEnum.BRL, days_gone: 30})
         fetchProfitability({ currency: CurrencyEnum.BRL, year: 2023});
         fetchCashflow({ currency: CurrencyEnum.BRL, days_gone: 30 })
         fetchCashOut({ currency: CurrencyEnum.BRL, days_gone: 30 })
@@ -385,10 +354,10 @@ export default function Dashboard() {
                                         <span className="p-float-label" style={{ marginTop: '7%' }}>
                                             <Dropdown value={selectedCurrency} onChange={(e) => {
                                                 setSelectedCurrency(e.value);
-                                                // fetchCashOut(e.value, selectedPeriod);
+                                           
                                                 fetchCashOut({ currency: e.value, days_gone: selectedPeriod });
                                                 fetchCashIn({ currency: e.value, days_gone: selectedPeriod });
-                                                // chartCashflow(e.value, selectedPeriod);
+                                                fetchCurrencyStats({ currency: e.value, days_gone: selectedPeriod})
                                                 fetchCashflow({ currency: e.value, period: selectedPeriod })
                                                 // chartProfitability(e.value, selectedPeriod);
                                                 // fetchProfitability({ currency: e.value, year: selectedYear})
@@ -403,6 +372,7 @@ export default function Dashboard() {
                                                 setSelectedPeriod(e.value)
                                                 // chartCashOut(selectedCurrency, e.value);
                                                 // chartCashIn(selectedCurrency, e.value);
+                                                fetchCurrencyStats({ currency: selectedCurrency, days_gone: e.value})
                                                 fetchCashOut({ currency: selectedCurrency, days_gone: e.value });
                                                 fetchCashIn({ currency: selectedCurrency, days_gone: e.value });
                                                 fetchCashflow({ currency: selectedCurrency, days_gone: e.value })
@@ -430,28 +400,34 @@ export default function Dashboard() {
                                     <div className='flux'>
                                         <h4 style={{ color: '#A5A5A5' }}>Entrada</h4>
                                         <span style={{ color: '#0F9803', }}>{cashIn
-                                            // .toLocaleString("pt-BR", {
-                                            //     style: "currency",
-                                            //     currency: selectedCurrency,
-                                            // })
+                                            .toLocaleString("pt-BR", {
+                                                style: "currency",
+                                                currency: selectedCurrency,
+                                            })
                                         }
                                         </span>
                                     </div>
                                     <div className='flux'>
                                         <h4 style={{ color: '#A5A5A5' }}>Saída</h4>
-                                        <span style={{ color: '#0F9803', }}>{cashOut
-                                            // .toLocaleString("pt-BR", {
-                                            //     style: "currency",
-                                            //     currency: selectedCurrency,
-                                            // })
+                                        <span style={{ color: '#A60000', }}>{cashOut
+                                            .toLocaleString("pt-BR", {
+                                                style: "currency",
+                                                currency: selectedCurrency,
+                                            })
                                         }
                                         </span>
 
                                     </div>
                                     <div className='flux'>
                                         <h4 style={{ color: '#A5A5A5' }}>Futuro</h4>
-                                        <h5 style={{ color: '#A5A5A5' }}>Entrada: {FutureCashIn}</h5>
-                                        <h5 style={{ color: '#A5A5A5' }}>Saída: {FutureCashOut}</h5>
+                                        <h5 style={{ color: '#A5A5A5' }}>Entrada: {FutureCashIn.toLocaleString("pt-BR", {
+                                                style: "currency",
+                                                currency: selectedCurrency,
+                                            })}</h5>
+                                        <h5 style={{ color: '#A5A5A5' }}>Saída: {FutureCashOut.toLocaleString("pt-BR", {
+                                                style: "currency",
+                                                currency: selectedCurrency,
+                                            })}</h5>
                                     </div>
                                 </div>
 
