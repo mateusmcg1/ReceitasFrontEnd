@@ -48,7 +48,7 @@ export default function IncludeGroup({
 
   return (
     <div className="inclusao-container grid">
-      <h1>Incluir Carteira</h1>
+      <h1>Incluir Grupo</h1>
 
       <div className="inclusao-frame grid">
         <label htmlFor="text1" style={{ marginBottom: "1%" }}>

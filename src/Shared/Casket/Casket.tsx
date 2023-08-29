@@ -26,7 +26,9 @@ export function Casket({ children }: { children?: any }) {
     const location = useLocation();
 
     let items = [
+        { label: 'Dashboard', icon: 'pi pi-user', command: () => {navigateMenu('dashboard') }, navigable: true },
         {
+            
             label: 'Balanço', icon: 'pi pi-dollar', command: () => { }, navigable: false, items: [
                 {
                     label: 'Total', icon: 'pi pi-dollar', command: () => { navigateMenu('balance') }, navigable: true
