@@ -4,6 +4,9 @@ import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 import { Calendar } from 'primereact/calendar';
 import { Toast, ToastMessage } from 'primereact/toast';
+import { useFormAction } from 'react-router-dom';
+import { useFormik } from 'formik';
+import { SelectWallet } from '../Balance/SelectWallet/SelectWallet';
 
 export default function AdvancedFilter({ walletId, fetch, closeDialog }: { walletId: string, fetch: Function, closeDialog: any }) {
 
@@ -11,6 +14,14 @@ export default function AdvancedFilter({ walletId, fetch, closeDialog }: { walle
     var [value2, setValue2] = useState("");
     const [value3, setValue3] = useState("");
     const [value4, setValue4] = useState("");
+
+    const formik = useFormik({initialValues:{
+        email: 'lala@gmail.com',
+    },
+    onSubmit: values => {
+        alert('Funcion')
+    }
+})
 
     const onSave = () => {
          
@@ -84,7 +95,7 @@ export default function AdvancedFilter({ walletId, fetch, closeDialog }: { walle
                 </div>
 
                 <div className='enquadramento-filtro'>
-                    {<Button label="FILTRAR" onClick={() => walletId? onSave() : AdvFilterToast('warn', 'Atenção!', 'Selecione uma carteira.')} />}
+                    {<Button label="FILTRAR" onClick={() => (value3!='' && value4!='' && (value3 >= value4) && walletId)? AdvFilterToast('warn', 'Atenção!', 'Valor mínimo deve ser inferior ao valor máximo.') : onSave()} />}
                 </div>
 
             </div>

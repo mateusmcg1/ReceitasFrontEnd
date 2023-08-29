@@ -156,10 +156,11 @@ export default function TransactionForm({
               <InputText
                 id="reference"
                 name="reference"
-                value={formik.values.reference}
+                value={formik.values.reference} 
                 onChange={(e) => {
                   formik.setFieldValue("reference", e.target.value);
                   setReference(e.target.value);
+                 
                 }}
                 className={classNames({
                   "p-invalid": isFormFieldInvalid("reference"),
@@ -178,7 +179,7 @@ export default function TransactionForm({
                 value={formik.values.value}
                 onValueChange={(e) => {
                   formik.setFieldValue("value", e.value);
-                  setValue(Number(e.value));
+                  setValue(Number(e.value));  
                 }}
                 inputClassName={classNames({
                   "p-invalid": isFormFieldInvalid("value"),
