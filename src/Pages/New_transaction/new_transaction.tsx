@@ -14,6 +14,7 @@ export default function NewTransaction({walletId, closeDialog,walletCurrency }:{
 
   const showToast = (severity: ToastMessage["severity"], summary: string, detail: string) => {
     toast.current?.show([{ severity, summary, detail }]);
+    
 };
 
   return (

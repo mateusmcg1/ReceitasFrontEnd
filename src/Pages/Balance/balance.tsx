@@ -326,6 +326,7 @@ export default function Balance() {
             closeDialog={() => {
               setShowIncludeTransaction(false);
               fetchTransactions();
+              walletsBill();
             }}
             walletId={selectedWallet?.id!}
             walletCurrency={selectedWallet?.currency!}
