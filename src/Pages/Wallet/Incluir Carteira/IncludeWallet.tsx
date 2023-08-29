@@ -15,13 +15,7 @@ export default function IncludeWallet({ closeDialog, onSuccess, onError }: { clo
     // const toast = useRef<Toast>(null);
 
     const [selectedCurrency, setSelectedCurrency] = useState('');
-    //É AQUI ONDE EU NAO SEI O QUE FAZER!
-    var currencyTypes = Object.values(CurrencyEnum); // como chamar essa variável currencyTypes corretamente para que liste as moedas?// 
-
-    // const show = (severity: ToastMessage["severity"], summary: string, detail: string) => {
-    //     toast.current?.show({ severity, summary, detail });
-    //     // closeDialog()
-    // };
+    var currencyTypes = Object.values(CurrencyEnum);
 
     const addWallets = async () => {
         try {
@@ -38,10 +32,6 @@ export default function IncludeWallet({ closeDialog, onSuccess, onError }: { clo
                 })
             onSuccess('success', 'Success', 'Carteira alterada com sucesso.');
             closeDialog();
-            // const interval = setInterval(() => {
-            //     window.location.reload();;
-            // }, 2 * 1000);
-            // return () => clearInterval(interval);
         }
         catch (err) {
             if (err = 400) {

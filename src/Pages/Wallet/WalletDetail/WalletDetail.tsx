@@ -15,7 +15,6 @@ import { Chart } from "primereact/chart";
 import { Toast, ToastMessage } from "primereact/toast";
 
 import { ConfirmDialog, confirmDialog } from "primereact/confirmdialog";
-import { WalletDto } from "../../../models/wallet.dto";
 import IncludeGroup from "./Dialogs/IncludeGroup";
 import { GroupDTO } from "../../../models/GroupDTO";
 
@@ -41,6 +40,7 @@ export default function WalletDetail() {
     detail: string
   ) => {
     toast.current?.show([{ severity, summary, detail }]);
+    fetchGroups();
   };
 
   const fetchCharts = async (params?: any) => {
@@ -247,13 +247,7 @@ export default function WalletDetail() {
           walletId={selectedWallet?.id!}
         ></IncludeGroup>
       </Dialog>
-      {/* <Dialog visible={showEditWallet} style={{ width: '50vw' }} onHide={() => setShowEditWallet(false)}>
-                <EditWallet wallet={selectedWallet} closeDialog={() => {
-                    setShowEditWallet(false);
-                    // showToast('success', 'Success', 'Carteira editada com sucesso.');
-                    fetchWallets();
-                }} onSuccess={showToast} onError={showToast}></EditWallet>
-            </Dialog> */}
+
       <ConfirmDialog />
     </div>
   );

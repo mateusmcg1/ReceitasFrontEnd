@@ -42,7 +42,7 @@ export default function Login() {
 
                 sessionStorage.setItem("access_token", result.data.access_token);
                 sessionStorage.setItem("refresh_token", result.data.refresh_token);
-                navigate('/admin', { replace: true })
+                navigate('/dashboard', { replace: true })
             }
 
             catch (err: any) {

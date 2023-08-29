@@ -6,7 +6,7 @@ import Balance from '../Pages/Balance/balance'
 import Due_Dated from '../Pages/Balance/due_dated'
 import Payable from '../Pages/Balance/payable'
 import Receivable from '../Pages/Balance/receivable'
-import Admin from '../Pages/Admin/Admin'
+import Dashboard from '../Pages/Dashboard/Admin'
 import Erro from '../Pages/Erro/erro'
 import Wallet from '../Pages/Wallet/Wallet'
 import Verifying from '../Pages/Verifying/verifying'
@@ -27,7 +27,7 @@ function Rotas() {
 
                 <Route element={<Casket />}>
                     <Route path='/balance' element={<Balance />} />
-                    <Route path='/admin' element={<Admin />} />
+                    <Route path='/dashboard' element={<Dashboard />} />
                     <Route path='/wallet' element={<Wallet />} />
                     <Route path='/wallet/detail/:selectedWallet' element={<WalletDetail />} />
                     <Route path='/due_dated' element={<Due_Dated />} />
