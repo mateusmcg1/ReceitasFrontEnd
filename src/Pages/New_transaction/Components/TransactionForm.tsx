@@ -32,8 +32,6 @@ export default function TransactionForm({
   const [installmentNumber, setInstallmentNumber] = useState(0);
   const [installments, setInstallments] = useState<Installment[]>([]);
   const [paid, setPaid] = useState(false);
-  const [groups, setGroups] = useState([]);
-  const [selectedGroup, setSelectedGroup] = useState<any>({});
 
   const asyncNewTransaction = async () => {
     try {
@@ -47,7 +45,6 @@ export default function TransactionForm({
           amount: value,
           wallet_id: walletId,
           paid: paid,
-          group_id: selectedGroup
         },
         {
           headers: {
@@ -69,23 +66,22 @@ export default function TransactionForm({
       value: null,
       date: [],
       selectedType: '',
-      group: ''
     },
     validate: (data) => {
       let errors: any = {};
 
-      !data.reference ? (
-        (errors.reference = data?.reference?.length === 0)
-      ) : <></>
-      !data.value ? (
-        (errors.value = data?.value === null)
-      ) : <></>
-      !data.date ? (
-        (errors.date = data?.date === null)
-      ) : <></>
-      !data.selectedType ? (
-        (errors.selectedType = data?.selectedType?.length === 0)
-      ) : <></>
+        !data.reference ? (
+          (errors.reference = data?.reference?.length === 0)
+        ) : <></>
+        !data.value ? (
+          (errors.value = data?.value === null)
+        ) : <></>
+        !data.date ? (
+          (errors.date = data?.date === null)
+        ) : <></>
+        !data.selectedType ? (
+          (errors.selectedType = data?.selectedType?.length === 0)
+        ) : <></>
 
       return errors;
     },
@@ -101,18 +97,7 @@ export default function TransactionForm({
     return !!formikToucheds[fieldName] && !!formikError[fieldName];
   };
 
-  const fetchGroups = async () => {
-    try {
-      const response = await axios.get(`${process.env.REACT_APP_API_URL}/v1/groups/${walletId}`, {
-        headers: {
-          Authorization: `Bearer ${sessionStorage.getItem("access_token")!}`,
-        }
-      });
-      setGroups(response.data)
-    } catch (err) {
-
-    }
-  }
+  
 
   const paidValidate = () => {
     const isPaid =
@@ -125,7 +110,7 @@ export default function TransactionForm({
 
   useEffect(() => {
     paidValidate();
-  }, [installments]);
+  },[installments]);
 
   const onUpdateItem = (installment: Installment, index: number) => {
     const installmentsArr = [...installments];
@@ -143,10 +128,6 @@ export default function TransactionForm({
     setInstallments(installmentArr);
   };
 
-  useEffect(() => {
-    fetchGroups();
-  }, []);
-
   return (
     <div>
       <form onSubmit={formik.handleSubmit}>
@@ -156,11 +137,10 @@ export default function TransactionForm({
               <InputText
                 id="reference"
                 name="reference"
-                value={formik.values.reference} 
+                value={formik.values.reference}
                 onChange={(e) => {
                   formik.setFieldValue("reference", e.target.value);
                   setReference(e.target.value);
-                 
                 }}
                 className={classNames({
                   "p-invalid": isFormFieldInvalid("reference"),
@@ -179,42 +159,16 @@ export default function TransactionForm({
                 value={formik.values.value}
                 onValueChange={(e) => {
                   formik.setFieldValue("value", e.value);
-                  setValue(Number(e.value));  
+                  setValue(Number(e.value));
                 }}
                 inputClassName={classNames({
                   "p-invalid": isFormFieldInvalid("value"),
                 })}
                 mode="currency"
-                currency={walletCurrency}
+                currency= {walletCurrency}
                 locale="pt-BR"
               />
               <label htmlFor="amount">Valor *</label>
-            </span>
-          </div>
-        </div>
-        <div className="grid" style={{ marginTop: "2%" }}>
-          <div className="col-12">
-            <span className="p-float-label">
-              <Dropdown
-                value={formik.values.group}
-                name="group"
-                onChange={(e: DropdownChangeEvent) => { setSelectedGroup(e.value); formik.setFieldValue('group', e.value) }}
-                className={classNames({
-                  "p-invalid w-full md:w-14rem": isFormFieldInvalid("group"),
-                })}
-                options={groups.map((g: any) => {
-                  return { label: g.name, value: g.id }
-                })}
-                // options={[
-                //   { label: "Cobrança", value: "BILLING" },
-                //   { label: "Pagamento", value: "PAYMENT" },
-                // ]}
-                optionLabel="label"
-                optionValue="value"
-                editable
-                placeholder="Selecione um tipo"
-              />
-              <label htmlFor="amount">Grupo</label>
             </span>
           </div>
         </div>
@@ -256,7 +210,7 @@ export default function TransactionForm({
               <Dropdown
                 value={formik.values.selectedType}
                 name="selectedType"
-                onChange={(e: DropdownChangeEvent) => { setSelectedType(e.value); formik.setFieldValue('selectedType', e.value) }}
+                onChange={(e: DropdownChangeEvent) => {setSelectedType(e.value); formik.setFieldValue('selectedType', e.value)}}
                 className={classNames({
                   "p-invalid w-full md:w-14rem": isFormFieldInvalid("selectedType"),
                 })}
