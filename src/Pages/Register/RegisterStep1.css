@@ -61,3 +61,17 @@
     width: 45%;
 }
 
+.back-login{
+    display: flex;
+   justify-content: center; 
+   margin-top: 4%;
+
+}
+
+.back-login a{
+    text-decoration: none;
+    /* color: #009BE7; */
+    color: rgb(84, 208, 246) ;
+    display:flex;
+    justify-content: center;
+}

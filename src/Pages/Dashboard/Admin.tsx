@@ -52,6 +52,7 @@ export default function Dashboard() {
                 }
             );
             setChartOut(result.data);
+            console.log(result.data)
             chartCashOut(params.currency, params.days_gone, result.data);
 
 
@@ -130,6 +131,7 @@ export default function Dashboard() {
 
             setCashIn(result.data.cashinAmount)
             setCashOut(result.data.cashoutAmount)
+           
             setFutureCashIn(result.data.futureCashin)
             setFutureCashOut(result.data.futureCashout)
 
@@ -151,6 +153,7 @@ export default function Dashboard() {
                     }),
                     backgroundColor: co.map((p, index) => {
                         return p.color
+                       
                     }),
                     hoverBackgroundColor: [
                         documentStyle.getPropertyValue('--blue-400'),
