@@ -38,9 +38,12 @@ function EmailRegister() {
                         firstName: firstName,
                         lastName: lastName,
                     })
+                    show('success', 'Success', 'Usuário registrado com sucesso.');
 
-
-                    navigate('/', { replace: true })
+                    setTimeout(() => {
+                        navigate('/login', { replace: true });
+                      }, 3000);
+                    
 
                 }
 
