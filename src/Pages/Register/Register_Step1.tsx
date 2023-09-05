@@ -99,6 +99,10 @@ function Register() {
 
                     </div>
 
+                    <div className="back-login">
+                        <Link to={`/login`}>Retornar ao Login</Link>
+                    </div>
+
 
                 </div>
             </div>

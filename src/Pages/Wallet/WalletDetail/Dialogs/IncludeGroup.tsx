@@ -70,7 +70,7 @@ export default function IncludeGroup({
               inputId="cp-hex"
               format="hex"
               value={colorHEX}
-              onChange={(e: ColorPickerChangeEvent) => setColorHEX(e.value!)}
+              onChange={(e: ColorPickerChangeEvent) => setColorHEX('#' + e.value!)}
               className="mb-2 col-1"
             />
           </div>
