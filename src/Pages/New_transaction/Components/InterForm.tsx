@@ -71,7 +71,9 @@ export default function InterForm({
         }
       );
       onSuccess("success", "Successo", "Transação incluida com sucesso.");
-      closeDialog();
+      setTimeout(() => {
+        closeDialog();
+      }, 3000);
     } catch (err) {
       {
         err = 400

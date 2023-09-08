@@ -56,7 +56,10 @@ export default function TransactionForm({
         }
       );
       onSuccess("success", "Successo", "Transação incluida com sucesso");
-      closeDialog();
+      setTimeout(() => {
+        closeDialog();
+      }, 3000);
+      
     } catch (err) {
       err = 400
         ? onError("error", "Erro", "Preencha os campos obrigatórios")
