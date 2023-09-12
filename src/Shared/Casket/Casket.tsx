@@ -45,7 +45,7 @@ export function Casket({ children }: { children?: any }) {
             ]
         },
         { label: 'Gestão de Carteiras', icon: 'pi pi-wallet', command: () => { navigateMenu('wallet') }, navigable: true },
-        { label: 'Loja', icon: 'pi pi-user', command: () => { }, navigable: true }
+        { label: 'Loja', icon: 'pi pi-user', command: () => {  navigateMenu('store')}, navigable: true }
     ];
     return (
         <div className="casket-container">
