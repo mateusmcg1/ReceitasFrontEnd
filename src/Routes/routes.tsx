@@ -13,6 +13,7 @@ import Verifying from '../Pages/Verifying/verifying'
 import { Casket } from '../Shared/Casket/Casket';
 import WalletDetail from '../Pages/Wallet/WalletDetail/WalletDetail';
 import StoreMainPage from '../Pages/Store/StoreMainPage';
+import Store2nd from '../Pages/Store/Store2ndPage';
 
 
 function Rotas() {
@@ -35,6 +36,7 @@ function Rotas() {
                     <Route path='/payable' element={<Payable />} />
                     <Route path='/receivable' element={<Receivable />} />
                     <Route path='/store' element={<StoreMainPage />} />
+                    <Route path='/store&step1' element={<Store2nd />} />
 
 
                 </Route>

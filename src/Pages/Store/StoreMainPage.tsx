@@ -3,6 +3,7 @@ import { useState } from "react";
 import "primeicons/primeicons.css";
 import './StoreMainPage.css'
 import { Button } from 'primereact/button';
+import { Link, useNavigate } from 'react-router-dom';
 
 
 export default function StoreMainPage() {
@@ -10,6 +11,7 @@ export default function StoreMainPage() {
     const [value1, setValue1] = useState(0);
     const [value2, setValue2] = useState(0);
     const [value3, setValue3] = useState(0);
+    let navigate = useNavigate();
 
     return (
         <div className="store-container">
@@ -37,7 +39,7 @@ export default function StoreMainPage() {
                                         </h3>
                                     </div>
                                     <div className='col-12'>
-                                        <Button label="COMPRAR" style={{ marginTop: '20%' }} />
+                                        <Button label="COMPRAR" onClick={ () => navigate('/store&step1')} style={{ marginTop: '20%' }} />
                                     </div>
                                 </div>
                             </div>
@@ -61,7 +63,7 @@ export default function StoreMainPage() {
                                     </div>
 
                                     <div className='col-12'>
-                                        <Button label="COMPRAR" style={{ marginTop: '20%' }} />
+                                        <Button label="COMPRAR" onClick={ () => navigate('/store&step1')} style={{ marginTop: '20%' }} />
                                     </div>
                                 </div>
                             </div>
@@ -84,7 +86,7 @@ export default function StoreMainPage() {
                                     </div>
 
                                     <div className='col-12'>
-                                        <Button label="COMPRAR" style={{ marginTop: '20%' }} />
+                                        <Button label="COMPRAR" onClick={ () => navigate('/store&step1')} style={{ marginTop: '20%' }} />
                                     </div>
                                 </div>
                             </div>

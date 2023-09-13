@@ -4,13 +4,17 @@
         font-size: 35px !important;
       }
 
+      .store-card svg{
+        min-width: 80%;
+      }
+
       
       .store-card h3{
         font-size: 18px !important;
         
       }
       .store-card h4{
-        font-size: 18px !important;
+        font-size: 16px !important;
         display: flex !important;
         justify-content: center !important;
         text-align: center;
@@ -19,7 +23,7 @@
       .store-card .p-button{
         display: flex !important;
         justify-content: center !important;
-        width: 70% !important;
+        width: 65% !important;
       }
 
       .store-card .p-button-label{
@@ -34,7 +38,9 @@
 }
 
 .store-container{
-    height: 100vh;
+    height: 95vh;
+    width: 95%;
+    
 }
 
 .store-card{
