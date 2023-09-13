@@ -1,4 +1,4 @@
-import LogoSVGWithoutPJXWritten from '../../Shared/img/LogoSVGWithoutPJXWritten'
+import LogoSVGWithoutPJXWritten from '../../../Shared/img/LogoSVGWithoutPJXWritten'
 import { useState } from "react";
 import "primeicons/primeicons.css";
 import './StoreMainPage.css'
@@ -39,7 +39,7 @@ export default function StoreMainPage() {
                                         </h3>
                                     </div>
                                     <div className='col-12'>
-                                        <Button label="COMPRAR" onClick={ () => navigate('/store&step1')} style={{ marginTop: '20%' }} />
+                                        <Button label="COMPRAR" onClick={ () => navigate('/store&steps')} style={{ marginTop: '20%' }} />
                                     </div>
                                 </div>
                             </div>
@@ -63,7 +63,7 @@ export default function StoreMainPage() {
                                     </div>
 
                                     <div className='col-12'>
-                                        <Button label="COMPRAR" onClick={ () => navigate('/store&step1')} style={{ marginTop: '20%' }} />
+                                        <Button label="COMPRAR" onClick={ () => navigate('/store&steps')} style={{ marginTop: '20%' }} />
                                     </div>
                                 </div>
                             </div>
@@ -86,7 +86,7 @@ export default function StoreMainPage() {
                                     </div>
 
                                     <div className='col-12'>
-                                        <Button label="COMPRAR" onClick={ () => navigate('/store&step1')} style={{ marginTop: '20%' }} />
+                                        <Button label="COMPRAR" onClick={ () => navigate('/store&steps')} style={{ marginTop: '20%' }} />
                                     </div>
                                 </div>
                             </div>
