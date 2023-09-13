@@ -1,7 +1,6 @@
 import { Dropdown } from "primereact/dropdown";
 import { InputText } from "primereact/inputtext";
 import { useState } from "react";
-import './Step3.css'
 import { Calendar } from "primereact/calendar";
 
 
