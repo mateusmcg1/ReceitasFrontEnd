@@ -16,6 +16,7 @@ import { Toast, ToastMessage } from "primereact/toast";
 
 import { ConfirmDialog, confirmDialog } from "primereact/confirmdialog";
 import IncludeGroup from "./Dialogs/IncludeGroup";
+import EditGroup from "./Dialogs/editGroup";
 import { GroupDTO } from "../../../models/GroupDTO";
 
 export default function WalletDetail() {
@@ -226,7 +227,7 @@ export default function WalletDetail() {
           <Column field="label" header="Label"></Column>
           <Column field="color" header="Cor" body={(data) => {
             return (
-              <div style={{ backgroundColor: `#${data.color}`, width: '27px', height: '27px', borderRadius: '10%' }}></div>
+              <div style={{ backgroundColor: `${data.color}`, width: '27px', height: '27px', borderRadius: '10%' }}></div>
             );
           }}></Column>
         </DataTable>
@@ -246,6 +247,23 @@ export default function WalletDetail() {
           onError={showToast}
           walletId={selectedWallet?.id!}
         ></IncludeGroup>
+      </Dialog>
+      
+      <Dialog
+        visible={showEditWallet}
+        style={{ width: "50vw" }}
+        onHide={() => {
+          setShowNewGroup(false);
+        }}
+      >
+        <EditGroup
+          closeDialog={() => {
+            setShowEditWallet(false);
+          }}
+          onSuccess={showToast}
+          onError={showToast}
+          group={selectedGroup}
+        ></EditGroup>
       </Dialog>
 
       <ConfirmDialog />
