@@ -155,11 +155,11 @@ export default function Dashboard() {
                         return p.color
                        
                     }),
-                    hoverBackgroundColor: [
-                        documentStyle.getPropertyValue('--blue-400'),
-                        documentStyle.getPropertyValue('--yellow-400'),
-                        documentStyle.getPropertyValue('--green-400')
-                    ]
+                    // hoverBackgroundColor: [
+                    //     documentStyle.getPropertyValue('--blue-400'),
+                    //     documentStyle.getPropertyValue('--yellow-400'),
+                    //     documentStyle.getPropertyValue('--green-400')
+                    // ]
                 }
             ]
         };
@@ -185,11 +185,11 @@ export default function Dashboard() {
                     backgroundColor: ci.map((p, index) => {
                         return p.color
                     }),
-                    hoverBackgroundColor: [
-                        documentStyle.getPropertyValue('--blue-400'),
-                        documentStyle.getPropertyValue('--yellow-400'),
-                        documentStyle.getPropertyValue('--green-400')
-                    ]
+                    // hoverBackgroundColor: [
+                    //     documentStyle.getPropertyValue('--blue-400'),
+                    //     documentStyle.getPropertyValue('--yellow-400'),
+                    //     documentStyle.getPropertyValue('--green-400')
+                    // ]
                 }
             ]
         };
