@@ -33,7 +33,7 @@ export default function TransactionForm({
   const [installments, setInstallments] = useState<Installment[]>([]);
   const [paid, setPaid] = useState(false);
   const [groups, setGroups] = useState([]);
-  const [selectedGroup, setSelectedGroup] = useState<any>({});
+  const [selectedGroup, setSelectedGroup] = useState<any>();
 
   const asyncNewTransaction = async () => {
     try {
@@ -62,7 +62,7 @@ export default function TransactionForm({
       
     } catch (err) {
       err = 400
-        ? onError("error", "Erro", "Preencha os campos obrigatórios")
+        ? (onError("error", "Erro", "Preencha os campos obrigatórios"))
         : onError("error", "Erro", "");
     }
   };
@@ -201,17 +201,14 @@ export default function TransactionForm({
               <Dropdown
                 value={formik.values.group}
                 name="group"
-                onChange={(e: DropdownChangeEvent) => { setSelectedGroup(e.value); formik.setFieldValue('group', e.value) }}
+                onChange={(e: DropdownChangeEvent) => { setSelectedGroup(e.value!); formik.setFieldValue('group', e.value) }}
                 className={classNames({
                   "p-invalid w-full md:w-14rem": isFormFieldInvalid("group"),
                 })}
                 options={groups.map((g: any) => {
                   return { label: g.name, value: g.id }
                 })}
-                // options={[
-                //   { label: "Cobrança", value: "BILLING" },
-                //   { label: "Pagamento", value: "PAYMENT" },
-                // ]}
+              
                 optionLabel="label"
                 optionValue="value"
                 editable
