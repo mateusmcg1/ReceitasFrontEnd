@@ -19,16 +19,21 @@ export function Casket({ children }: { children?: any }) {
         setShowMenu(false);
     }
     useEffect(() => {
-        const decoded: any = jwtDecode(sessionStorage.getItem('access_token')!);
-        setUserName(`${decoded.given_name} ${decoded.family_name}`);
+        if (sessionStorage.getItem('access_token')!) {
+            const decoded: any = jwtDecode(sessionStorage.getItem('access_token')!);
+            setUserName(`${decoded.given_name} ${decoded.family_name}`);
+        } else {
+            navigate('login')
+        }
+
     }, []);
 
     const location = useLocation();
 
     let items = [
-        { label: 'Dashboard', icon: 'pi pi-user', command: () => {navigateMenu('dashboard') }, navigable: true },
+        { label: 'Dashboard', icon: 'pi pi-user', command: () => { navigateMenu('dashboard') }, navigable: true },
         {
-            
+
             label: 'Balanço', icon: 'pi pi-dollar', command: () => { }, navigable: false, items: [
                 {
                     label: 'Total', icon: 'pi pi-dollar', command: () => { navigateMenu('balance') }, navigable: true
@@ -45,7 +50,7 @@ export function Casket({ children }: { children?: any }) {
             ]
         },
         { label: 'Gestão de Carteiras', icon: 'pi pi-wallet', command: () => { navigateMenu('wallet') }, navigable: true },
-        { label: 'Loja', icon: 'pi pi-user', command: () => { }, navigable: true }
+        { label: 'Loja', icon: 'pi pi-user', command: () => { navigateMenu('store') }, navigable: true }
     ];
     return (
         <div className="casket-container">
