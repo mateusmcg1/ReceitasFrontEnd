@@ -218,22 +218,7 @@ export default function Dashboard() {
                     data: Object.keys(p[keyName]).map((month) => p[keyName][month])
                 }
             })
-            // datasets: [
-            //     {
-            //         label: profitability.map((p, index) => {
-            //             return 
-            //         }),
-            //         backgroundColor: documentStyle.getPropertyValue('--blue-500'),
-            //         borderColor: documentStyle.getPropertyValue('--blue-500'),
-            //         data: [65, 59, 80, 81, 56, 55, 40]
-            //     },
-            // //     {
-            // //         label: 'Wallet2',
-            // //         backgroundColor: documentStyle.getPropertyValue('--pink-500'),
-            // //         borderColor: documentStyle.getPropertyValue('--pink-500'),
-            // //         data: [28, 48, 40, 19, 86, 27, 90]
-            // //     }
-            // ]
+
         };
         const options = {
             maintainAspectRatio: false,
@@ -401,8 +386,7 @@ export default function Dashboard() {
                                 <div className='flux-data' style={{ marginTop: '2%' }}>
                                     <div className='flux'>
                                         <h4 style={{ color: '#A5A5A5' }}>Entrada</h4>
-                                        <span style={{ color: '#0F9803', }}>{cashIn
-                                            .toLocaleString("pt-BR", {
+                                        <span style={{ color: '#0F9803', }}>{cashIn?.toLocaleString("pt-BR", {
                                                 style: "currency",
                                                 currency: selectedCurrency,
                                             })
@@ -411,8 +395,7 @@ export default function Dashboard() {
                                     </div>
                                     <div className='flux'>
                                         <h4 style={{ color: '#A5A5A5' }}>Saída</h4>
-                                        <span style={{ color: '#A60000', }}>{cashOut
-                                            .toLocaleString("pt-BR", {
+                                        <span style={{ color: '#A60000', }}>{cashOut?.toLocaleString("pt-BR", {
                                                 style: "currency",
                                                 currency: selectedCurrency,
                                             })
@@ -422,11 +405,11 @@ export default function Dashboard() {
                                     </div>
                                     <div className='flux'>
                                         <h4 style={{ color: '#A5A5A5' }}>Futuro</h4>
-                                        <h5 style={{ color: '#A5A5A5' }}>Entrada: {FutureCashIn.toLocaleString("pt-BR", {
+                                        <h5 style={{ color: '#A5A5A5' }}>Entrada: {FutureCashIn?.toLocaleString("pt-BR", {
                                             style: "currency",
                                             currency: selectedCurrency,
                                         })}</h5>
-                                        <h5 style={{ color: '#A5A5A5' }}>Saída: {FutureCashOut.toLocaleString("pt-BR", {
+                                        <h5 style={{ color: '#A5A5A5' }}>Saída: {FutureCashOut?.toLocaleString("pt-BR", {
                                             style: "currency",
                                             currency: selectedCurrency,
                                         })}</h5>

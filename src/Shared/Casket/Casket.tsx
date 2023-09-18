@@ -79,7 +79,7 @@ export function Casket({ children }: { children?: any }) {
                     <div style={{ width: '100%', backgroundColor: '#2b2b2b' }}>
                         <div style={{ height: '100px' }}></div>
                         {items.map((menuItem, index) => {
-                            return <div>
+                            return <div key={index}>
                                 <div className="menu-item" key={index} style={{ cursor: menuItem.navigable ? 'pointer' : 'auto' }} onClick={() => {
                                     setActiveMenuItem(menuItem);
                                     menuItem?.command!()
@@ -90,7 +90,7 @@ export function Casket({ children }: { children?: any }) {
                                     </div>
                                 </div>
                                 {menuItem?.items?.map((subItem, index) => {
-                                    return <div className="submenu-item" onClick={() => {
+                                    return <div key={index} className="submenu-item" onClick={() => {
                                         setActiveMenuItem(menuItem);
                                         subItem.command!();
                                     }}>
