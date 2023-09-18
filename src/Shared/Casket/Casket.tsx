@@ -19,16 +19,21 @@ export function Casket({ children }: { children?: any }) {
         setShowMenu(false);
     }
     useEffect(() => {
-        const decoded: any = jwtDecode(sessionStorage.getItem('access_token')!);
-        setUserName(`${decoded.given_name} ${decoded.family_name}`);
+        if (sessionStorage.getItem('access_token')!) {
+            const decoded: any = jwtDecode(sessionStorage.getItem('access_token')!);
+            setUserName(`${decoded.given_name} ${decoded.family_name}`);
+        } else {
+            navigate('login')
+        }
+
     }, []);
 
     const location = useLocation();
 
     let items = [
-        { label: 'Dashboard', icon: 'pi pi-user', command: () => {navigateMenu('dashboard') }, navigable: true },
+        { label: 'Dashboard', icon: 'pi pi-user', command: () => { navigateMenu('dashboard') }, navigable: true },
         {
-            
+
             label: 'Balanço', icon: 'pi pi-dollar', command: () => { }, navigable: false, items: [
                 {
                     label: 'Total', icon: 'pi pi-dollar', command: () => { navigateMenu('balance') }, navigable: true
@@ -45,7 +50,7 @@ export function Casket({ children }: { children?: any }) {
             ]
         },
         { label: 'Gestão de Carteiras', icon: 'pi pi-wallet', command: () => { navigateMenu('wallet') }, navigable: true },
-        { label: 'Loja', icon: 'pi pi-user', command: () => {  navigateMenu('store')}, navigable: true }
+        { label: 'Loja', icon: 'pi pi-user', command: () => { navigateMenu('store') }, navigable: true }
     ];
     return (
         <div className="casket-container">
@@ -79,7 +84,7 @@ export function Casket({ children }: { children?: any }) {
                     <div style={{ width: '100%', backgroundColor: '#2b2b2b' }}>
                         <div style={{ height: '100px' }}></div>
                         {items.map((menuItem, index) => {
-                            return <div>
+                            return <div key={index}>
                                 <div className="menu-item" key={index} style={{ cursor: menuItem.navigable ? 'pointer' : 'auto' }} onClick={() => {
                                     setActiveMenuItem(menuItem);
                                     menuItem?.command!()
@@ -90,7 +95,7 @@ export function Casket({ children }: { children?: any }) {
                                     </div>
                                 </div>
                                 {menuItem?.items?.map((subItem, index) => {
-                                    return <div className="submenu-item" onClick={() => {
+                                    return <div key={index} className="submenu-item" onClick={() => {
                                         setActiveMenuItem(menuItem);
                                         subItem.command!();
                                     }}>

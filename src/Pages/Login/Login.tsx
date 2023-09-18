@@ -8,6 +8,7 @@ import axios from "axios";
 import { Toast, ToastMessage } from 'primereact/toast'
 import SVGLogo from '../../Shared/img/LogoSVG'
 import Video from '../../Shared/img/PeopleBusiness.mp4'
+import httpService from "../../Shared/HttpHelper/pjx-http.helper";
 
 export default function Login() {
 
@@ -27,21 +28,19 @@ export default function Login() {
 
     }, []);
 
-    async function LogUser(e:any) {
+    async function LogUser(e: any) {
 
         e.preventDefault();
         if (user !== '' && senha !== '') {
 
             try {
-                const result = await axios.post(`${process.env.REACT_APP_API_URL}/v1/authentication/login`, {
-
+                const result = await httpService.post(`${process.env.REACT_APP_API_URL}/v1/authentication/login`, {
                     username: user,
                     password: senha,
+                });
 
-                })
-
-                sessionStorage.setItem("access_token", result.data.access_token);
-                sessionStorage.setItem("refresh_token", result.data.refresh_token);
+                sessionStorage.setItem("access_token", result?.data.access_token);
+                sessionStorage.setItem("refresh_token", result?.data.refresh_token);
                 navigate('/dashboard', { replace: true })
             }
 
@@ -61,7 +60,7 @@ export default function Login() {
     return (
 
         <div className="container">
-            
+
             <div className="fitting">
 
                 <video width="100%" height="100%" style={{ objectFit: "cover" }} loop autoPlay muted >
@@ -77,7 +76,7 @@ export default function Login() {
                     </div>
 
                     <form onSubmit={(e) => LogUser(e)}>
-                    <Toast ref={toast} />
+                        <Toast ref={toast} />
                         <div className="login-user" style={{ width: "100%" }}>
 
                             <label>Usuário</label>

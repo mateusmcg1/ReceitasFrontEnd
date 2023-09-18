@@ -40,7 +40,7 @@ export default function Wallet() {
             command: async () => {
                 console.log(selectedWallet);
                 setShowEditWallet(true); //Basically I set this to call a dialog which invokes the editWallet component so the user can edit the infos 
-                //from the selected row in the table. At the moment, user needs to refresh the page to see the result.  
+                //from the selected row in the table.
             }
         },
         {
