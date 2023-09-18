@@ -4,6 +4,7 @@ import "primeicons/primeicons.css";
 import './StoreMainPage.css'
 import { Button } from 'primereact/button';
 import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 
 export default function StoreMainPage() {
@@ -12,6 +13,23 @@ export default function StoreMainPage() {
     const [value2, setValue2] = useState(0);
     const [value3, setValue3] = useState(0);
     let navigate = useNavigate();
+
+    const fetchCards = async (params?: any) => {
+        try {
+          const result = await axios.get(
+            `${process.env.REACT_APP_API_URL}/v1/charts/cashflow`,
+            {
+              headers: {
+                Authorization: `Bearer ${sessionStorage.getItem("access_token")}`,
+              },
+              params,
+            }
+          );
+          
+        } catch (err) {
+          alert(err);
+        }
+      };
 
     return (
         <div className="store-container">
