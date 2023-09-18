@@ -75,7 +75,7 @@ export default function EditGroup({
     }, []);
     return (
       <div className="inclusao-container grid">
-        <h1>Incluir Grupo</h1>
+        <h1>Editar Grupo</h1>
   
         <div className="inclusao-frame grid">
           <label htmlFor="text1" style={{ marginBottom: "1%" }}>
@@ -103,7 +103,7 @@ export default function EditGroup({
             </div>
   
           <div className="inclusao-button">
-            {<Button label="INCLUIR" onClick={() => ChangeGroup()} />}
+            {<Button label="EDITAR" onClick={() => ChangeGroup()} />}
           </div>
         </div>
       </div>

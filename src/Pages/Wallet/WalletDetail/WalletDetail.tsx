@@ -253,7 +253,7 @@ export default function WalletDetail() {
         visible={showEditWallet}
         style={{ width: "50vw" }}
         onHide={() => {
-          setShowNewGroup(false);
+          setShowEditWallet(false);
         }}
       >
         <EditGroup
