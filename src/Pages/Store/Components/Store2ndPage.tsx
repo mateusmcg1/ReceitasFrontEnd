@@ -82,7 +82,7 @@ export default function Store2ndPage() {
 
                 <div className='store-container'>
 
-                    <div className='steps' style={{ marginBottom: '1%', width: '92%' }}>
+                    <div className='steps' style={{ marginBottom: '1%', width: '100%' }}>
                         <Steps model={items} activeIndex={activeIndex} onSelect={(e) => setActiveIndex(e.index)} readOnly={true} style={{ marginBottom: '5%' }} />
 
                     </div>
