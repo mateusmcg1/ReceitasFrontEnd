@@ -110,7 +110,7 @@ export default function Step3() {
                     </div>
 
                 </div>
-                <div className="grid" style={{ marginTop: '2%',  marginBottom:'2%' }}>
+                <div className="grid" style={{ marginTop: '2%', marginBottom: '2%' }}>
                     <div className="col-3">
                         <span className="p-float-label" >
                             <InputText value={value9} onChange={(e) => setValue9(e.target.value)} />
@@ -126,7 +126,7 @@ export default function Step3() {
                     </div>
                 </div>
 
-                <span style={{ fontSize: '16px', marginLeft: '0.3%' }}>Dados do Cartão</span>
+                {/* <span style={{ fontSize: '16px', marginLeft: '0.3%' }}>Dados do Cartão</span>
 
                 <div className="grid" style={{ marginTop: '2%' }}>
                     <div className="col-4">
@@ -164,7 +164,7 @@ export default function Step3() {
                             <label htmlFor="payment">Parcelas</label>
                         </span>
                     </div>
-                </div>
+                </div> */}
             </div>
         </div>
 

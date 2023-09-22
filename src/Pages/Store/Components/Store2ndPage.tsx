@@ -35,7 +35,7 @@ export default function Store2ndPage() {
             label: 'Resumo',
             command: (event) => {
                 // showToast('info', 'First Step', 'deu certo');
-                
+
             }
 
         },
@@ -43,20 +43,20 @@ export default function Store2ndPage() {
             label: 'Forma de Pagamento',
             command: (event) => {
                 // showToast('info', 'Second Step', 'deu certo');
-                
+
             }
         },
         {
             label: 'Pagamento',
             command: (event) => {
-                
+
             }
         }
     ];
     const RenderingPage = () => {
         switch (activeIndex) {
             case 0:
-                return (<Step1 productId={cardId} />)
+                return (<Step1 productId={cardId} setNextStep={setActiveIndex}/>)
                 break;
 
             case 1:
@@ -68,7 +68,7 @@ export default function Store2ndPage() {
                 return (<Step3 />)
                 break;
             default:
-                
+
                 return (<></>)
         }
     }
@@ -83,24 +83,13 @@ export default function Store2ndPage() {
                 <div className='store-container'>
 
                     <div className='steps' style={{ marginBottom: '1%', width: '92%' }}>
-                        <Steps model={items} activeIndex={activeIndex} onSelect={(e) => setActiveIndex(e.index)} readOnly={true } style={{ marginBottom: '5%' }} />
+                        <Steps model={items} activeIndex={activeIndex} onSelect={(e) => setActiveIndex(e.index)} readOnly={true} style={{ marginBottom: '5%' }} />
 
                     </div>
                     <div>
                         <RenderingPage />
                     </div>
-                  
-                        <div className='grid' style={{ marginTop: '5%', width: '93%' }} >
-                            <div className='col-11'>
-                            </div>
-                            
-                            <div className='col-1'>
-                            <div className="secondButton">
-                                <Button label="PRÓXIMO"/>
-
-                            </div>
-                        </div>
-                    </div>
+   
                 </div>
             </div>
         </div>
