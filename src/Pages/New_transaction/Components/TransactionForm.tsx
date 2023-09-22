@@ -94,11 +94,12 @@ export default function TransactionForm({
     },
     onSubmit: (data) => {
       data && onError(data);
+      console.log(data)
       formik.resetForm();
     },
   });
 
-  const   isFormFieldInvalid = (fieldName: string) => {
+  const isFormFieldInvalid = (fieldName: string) => {
     const formikToucheds: any = formik.touched;
     const formikError: any = formik.errors;
     return !!formikToucheds[fieldName] && !!formikError[fieldName];
