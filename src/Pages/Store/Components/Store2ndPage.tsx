@@ -3,7 +3,7 @@ import './Store2ndPage.css'
 import "primeicons/primeicons.css";
 import './StoreMainPage.css'
 import { Button } from 'primereact/button';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { MenuItem } from 'primereact/menuitem';
 import { Steps } from 'primereact/steps';
 import { Toast, ToastMessage } from 'primereact/toast';
@@ -14,6 +14,7 @@ import Step3 from './Step3'
 
 export default function Store2ndPage() {
 
+    let { cardId } = useParams();
     const [value1, setValue1] = useState(0);
     const [value2, setValue2] = useState(0);
     const [value3, setValue3] = useState(0);
@@ -34,29 +35,28 @@ export default function Store2ndPage() {
             label: 'Resumo',
             command: (event) => {
                 // showToast('info', 'First Step', 'deu certo');
-                <Step1 />
+                
             }
 
         },
         {
-            label: 'Pagamento',
+            label: 'Forma de Pagamento',
             command: (event) => {
                 // showToast('info', 'Second Step', 'deu certo');
-                <Step2 />
+                
             }
         },
         {
-            label: 'Conclusão',
+            label: 'Pagamento',
             command: (event) => {
-                // showToast('info', 'Third Step', 'deu certo');
-                <Step3 />
+                
             }
         }
     ];
     const RenderingPage = () => {
         switch (activeIndex) {
             case 0:
-                return (<Step1 />)
+                return (<Step1 productId={cardId} />)
                 break;
 
             case 1:
@@ -68,7 +68,7 @@ export default function Store2ndPage() {
                 return (<Step3 />)
                 break;
             default:
-                console.log(`Sorry, we are out of ${activeIndex}.`);
+                
                 return (<></>)
         }
     }
@@ -83,7 +83,7 @@ export default function Store2ndPage() {
                 <div className='store-container'>
 
                     <div className='steps' style={{ marginBottom: '1%', width: '92%' }}>
-                        <Steps model={items} activeIndex={activeIndex} onSelect={(e) => setActiveIndex(e.index)} readOnly={false} style={{ marginBottom: '5%' }} />
+                        <Steps model={items} activeIndex={activeIndex} onSelect={(e) => setActiveIndex(e.index)} readOnly={true } style={{ marginBottom: '5%' }} />
 
                     </div>
                     <div>
@@ -96,7 +96,7 @@ export default function Store2ndPage() {
                             
                             <div className='col-1'>
                             <div className="secondButton">
-                                <Button label="PRÓXIMO" />
+                                <Button label="PRÓXIMO"/>
 
                             </div>
                         </div>

@@ -36,7 +36,7 @@ function Rotas() {
                     <Route path='/payable' element={<Payable />} />
                     <Route path='/receivable' element={<Receivable />} />
                     <Route path='/store' element={<StoreMainPage />} />
-                    <Route path='/store&steps' element={<Store2nd />} />
+                    <Route path='/storeresume/:cardId' element={<Store2nd />} />
 
 
                 </Route>
