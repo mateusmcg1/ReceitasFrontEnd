@@ -7,6 +7,8 @@ import { Button } from 'primereact/button';
 import { Toast, ToastMessage } from 'primereact/toast'
 import axios from "axios";
 import Video from '../../Shared/img/PeopleBusiness.mp4'
+import { Dropdown } from "primereact/dropdown";
+import { Calendar } from "primereact/calendar";
 
 
 function EmailRegister() {
@@ -18,32 +20,36 @@ function EmailRegister() {
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const toast = useRef<Toast>(null);
+    const [sex, setSex] = useState('female');
+    const [birthdate, setBirthdate] = useState<Date | Date[] | string>(new Date());
 
 
     const show = (severity: ToastMessage["severity"], summary: string, detail: string) => {
         toast.current?.show({ severity, summary, detail });
     };
 
-    const novoUsuario = async (e:any) => {
+    const novoUsuario = async (e: any) => {
 
         e.preventDefault();
         if (user !== '' && password !== '' && firstName !== "" && lastName !== '' && confirmationPassword !== '') {
 
             if (password === confirmationPassword) {
                 try {
-                    const result = await axios.post(`${process.env.REACT_APP_API_URL}/v1/users`, {
+                    const result = await axios.post(`${process.env.REACT_APP_API_URL}/v2/users`, {
 
                         email: user,
                         password: password,
-                        firstName: firstName,
-                        lastName: lastName,
+                        given_name: firstName,
+                        family_name: lastName,
+                        gender: sex,
+                        birthdate,
                     })
                     show('success', 'Success', 'Usuário registrado com sucesso.');
 
                     setTimeout(() => {
                         navigate('/login', { replace: true });
-                      }, 3000);
-                    
+                    }, 3000);
+
 
                 }
 
@@ -94,6 +100,13 @@ function EmailRegister() {
 
                         <label>Segundo Nome</label>
                         <InputText value={lastName} onChange={(e) => setLastName(e.target.value)} />
+
+                        <label>Data de Nascimento</label>
+                        <Calendar value={birthdate} onChange={(e) => setBirthdate(e.target.value!)} />
+
+                        <label>Sexo</label>
+                        <Dropdown value={sex} onChange={(e) => setSex(e.value)} options={[{ label: 'Feminino', value: 'female' }, { label: 'Masculino', value: 'male' }]} optionLabel="label"
+                            className="w-full md:w-14rem" optionValue="value" />
 
                         <Button label="Registrar" onClick={(e) => novoUsuario(e)} style={{ marginTop: "10%" }} />
 

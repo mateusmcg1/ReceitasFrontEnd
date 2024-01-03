@@ -9,6 +9,7 @@ import { Toast, ToastMessage } from 'primereact/toast'
 import SVGLogo from '../../Shared/img/LogoSVG'
 import Video from '../../Shared/img/PeopleBusiness.mp4'
 import httpService from "../../Shared/HttpHelper/pjx-http.helper";
+import { authenticateCognito, signUpCognito } from "../../Shared/GoogleAuth/GoogleAuth";
 
 export default function Login() {
 
@@ -33,22 +34,28 @@ export default function Login() {
         e.preventDefault();
         if (user !== '' && senha !== '') {
 
+            // await authenticateCognito(user, senha).then(() => {
+            //     navigate('/dashboard', { replace: true })
+            // })
+
             try {
-                const result = await httpService.post(`${process.env.REACT_APP_API_URL}/v1/authentication/login`, {
-                    username: user,
+                const result = await httpService.post(`${process.env.REACT_APP_API_URL}/v2/authentication/login`, {
+                    email: user,
                     password: senha,
                 });
 
-                sessionStorage.setItem("access_token", result?.data.access_token);
-                sessionStorage.setItem("refresh_token", result?.data.refresh_token);
+                sessionStorage.setItem("access_token", result?.data.idToken.jwtToken);
+                sessionStorage.setItem("refresh_token", result?.data.idToken.refreshToken);
                 navigate('/dashboard', { replace: true })
             }
 
             catch (err: any) {
+                console.log(err);
                 //  alert('Usuário não credenciado.')
                 show('error', 'Erro', 'Usuário não credenciado');
 
             }
+
         }
 
         else {
@@ -84,10 +91,9 @@ export default function Login() {
                         </div>
                         <div style={{ marginTop: "1%", width: "100%" }}>
                             <label>Senha</label>
-                            <Password value={senha} onChange={(e) => setSenha(e.target.value)} feedback={false} />
+                            <Password value={senha} onChange={(e) => setSenha(e.target.value)} feedback={false} toggleMask />
 
                         </div>
-
                         <Button label="Entrar" onClick={(e) => LogUser(e)} style={{ marginTop: "10%" }} />
 
                         <div className="Register" style={{ marginTop: "5%" }}>
