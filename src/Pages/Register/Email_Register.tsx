@@ -42,7 +42,7 @@ function EmailRegister() {
                         given_name: firstName,
                         family_name: lastName,
                         gender: sex,
-                        birthdate,
+                        birthdate: birthdate,
                     })
                     show('success', 'Success', 'Usuário registrado com sucesso.');
 
