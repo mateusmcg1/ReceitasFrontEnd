@@ -14,6 +14,7 @@ import { Casket } from '../Shared/Casket/Casket';
 import WalletDetail from '../Pages/Wallet/WalletDetail/WalletDetail';
 import StoreMainPage from '../Pages/Store/Components/StoreMainPage';
 import Store2nd from '../Pages/Store/Components/Store2ndPage';
+import { ConfirmationCode } from '../Pages/Register/Confirmation_Code';
 
 
 function Rotas() {
@@ -26,6 +27,7 @@ function Rotas() {
                 <Route path='/login' element={<Login />} />
                 <Route path='/email_register' element={<EmailRegister />} />
                 <Route path='/register' element={<Register />} />
+                <Route path='/confirmationcode' element={<ConfirmationCode/>}/>
 
                 <Route element={<Casket />}>
                     <Route path='/balance' element={<Balance />} />
