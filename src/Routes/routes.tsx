@@ -5,7 +5,6 @@ import Register from '../Pages/Register/Register_Step1'
 import Dashboard from '../Pages/Dashboard/Admin'
 import Erro from '../Pages/Erro/erro'
 import Wallet from '../Pages/Wallet/Wallet'
-import Verifying from '../Pages/Verifying/verifying'
 import { Casket } from '../Shared/Casket/Casket';
 import WalletDetail from '../Pages/Wallet/WalletDetail/WalletDetail';
 import StoreMainPage from '../Pages/Store/Components/StoreMainPage';
@@ -19,7 +18,7 @@ function Rotas() {
         <BrowserRouter>
             <Routes>
 
-                <Route path='/' element={<Verifying />} />
+                <Route path='/' element={<Login/>} />
                 <Route path='/login' element={<Login />} />
                 <Route path='/email_register' element={<EmailRegister />} />
                 <Route path='/register' element={<Register />} />

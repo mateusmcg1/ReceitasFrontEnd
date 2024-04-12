@@ -7,9 +7,7 @@ import { Button } from 'primereact/button';
 import axios from "axios";
 import { Toast, ToastMessage } from 'primereact/toast'
 import SVGLogo from '../../Shared/img/LogoSVG'
-import Video from '../../Shared/img/PeopleBusiness.mp4'
 import httpService from "../../Shared/HttpHelper/pjx-http.helper";
-import { authenticateCognito, signUpCognito } from "../../Shared/GoogleAuth/GoogleAuth";
 
 export default function Login() {
 
@@ -70,9 +68,9 @@ export default function Login() {
 
             <div className="fitting">
 
-                <video width="100%" height="100%" style={{ objectFit: "cover" }} loop autoPlay muted >
-                    <source src={Video} type="video/mp4" />
-                </video>
+                <image width="100%" height="100%" style={{ objectFit: "cover" }} >
+                    {/* <source src={Image} type="video/mp4" /> */}
+                </image>
             </div>
 
             <div className="login">
