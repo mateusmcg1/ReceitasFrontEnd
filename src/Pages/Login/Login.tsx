@@ -31,16 +31,16 @@ export default function Login() {
 
         e.preventDefault();
         if (user !== '' && senha !== '') {
-
-            // await authenticateCognito(user, senha).then(() => {
-            //     navigate('/dashboard', { replace: true })
-            // })
-
             try {
-                // const result = await httpService.post(`${process.env.REACT_APP_API_URL}/v2/authentication/login`, {
-                //     email: user,
-                //     password: senha,
-                // });
+                const formData = new FormData();
+                formData.append('username', user);
+                formData.append('password', senha);
+
+                const result = await axios.post("http://localhost:8080/login", formData, {
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    }
+                });
 
                 // sessionStorage.setItem("access_token", result?.data.idToken.jwtToken);
                 // sessionStorage.setItem("refresh_token", result?.data.idToken.refreshToken);
@@ -95,7 +95,7 @@ export default function Login() {
                         <Button label="Entrar" onClick={(e) => LogUser(e)} style={{ marginTop: "10%" }} />
 
                         <div className="Register" style={{ marginTop: "5%" }}>
-                            <Link to={`/register`}>Não possuo conta</Link>
+                            {/* <Link to={`/register`}>Não possuo conta</Link> */}
                         </div>
                     </form>
                 </div>

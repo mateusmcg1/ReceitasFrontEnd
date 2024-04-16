@@ -117,7 +117,7 @@ export default function Wallet() {
             <Toast ref={toast} />
             <div className='wallet-main-content'>
 
-                <h1>Carteiras</h1>
+                <h1>Funcionários</h1>
 
                 <div className='wallet-menu'>
 
@@ -163,12 +163,14 @@ export default function Wallet() {
                 }} tableStyle={{ minWidth: '50rem' }} value={wallets}>
                     <Column body={(data) => {
                         return <span>{new Date(data.createdAt).toLocaleDateString('pt-BR')}</span>
-                    }} header="Data de Criação"></Column>
+                    }} header="Data de Admissão"></Column>
                     <Column field="name" header="Nome"></Column>
-                    <Column field="currency" header="Moeda"></Column>
+                    <Column field="rg" header="RG"></Column>
+                    <Column field="currency" header="Salário"></Column>
+                    <Column field="role" header="Cargo"></Column>
                 </DataTable>
             </div>
-            <Dialog visible={showNewWallet} style={{ width: '50vw' }} onHide={() => {
+            <Dialog header="Incluir Funcionário" visible={showNewWallet} style={{ width: '50vw' }} onHide={() => {
                 setShowNewWallet(false)
             }}>
                 <IncludeWallet closeDialog={() => {
@@ -176,7 +178,7 @@ export default function Wallet() {
                     fetchWallets();
                 }} onSuccess={showToast} onError={showToast}></IncludeWallet>
             </Dialog>
-            <Dialog visible={showEditWallet} style={{ width: '50vw' }} onHide={() => setShowEditWallet(false)}>
+            <Dialog header="Editar Funcionário" visible={showEditWallet} style={{ width: '50vw' }} onHide={() => setShowEditWallet(false)}>
                 <EditWallet wallet={selectedWallet} closeDialog={() => {
                     setShowEditWallet(false);
                     // showToast('success', 'Success', 'Carteira editada com sucesso.');

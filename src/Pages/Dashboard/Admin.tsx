@@ -332,13 +332,13 @@ export default function Dashboard() {
                 <h1>Dashboard</h1>
                 <div className='grid'>
                     <div className='col-11'>
-                        <TabView style={{ width: '100%' }}>
+                        {/* <TabView style={{ width: '100%' }}>
 
                             <TabPanel header="Fluxo de Caixa">
 
                                 
                             </TabPanel>
-                        </TabView>
+                        </TabView> */}
                     </div>
                 </div>
             </div>

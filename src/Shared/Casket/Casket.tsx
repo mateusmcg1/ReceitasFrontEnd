@@ -31,26 +31,19 @@ export function Casket({ children }: { children?: any }) {
     const location = useLocation();
 
     let items = [
-        { label: 'Dashboard', icon: 'pi pi-user', command: () => { navigateMenu('dashboard') }, navigable: true },
+        { label: 'Dashboard', icon: 'pi pi-home', command: () => { navigateMenu('dashboard') }, navigable: true },
         {
 
-            label: 'Receitas', icon: 'pi pi-dollar', command: () => { }, navigable: false, items: [
+            label: 'Receitas', icon: 'pi pi-book', command: () => { }, navigable: false, items: [
                 {
-                    label: 'Criar', icon: 'pi pi-dollar', command: () => { navigateMenu('balance') }, navigable: true
+                    label: 'Criar', icon: 'pi pi-plus', command: () => { navigateMenu('balance') }, navigable: true
                 },
                 {
-                    label: 'Avaliar', icon: 'pi pi-dollar', command: () => { navigateMenu('due_dated') }, navigable: true
+                    label: 'Avaliar', icon: 'pi pi-check', command: () => { navigateMenu('due_dated') }, navigable: true
                 },
-                {
-                    label: 'A Pagar', icon: 'pi pi-dollar', command: () => { navigateMenu('payable') }, navigable: true
-                },
-                {
-                    label: 'A Receber', icon: 'pi pi-dollar', command: () => { navigateMenu('receivable') }, navigable: true
-                }
             ]
         },
-        { label: 'Cadastrar funcionário', icon: 'pi pi-wallet', command: () => { navigateMenu('wallet') }, navigable: true },
-        { label: 'Loja', icon: 'pi pi-user', command: () => { navigateMenu('store') }, navigable: true }
+        { label: 'Cadastrar funcionário', icon: 'pi pi-user-plus', command: () => { navigateMenu('wallet') }, navigable: true },
     ];
     return (
         <div className="casket-container">
