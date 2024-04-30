@@ -32,14 +32,10 @@ export default function Login() {
         e.preventDefault();
         if (user !== '' && senha !== '') {
             try {
-                const formData = new FormData();
-                formData.append('username', user);
-                formData.append('password', senha);
 
-                const result = await axios.post("http://localhost:8080/login", formData, {
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded'
-                    }
+                const result = await axios.post("http://localhost:3000/auth/adminlogin", {
+                    email: user,
+                    password:senha
                 });
 
                 // sessionStorage.setItem("access_token", result?.data.idToken.jwtToken);
