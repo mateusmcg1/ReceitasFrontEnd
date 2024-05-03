@@ -36,10 +36,11 @@ export default function Login() {
                 const result = await axios.post("http://localhost:3000/auth/adminlogin", {
                     email: user,
                     password:senha
-                });
+                }).then(result=>console.log(result));
 
                 // sessionStorage.setItem("access_token", result?.data.idToken.jwtToken);
                 // sessionStorage.setItem("refresh_token", result?.data.idToken.refreshToken);
+                
                 navigate('/dashboard', { replace: true })
             }
 
