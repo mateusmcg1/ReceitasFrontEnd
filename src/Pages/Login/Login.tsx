@@ -22,10 +22,7 @@ export default function Login() {
         toast.current?.show({ severity, summary, detail });
     };
 
-    useEffect(() => {
 
-
-    }, []);
 
     async function LogUser(e: any) {
 
@@ -36,12 +33,18 @@ export default function Login() {
                 const result = await axios.post("http://localhost:3000/auth/adminlogin", {
                     email: user,
                     password:senha
-                }).then(result=>console.log(result));
+                }).then(result=>{
+                    if(result.data.loginStatus){
+                        navigate('/dashboard')
+                    }else{
+                        show('error', 'Erro', 'Usuário não credenciado');
+                    }
+                });
 
-                // sessionStorage.setItem("access_token", result?.data.idToken.jwtToken);
-                // sessionStorage.setItem("refresh_token", result?.data.idToken.refreshToken);
+                    // sessionStorage.setItem("access_token", result?.data.idToken.jwtToken);
+                    // sessionStorage.setItem("refresh_token", result?.data.idToken.refreshToken);
                 
-                navigate('/dashboard', { replace: true })
+                
             }
 
             catch (err: any) {
