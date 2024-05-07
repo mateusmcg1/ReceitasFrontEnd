@@ -1,13 +1,11 @@
 import { BrowserRouter, Route, Routes, useNavigate } from 'react-router-dom';
 import Login from '../Pages/Login/Login'
-import EmailRegister from '../Pages/Register/Email_Register'
-import Register from '../Pages/Register/Register_Step1'
 import Dashboard from '../Pages/Dashboard/Admin'
 import Erro from '../Pages/Erro/erro'
 import Wallet from '../Pages/Wallet/Wallet'
 import { Casket } from '../Shared/Casket/Casket';
 import WalletDetail from '../Pages/Wallet/WalletDetail/WalletDetail';
-import { ConfirmationCode } from '../Pages/Register/Confirmation_Code';
+
 
 
 function Rotas() {
@@ -18,9 +16,6 @@ function Rotas() {
 
                 <Route path='/' element={<Login/>} />
                 <Route path='/login' element={<Login />} />
-                <Route path='/email_register' element={<EmailRegister />} />
-                <Route path='/register' element={<Register />} />
-                <Route path='/confirmationcode' element={<ConfirmationCode/>}/>
 
                 <Route element={<Casket />}>
                     <Route path='/dashboard' element={<Dashboard />} />

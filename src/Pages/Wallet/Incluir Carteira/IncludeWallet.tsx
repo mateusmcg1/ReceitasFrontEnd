@@ -3,9 +3,9 @@ import "./inclusao.css";
 import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
 import axios from "axios";
-import { Toast, ToastMessage } from "primereact/toast";
-import { Dropdown } from "primereact/dropdown";
-import { CurrencyEnum } from "../../../Shared/enums/CurrencyEnum";
+
+import { CargoDTO } from "../../../models/CargoDTO";
+import { InputNumber } from "primereact/inputnumber";
 
 export default function IncludeWallet({
   closeDialog,
@@ -16,41 +16,50 @@ export default function IncludeWallet({
   onSuccess: Function;
   onError: Function;
 }) {
-  const [text1, setText1] = useState("");
-  const [text2, setText2] = useState("");
+  const [funcionario, setFuncionario] = useState({
+    nome: "",
+    rg: "",
+    data_admissao: '',
+    salario: 0,
+    idCargo: '',
+    email: "",
+    password: "",
+  });
+  const [cargo, setCargo] = useState<CargoDTO[]>([]);
   const sharedClasses = {
     InputText: "w-full p-2 border rounded mb-4",
     select: "w-full p-2 border rounded mb-4",
     button:
       "w-full bg-green-600 text-white p-3 rounded-lg mt-4 hover:bg-green-700",
   };
-  // const toast = useRef<Toast>(null);
 
-  const [selectedCurrency, setSelectedCurrency] = useState("");
-  var currencyTypes = Object.values(CurrencyEnum);
-
-  const addWallets = async () => {
-    try {
-      const result = await axios.post(
-        `${process.env.REACT_APP_API_URL}/v1/wallets`,
-        {
-          currency: selectedCurrency,
-          name: text1,
-          createdAt: new Date(),
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${sessionStorage.getItem("access_token")}`,
-          },
+  useEffect(() => {
+    axios
+      .get("http://localhost:3000/auth/cargo")
+      .then((result) => {
+        if (result.data.Status) {
+          setCargo(result.data.Result);
+        } else {
+          alert(result.data.Error);
         }
-      );
-      onSuccess("success", "Success", "Carteira alterada com sucesso.");
-      closeDialog();
-    } catch (err) {
-      if ((err = 400)) {
-        onError("error", "Erro", "Invalid currency");
-      }
-    }
+      })
+      .catch((err) => console.log(err));
+  }, []);
+
+  const addFuncionario = (e: any) => {
+    e.preventDefault();
+    axios
+      .post("http://localhost:3000/auth/add_funcionario", {
+        Nome: funcionario.nome,
+        Rg: funcionario.rg,
+        Data_admissao: funcionario.data_admissao,
+        Salario: funcionario.salario,
+        idCargo: parseInt(funcionario.idCargo),
+        email: funcionario.email,
+        password: funcionario.password
+      })
+      .then((result) => console.log(result.data))
+      .catch((err) => console.log(err));
   };
 
   return (
@@ -63,8 +72,9 @@ export default function IncludeWallet({
             <div>
               <label className="block mb-2">Email</label>
               <InputText
-                value={text1}
-                onChange={(e) => setText1(e.target.value)}
+                onChange={(e) =>
+                  setFuncionario({ ...funcionario, email: e.target.value })
+                }
                 type="email"
                 className={sharedClasses.InputText}
                 placeholder="Email"
@@ -74,38 +84,68 @@ export default function IncludeWallet({
                 type="password"
                 className={sharedClasses.InputText}
                 placeholder="Senha"
-              />
-              <label className="block mb-2">Confirmar Senha</label>
-              <InputText
-                type="password"
-                className={sharedClasses.InputText}
-                placeholder="Confirmar Senha"
+                onChange={(e) =>
+                  setFuncionario({ ...funcionario, password: e.target.value })
+                }
               />
               <label className="block mb-2">Salário</label>
-              <InputText
+              <InputNumber
                 type="text"
-                className={sharedClasses.InputText}
+                mode="currency"
+                currency="BRL"
+                minFractionDigits={2}
+                maxFractionDigits={2}
+                locale="pt-BR"
                 placeholder="Salário"
+                onChange={(e) =>
+                  setFuncionario({ ...funcionario, salario: e.value! })
+                }
               />
             </div>
             <div>
-              <label className="block mb-2">Usuário</label>
+              <label className="block mb-2">Nome</label>
               <InputText
                 type="text"
                 className={sharedClasses.InputText}
-                placeholder="Usuário"
+                placeholder="Nome"
+                onChange={(e) =>
+                  setFuncionario({ ...funcionario, nome: e.target.value })
+                }
               />
               <label className="block mb-2">RG</label>
               <InputText
                 type="number"
-                className={sharedClasses.InputText}
                 placeholder="RG"
+                onChange={(e) =>
+                  setFuncionario({ ...funcionario, rg: e.target.value! })
+                }
               />
               <label className="block mb-2">Data de Nascimento</label>
-              <InputText type="date" className={sharedClasses.InputText} />
+              <InputText
+                type="date"
+                className={sharedClasses.InputText}
+                onChange={(e) =>
+                  setFuncionario({
+                    ...funcionario,
+                    data_admissao: e.target.value!,
+                  })
+                }
+              />
               <label className="block mb-2">Cargo</label>
-              <select className={sharedClasses.select}>
-                <option>Degustador</option>
+              <select
+                className={sharedClasses.select}
+                onChange={(e) =>
+                  setFuncionario({ ...funcionario, idCargo: e.target.value })
+                }
+              >
+                <option value="">Selecione um cargo</option>{" "}
+                {cargo
+                  .filter((cargoItem) => cargoItem.descricao !== null)
+                  .map((cargoItem) => (
+                    <option key={cargoItem.idCargo} value={cargoItem.idCargo}>
+                      {cargoItem.descricao}
+                    </option>
+                  ))}
               </select>
               <label className="block mb-2">Restaurante</label>
               <select className={sharedClasses.select}>
@@ -117,25 +157,14 @@ export default function IncludeWallet({
             <Button
               severity="success"
               label="Registrar"
-              onClick={() => addWallets()}
+              onClick={(e) => {
+                addFuncionario(e);
+                console.log(funcionario.idCargo);
+              }}
             />
           </div>
         </div>
       </div>
-
-      {/* <div className='inclusao-frame'>
-                <label htmlFor="text1" style={{ marginBottom: "1%" }}>Email</label>
-                <InputText value={text1} onChange={(e) => setText1(e.target.value)} />
-
-                <label htmlFor="text2" style={{ marginBottom: "1%" }}>Cargo</label>
-                <Dropdown value={selectedCurrency} onChange={(e) => setSelectedCurrency(e.value)} options={currencyTypes}
-                    className="w-full md:w-14rem" />
-               
-
-                <div className='inclusao-button'>
-                    {<Button severity="success" label="Registrar" onClick={() => addWallets()} />}
-                </div>
-            </div> */}
     </div>
   );
 }
