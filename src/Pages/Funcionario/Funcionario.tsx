@@ -246,7 +246,7 @@ export default function Wallet() {
         onHide={() => setShowEditFuncionario(false)}
       >
         <EditarFuncionario
-          funcionario={selectedFuncionario}
+          funcionarioId={selectedFuncionario}
           closeDialog={() => {
             setShowEditFuncionario(false);
           }}
