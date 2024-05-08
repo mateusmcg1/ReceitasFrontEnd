@@ -43,7 +43,7 @@ export function Casket({ children }: { children?: any }) {
                 },
             ]
         },
-        { label: 'Cadastrar funcionário', icon: 'pi pi-user-plus', command: () => { navigateMenu('wallet') }, navigable: true },
+        { label: 'Cadastrar funcionário', icon: 'pi pi-user-plus', command: () => { navigateMenu('funcionario') }, navigable: true },
     ];
     return (
         <div className="casket-container">

@@ -2,9 +2,8 @@ import { BrowserRouter, Route, Routes, useNavigate } from 'react-router-dom';
 import Login from '../Pages/Login/Login'
 import Dashboard from '../Pages/Dashboard/Admin'
 import Erro from '../Pages/Erro/erro'
-import Wallet from '../Pages/Wallet/Wallet'
+import Funcionario from '../Pages/Funcionario/Funcionario'
 import { Casket } from '../Shared/Casket/Casket';
-import WalletDetail from '../Pages/Wallet/WalletDetail/WalletDetail';
 
 
 
@@ -19,8 +18,7 @@ function Rotas() {
 
                 <Route element={<Casket />}>
                     <Route path='/dashboard' element={<Dashboard />} />
-                    <Route path='/wallet' element={<Wallet />} />
-                    <Route path='/wallet/detail/:selectedWallet' element={<WalletDetail />} />
+                    <Route path='/funcionario' element={<Funcionario />} />
 
 
                 </Route>

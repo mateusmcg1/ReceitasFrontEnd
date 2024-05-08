@@ -58,7 +58,11 @@ export default function IncludeWallet({
         email: funcionario.email,
         password: funcionario.password
       })
-      .then((result) => console.log(result.data))
+      .then((result) => {if(result.data.Status){
+        closeDialog();
+      }else{
+          alert(result.data.Status)
+      }})
       .catch((err) => console.log(err));
   };
 

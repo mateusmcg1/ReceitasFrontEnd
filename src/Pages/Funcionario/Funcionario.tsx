@@ -1,4 +1,4 @@
-import "./wallet.css";
+import "./funcionario.css";
 import { Menu } from "primereact/menu";
 import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -9,24 +9,24 @@ import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
 import { Avatar } from "primereact/avatar";
 import { SplitButton } from "primereact/splitbutton";
-import { WalletDto } from "../../models/wallet.dto";
 import { MenuItem } from "primereact/menuitem";
 import { Dialog } from "primereact/dialog";
-import IncludeWallet from "./Incluir Carteira/IncludeWallet";
-import EditWallet from "./Editar Carteira/editWallet";
+import IncluirFuncionario from "./IncluirFuncionario/IncluirFuncionario";
+import EditarFuncionario from "./EditarFuncionario/editFuncionario";
 import { Toast, ToastMessage } from "primereact/toast";
 import { ConfirmDialog, confirmDialog } from "primereact/confirmdialog";
 import IncluirCargo from "./IncluirCargo/IncluirCargo";
+import { FuncionarioDTO } from "../../models/FuncionarioDTO";
 
 export default function Wallet() {
   const [find, setFind] = useState("");
   const [loading, setLoading] = useState(false);
-  const [selectedWallet, setSelectedWallet] = useState<any>();
-  const [wallets, setWallets] = useState<WalletDto[]>([]);
-  const [showNewWallet, setShowNewWallet] = useState(false);
+  const [selectedFuncionario, setSelectedFuncionario] = useState<any>();
+  const [showNewFuncionario, setShowNewFuncionario] = useState(false);
   const [showNovoCargo, setShowNovoCargo] = useState(false);
-  const [showEditWallet, setShowEditWallet] = useState(false);
-  const [showDeleteWallet, setShowDeleteWallet] = useState(false);
+  const [showEditFuncionario, setShowEditFuncionario] = useState(false);
+  const [showDeleteFuncionario, setShowDeleteFuncionario] = useState(false);
+  const [funcionario, setFuncionario] = useState<FuncionarioDTO[]>([]);
   const toast = useRef<Toast>(null);
   const navigate = useNavigate();
 
@@ -38,45 +38,22 @@ export default function Wallet() {
     toast.current?.show([{ severity, summary, detail }]);
   };
 
-  const actions: MenuItem[] = [
-    {
-      label: "Editar",
-      icon: "pi pi-pencil",
-      command: async () => {
-        console.log(selectedWallet);
-        setShowEditWallet(true); //Basically I set this to call a dialog which invokes the editWallet component so the user can edit the infos
-        //from the selected row in the table.
-      },
-    },
-    {
-      label: "Deletar",
-      icon: "pi pi-trash",
-      command: () => {
-        console.log(selectedWallet);
-        confirmDialog({
-          message: "Deseja deletar?",
-          header: "Deletar Carteira",
-          accept: deleteWallets,
-          reject: () => setShowDeleteWallet(false),
-        });
-      },
-    },
-    {
-      label: "Detalhar",
-      icon: "pi pi-book",
-      command: () => {
-        navigate("detail/" + selectedWallet.id, {
-          state: { selectedWallet: selectedWallet },
-        });
-      },
-    },
-  ];
+  
 
   useEffect(() => {
-    fetchWallets();
+    axios
+      .get("http://localhost:3000/auth/funcionario")
+      .then((result) => {
+        if (result.data.Status) {
+          setFuncionario(result.data.Result);
+        } else {
+          alert(result.data.Error);
+        }
+      })
+      .catch((err) => console.log(err));
   }, []);
 
-  const deleteWallets = async () => {
+  const deleteFuncionario = async () => {
     try {
       // await axios.delete(`${process.env.REACT_APP_API_URL}/v1/wallets/${selectedWallet?.id}`, {
       //     headers: {
@@ -95,23 +72,6 @@ export default function Wallet() {
       }
     }
   };
-  const fetchWallets = async (params?: any) => {
-    try {
-      // setLoading(true);
-      // const result = await axios.get(`${process.env.REACT_APP_API_URL}/v1/wallets`, {
-      //     headers: {
-      //         Authorization: `Bearer ${sessionStorage.getItem('access_token')}`
-      //     },
-      //     params
-      // });
-      // setLoading(false);
-      // setWallets(result.data);
-    } catch (err) {}
-  };
-
-  useEffect(() => {
-    fetchWallets();
-  }, []);
 
   return (
     <div className="wallet-container">
@@ -135,25 +95,10 @@ export default function Wallet() {
             <div className="wallet-first-button">
               <Button
                 label="FILTRAR"
-                onClick={() => {
-                  fetchWallets({ name: find });
-                }}
+                // onClick={() => {
+                //   fetchWallets({ name: find });
+                // }}
               />
-            </div>
-
-            <div>
-              {selectedWallet === undefined ? (
-                <SplitButton label="AÇÕES" disabled />
-              ) : (
-                <SplitButton
-                  label="AÇÕES"
-                  icon=""
-                  onClick={() => {
-                    console.log("clicked");
-                  }}
-                  model={actions}
-                />
-              )}
             </div>
 
             <div className="wallet-last-button">
@@ -169,7 +114,7 @@ export default function Wallet() {
               <Button
                 id="inclusao"
                 label="INCLUIR"
-                onClick={() => setShowNewWallet(true)}
+                onClick={() => setShowNewFuncionario(true)}
               />
             </div>
           </div>
@@ -178,27 +123,88 @@ export default function Wallet() {
         <DataTable
           loading={loading}
           selectionMode="single"
-          selection={selectedWallet}
+          selection={selectedFuncionario}
           onSelectionChange={(e) => {
-            setSelectedWallet(e.value);
+            setSelectedFuncionario(e.value);
           }}
           tableStyle={{ minWidth: "50rem" }}
-          value={wallets}
+          value={funcionario}
         >
           <Column
             body={(data) => {
               return (
                 <span>
-                  {new Date(data.createdAt).toLocaleDateString("pt-BR")}
+                  {new Date(data.Data_admissao).toLocaleDateString("pt-BR")}
                 </span>
               );
             }}
             header="Data de Admissão"
           ></Column>
-          <Column field="name" header="Nome"></Column>
-          <Column field="rg" header="RG"></Column>
-          <Column field="currency" header="Salário"></Column>
-          <Column field="role" header="Cargo"></Column>
+          <Column
+            field="name"
+            header="Nome"
+            body={(data) => (
+              <div>
+                <span>{data.Nome}</span>
+              </div>
+            )}
+          ></Column>
+          <Column
+            field="rg"
+            header="RG"
+            body={(data) => (
+              <div>
+                <span>{data.Rg}</span>
+              </div>
+            )}
+          ></Column>
+          <Column
+            field="currency"
+            header="Salário"
+            body={(data) => (
+              <div>
+                <span>{data.Salario}</span>
+              </div>
+            )}
+          ></Column>
+          <Column
+            field="role"
+            header="Cargo"
+            body={(data) => (
+              <div>
+                <span>{data.Cargo}</span>
+              </div>
+            )}
+          ></Column>
+          <Column
+            field="action"
+            header="Ações"
+            body={(data) => (
+              <div>
+                <Button
+                  icon="pi pi-pencil"
+                  className="p-button-rounded p-button-text"
+                  onClick={() => {
+                    console.log(data);
+                    setShowEditFuncionario(true);
+                  }}
+                />
+                <Button
+                  icon="pi pi-trash"
+                  className="p-button-rounded p-button-text"
+                  onClick={() => {
+                    console.log(data);
+                    confirmDialog({
+                      message: "Deseja deletar?",
+                      header: "Deletar Funcionário",
+                      accept: deleteFuncionario, // Assume deleteFuncionario is your delete function
+                      reject: () => setShowDeleteFuncionario(false),
+                    });
+                  }}
+                />
+              </div>
+            )}
+          ></Column>
         </DataTable>
       </div>
       <Dialog
@@ -219,37 +225,34 @@ export default function Wallet() {
       </Dialog>
       <Dialog
         header="Incluir Funcionário"
-        visible={showNewWallet}
+        visible={showNewFuncionario}
         style={{ width: "50vw" }}
         onHide={() => {
-          setShowNewWallet(false);
+          setShowNewFuncionario(false);
         }}
       >
-        <IncludeWallet
+        <IncluirFuncionario
           closeDialog={() => {
-            setShowNewWallet(false);
-            fetchWallets();
+            setShowNewFuncionario(false);
           }}
           onSuccess={showToast}
           onError={showToast}
-        ></IncludeWallet>
+        ></IncluirFuncionario>
       </Dialog>
       <Dialog
         header="Editar Funcionário"
-        visible={showEditWallet}
+        visible={showEditFuncionario}
         style={{ width: "50vw" }}
-        onHide={() => setShowEditWallet(false)}
+        onHide={() => setShowEditFuncionario(false)}
       >
-        <EditWallet
-          wallet={selectedWallet}
+        <EditarFuncionario
+          funcionario={selectedFuncionario}
           closeDialog={() => {
-            setShowEditWallet(false);
-            // showToast('success', 'Success', 'Carteira editada com sucesso.');
-            fetchWallets();
+            setShowEditFuncionario(false);
           }}
           onSuccess={showToast}
           onError={showToast}
-        ></EditWallet>
+        ></EditarFuncionario>
       </Dialog>
       <ConfirmDialog />
     </div>

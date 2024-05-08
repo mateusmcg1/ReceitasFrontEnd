@@ -5,8 +5,8 @@ import { Button } from "primereact/button";
 import axios from "axios";
 import { Toast, ToastMessage } from "primereact/toast";
 import { Dropdown } from "primereact/dropdown";
-import { CurrencyEnum } from "../../../Shared/enums/CurrencyEnum";
 import { useNavigate } from "react-router-dom";
+
 
 export default function IncluirCargo({
   closeDialog,

@@ -7,7 +7,6 @@ import axios from "axios";
 import { TabView, TabPanel } from 'primereact/tabview';
 import { Chart } from 'primereact/chart';
 import { Calendar } from 'primereact/calendar';
-import { CurrencyEnum } from '../../Shared/enums/CurrencyEnum';
 import { Period } from '../../Shared/enums/Period';
 import { Year } from '../../Shared/enums/Year';
 import { Dropdown } from 'primereact/dropdown';
