@@ -38,8 +38,6 @@ export default function Wallet() {
     toast.current?.show([{ severity, summary, detail }]);
   };
 
-  
-
   useEffect(() => {
     axios
       .get("http://localhost:3000/auth/funcionario")
@@ -53,24 +51,17 @@ export default function Wallet() {
       .catch((err) => console.log(err));
   }, []);
 
-  const deleteFuncionario = async () => {
-    try {
-      // await axios.delete(`${process.env.REACT_APP_API_URL}/v1/wallets/${selectedWallet?.id}`, {
-      //     headers: {
-      //         Authorization: `Bearer ${sessionStorage.getItem('access_token')}`
-      //     }
-      // });
-      // showToast('success', 'Success', 'Deletado com sucesso.');
-      // fetchWallets();
-    } catch (err: any) {
-      if ((err.status = 401)) {
-        showToast(
-          "error",
-          "Unauthorized",
-          "Acesso negado! O token de acesso informado é inválido."
-        );
-      }
-    }
+  const deleteFuncionario = async (id: number) => {
+    axios
+      .delete(`http://localhost:3000/auth/delete_funcionario/` + id)
+      .then((result) => {
+        if (result.data.Status) {
+          window.location.reload();
+        } else {
+          alert(result.data.Status);
+        }
+      })
+      .catch((err) => console.log(err));
   };
 
   return (
@@ -185,7 +176,6 @@ export default function Wallet() {
                   icon="pi pi-pencil"
                   className="p-button-rounded p-button-text"
                   onClick={() => {
-                    console.log(data);
                     setShowEditFuncionario(true);
                   }}
                 />
@@ -193,11 +183,10 @@ export default function Wallet() {
                   icon="pi pi-trash"
                   className="p-button-rounded p-button-text"
                   onClick={() => {
-                    console.log(data);
                     confirmDialog({
                       message: "Deseja deletar?",
                       header: "Deletar Funcionário",
-                      accept: deleteFuncionario, // Assume deleteFuncionario is your delete function
+                      accept: () => deleteFuncionario(data.idFuncionario),
                       reject: () => setShowDeleteFuncionario(false),
                     });
                   }}

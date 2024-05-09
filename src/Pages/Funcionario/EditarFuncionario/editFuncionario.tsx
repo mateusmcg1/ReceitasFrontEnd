@@ -37,6 +37,12 @@ export default function EditarFuncionario({
     idCargo: "",
     email: "",
   });
+  const sharedClasses = {
+    InputText: "w-full p-2 border rounded mb-4",
+    select: "w-full p-2 border rounded mb-4",
+    button:
+      "w-full bg-green-600 text-white p-3 rounded-lg mt-4 hover:bg-green-700",
+  };
 
   useEffect(() => {
     axios
@@ -54,21 +60,48 @@ export default function EditarFuncionario({
   useEffect(() => {
     axios
       .get(
-        `http://localhost:3000/auth/funcionario/${funcionarioId?.idFuncionario}`
+        `http://localhost:3000/auth/edit_funcionario/${funcionarioId?.idFuncionario}`
       )
       .then((result) => {
-        console.log(funcionarioId?.idFuncionario)
+        console.log(funcionario.data_admissao);
         setFuncionario({
           ...funcionario,
           nome: result.data.Result[0].Nome,
           rg: result.data.Result[0].Rg,
           salario: result.data.Result[0].Salario,
           idCargo: result.data.Result[0].idCargo,
-          email: result.data.Result[0].email
+          email: result.data.Result[0].email,
+          data_admissao: new Date(result.data.Result[0].Data_admissao)
+            .toISOString()
+            .split("T")[0],
         });
       })
       .catch((err) => console.log(err));
   }, []);
+
+  const updateFuncionario = (e: any) => {
+    e.preventDefault();
+    axios
+      .put(
+        `http://localhost:3000/auth/edit_funcionario/${funcionarioId?.idFuncionario}`,
+        {
+          Nome: funcionario.nome,
+          Rg: funcionario.rg,
+          Data_admissao: funcionario.data_admissao,
+          Salario: funcionario.salario,
+          idCargo: parseInt(funcionario.idCargo),
+          email: funcionario.email,
+        }
+      )
+      .then((result) => {
+        if (result.data.Status) {
+          closeDialog();
+        } else {
+          alert(result.data.Status);
+        }
+      })
+      .catch((err) => console.log(err));
+  };
 
   // const ChangeWallet = async () => {
   //     try {
@@ -106,6 +139,7 @@ export default function EditarFuncionario({
               <label className="block mb-2">Email</label>
               <InputText
                 value={funcionario.email}
+                className={sharedClasses.InputText}
                 onChange={(e) =>
                   setFuncionario({ ...funcionario, email: e.target.value })
                 }
@@ -133,6 +167,7 @@ export default function EditarFuncionario({
                 value={funcionario.nome}
                 type="text"
                 placeholder="Nome"
+                className={sharedClasses.InputText}
                 onChange={(e) =>
                   setFuncionario({ ...funcionario, nome: e.target.value })
                 }
@@ -140,6 +175,7 @@ export default function EditarFuncionario({
               <label className="block mb-2">RG</label>
               <InputText
                 value={funcionario.rg}
+                className={sharedClasses.InputText}
                 type="number"
                 placeholder="RG"
                 onChange={(e) =>
@@ -149,6 +185,7 @@ export default function EditarFuncionario({
               <label className="block mb-2">Data de Nascimento</label>
               <InputText
                 value={funcionario.data_admissao}
+                className={sharedClasses.InputText}
                 type="date"
                 onChange={(e) =>
                   setFuncionario({
@@ -160,6 +197,7 @@ export default function EditarFuncionario({
               <label className="block mb-2">Cargo</label>
               <select
                 value={funcionario.idCargo}
+                className={sharedClasses.InputText}
                 onChange={(e) =>
                   setFuncionario({ ...funcionario, idCargo: e.target.value })
                 }
@@ -173,7 +211,7 @@ export default function EditarFuncionario({
                     </option>
                   ))}
               </select>
-              <select>
+              <select className={sharedClasses.InputText}>
                 <label className="block mb-2">Restaurante</label>
                 <option>Casa Itália</option>
               </select>
@@ -183,10 +221,9 @@ export default function EditarFuncionario({
             <Button
               severity="success"
               label="Atualizar"
-              //   onClick={(e) => {
-              //     updaetFuncionario(e);
-              //     console.log(funcionario.idCargo);
-              //   }}
+              onClick={(e) => {
+                updateFuncionario(e);
+              }}
             />
           </div>
         </div>
