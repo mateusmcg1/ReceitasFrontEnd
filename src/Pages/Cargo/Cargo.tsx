@@ -1,4 +1,4 @@
-import "./funcionario.css";
+import "./cargo.css";
 import { Menu } from "primereact/menu";
 import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -11,20 +11,18 @@ import { Avatar } from "primereact/avatar";
 import { SplitButton } from "primereact/splitbutton";
 import { MenuItem } from "primereact/menuitem";
 import { Dialog } from "primereact/dialog";
-import IncluirFuncionario from "./IncluirFuncionario/IncluirFuncionario";
-import EditarFuncionario from "./EditarFuncionario/editFuncionario";
 import { Toast, ToastMessage } from "primereact/toast";
 import { ConfirmDialog, confirmDialog } from "primereact/confirmdialog";
 import { FuncionarioDTO } from "../../models/FuncionarioDTO";
+import IncluirCargo from "./IncluirCargo/IncluirCargo";
 
-export default function Funcionario() {
+export default function Cargo() {
   const [find, setFind] = useState("");
   const [loading, setLoading] = useState(false);
-  const [selectedFuncionario, setSelectedFuncionario] = useState<any>();
-  const [showNewFuncionario, setShowNewFuncionario] = useState(false);
+  const [selectedCargo, setSelectedCargo] = useState<any>();
   const [showNovoCargo, setShowNovoCargo] = useState(false);
-  const [showEditFuncionario, setShowEditFuncionario] = useState(false);
-  const [showDeleteFuncionario, setShowDeleteFuncionario] = useState(false);
+  const [showEditCargo, setShowEditCargo] = useState(false);
+  const [showDeleteCargo, setShowDeleteCargo] = useState(false);
   const [funcionario, setFuncionario] = useState<FuncionarioDTO[]>([]);
   const toast = useRef<Toast>(null);
   const navigate = useNavigate();
@@ -67,7 +65,7 @@ export default function Funcionario() {
     <div className="wallet-container">
       <Toast ref={toast} />
       <div className="wallet-main-content">
-        <h1>Funcionários</h1>
+        <h1>Cargo</h1>
 
         <div className="wallet-menu">
           <div className="wallet-text">
@@ -99,23 +97,15 @@ export default function Funcionario() {
                 onClick={() => setShowNovoCargo(true)}
               />
             </div>
-
-            <div className="wallet-last-button">
-              <Button
-                id="inclusao"
-                label="INCLUIR"
-                onClick={() => setShowNewFuncionario(true)}
-              />
-            </div>
           </div>
         </div>
 
         <DataTable
           loading={loading}
           selectionMode="single"
-          selection={selectedFuncionario}
+          selection={selectedCargo}
           onSelectionChange={(e) => {
-            setSelectedFuncionario(e.value);
+            setSelectedCargo(e.value);
           }}
           tableStyle={{ minWidth: "50rem" }}
           value={funcionario}
@@ -128,34 +118,7 @@ export default function Funcionario() {
                 </span>
               );
             }}
-            header="Data de Admissão"
-          ></Column>
-          <Column
-            field="name"
-            header="Nome"
-            body={(data) => (
-              <div>
-                <span>{data.Nome}</span>
-              </div>
-            )}
-          ></Column>
-          <Column
-            field="rg"
-            header="RG"
-            body={(data) => (
-              <div>
-                <span>{data.Rg}</span>
-              </div>
-            )}
-          ></Column>
-          <Column
-            field="currency"
-            header="Salário"
-            body={(data) => (
-              <div>
-                <span>{data.Salario}</span>
-              </div>
-            )}
+            header="Data de criação"
           ></Column>
           <Column
             field="role"
@@ -175,7 +138,7 @@ export default function Funcionario() {
                   icon="pi pi-pencil"
                   className="p-button-rounded p-button-text"
                   onClick={() => {
-                    setShowEditFuncionario(true);
+                    setShowEditCargo(true);
                   }}
                 />
                 <Button
@@ -186,7 +149,7 @@ export default function Funcionario() {
                       message: "Deseja deletar?",
                       header: "Deletar Funcionário",
                       accept: () => deleteFuncionario(data.idFuncionario),
-                      reject: () => setShowDeleteFuncionario(false),
+                      reject: () => setShowDeleteCargo(false),
                     });
                   }}
                 />
@@ -196,35 +159,20 @@ export default function Funcionario() {
         </DataTable>
       </div>
       <Dialog
-        header="Incluir Funcionário"
-        visible={showNewFuncionario}
+        header="Incluir Cargo"
+        visible={showNovoCargo}
         style={{ width: "50vw" }}
         onHide={() => {
-          setShowNewFuncionario(false);
+          setShowNovoCargo(false);
         }}
       >
-        <IncluirFuncionario
+        <IncluirCargo
           closeDialog={() => {
-            setShowNewFuncionario(false);
+            setShowNovoCargo(false);
           }}
           onSuccess={showToast}
           onError={showToast}
-        ></IncluirFuncionario>
-      </Dialog>
-      <Dialog
-        header="Editar Funcionário"
-        visible={showEditFuncionario}
-        style={{ width: "50vw" }}
-        onHide={() => setShowEditFuncionario(false)}
-      >
-        <EditarFuncionario
-          funcionarioId={selectedFuncionario}
-          closeDialog={() => {
-            setShowEditFuncionario(false);
-          }}
-          onSuccess={showToast}
-          onError={showToast}
-        ></EditarFuncionario>
+        ></IncluirCargo>
       </Dialog>
       <ConfirmDialog />
     </div>

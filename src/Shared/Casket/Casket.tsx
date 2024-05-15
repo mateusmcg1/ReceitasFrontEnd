@@ -32,18 +32,50 @@ export function Casket({ children }: { children?: any }) {
 
     let items = [
         { label: 'Dashboard', icon: 'pi pi-home', command: () => { navigateMenu('dashboard') }, navigable: true },
+        { label: 'Cadastrar restaurante', icon: 'pi pi-shopping-bag', command: () => { navigateMenu('restaurante') }, navigable: true},
         {
 
-            label: 'Receitas', icon: 'pi pi-book', command: () => { }, navigable: false, items: [
+            label: 'Receitas', icon: 'pi pi-list', command: () => { }, navigable: false, items: [
                 {
-                    label: 'Criar', icon: 'pi pi-plus', command: () => { navigateMenu('balance') }, navigable: true
+                    label: 'Criar', icon: 'pi pi-plus', command: () => { navigateMenu('criarReceita') }, navigable: true
                 },
                 {
-                    label: 'Avaliar', icon: 'pi pi-check', command: () => { navigateMenu('due_dated') }, navigable: true
+                    label: 'Avaliar', icon: 'pi pi-check', command: () => { navigateMenu('avaliarReceita') }, navigable: true
+                },
+                {
+                    label: 'Criar ingrediente', icon: 'pi pi-plus', command: () => { navigateMenu('ingrediente') }, navigable: true
+                },
+                {
+                    label: 'Criar categoria', icon: 'pi pi-plus', command: () => { navigateMenu('categoria') }, navigable: true
+                },
+                {
+                    label: 'Criar medida', icon: 'pi pi-plus', command: () => { navigateMenu('medida') }, navigable: true
                 },
             ]
         },
-        { label: 'Cadastrar funcionário', icon: 'pi pi-user-plus', command: () => { navigateMenu('funcionario') }, navigable: true },
+        { 
+            label: 'Funcionário', icon: 'pi pi-users', command: () => { }, navigable: false, items: [
+                {
+                    label: 'Cadastrar funcionário', icon: 'pi pi-user-plus', command: () => { navigateMenu('funcionario') }, navigable: true
+                },
+                {
+                    label: 'Cadastrar cargo', icon: 'pi pi-user-plus', command: () => { navigateMenu('cargo') }, navigable: true
+                },
+                {
+                    label: 'Cadastrar referência', icon: 'pi pi-user-plus', command: () => { navigateMenu('referencia') }, navigable: true
+                },
+            ]
+             },
+             { 
+                label: 'Editor', icon: 'pi pi-book', command: () => { }, navigable: false, items: [
+                    {
+                        label: 'Livro', icon: 'pi pi-plus', command: () => { navigateMenu('livro') }, navigable: true
+                    },
+                    {
+                        label: 'Publicação', icon: 'pi pi-plus', command: () => { navigateMenu('publicacao') }, navigable: true
+                    },
+                ]
+                 },
     ];
     return (
         <div className="casket-container">

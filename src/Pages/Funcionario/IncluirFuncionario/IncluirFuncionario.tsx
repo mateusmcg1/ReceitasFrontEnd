@@ -7,7 +7,7 @@ import axios from "axios";
 import { CargoDTO } from "../../../models/CargoDTO";
 import { InputNumber } from "primereact/inputnumber";
 
-export default function IncludeWallet({
+export default function IncluirFuncionario({
   closeDialog,
   onSuccess,
   onError,
