@@ -22,7 +22,6 @@ export default function Funcionario() {
   const [loading, setLoading] = useState(false);
   const [selectedFuncionario, setSelectedFuncionario] = useState<any>();
   const [showNewFuncionario, setShowNewFuncionario] = useState(false);
-  const [showNovoCargo, setShowNovoCargo] = useState(false);
   const [showEditFuncionario, setShowEditFuncionario] = useState(false);
   const [showDeleteFuncionario, setShowDeleteFuncionario] = useState(false);
   const [funcionario, setFuncionario] = useState<FuncionarioDTO[]>([]);
@@ -88,15 +87,6 @@ export default function Funcionario() {
                 // onClick={() => {
                 //   fetchWallets({ name: find });
                 // }}
-              />
-            </div>
-
-            <div className="wallet-last-button">
-              <Button
-                id="inclusaoCargo"
-                label="Cargo"
-                icon="pi pi-plus"
-                onClick={() => setShowNovoCargo(true)}
               />
             </div>
 

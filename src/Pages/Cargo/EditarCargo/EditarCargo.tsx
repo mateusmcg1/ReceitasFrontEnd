@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import "./editFuncionario.css";
+import "./editarCargo.css";
 import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
 import axios from "axios";
@@ -9,7 +9,7 @@ import { FuncionarioDTO } from "../../../models/FuncionarioDTO";
 import { InputNumber } from "primereact/inputnumber";
 import { CargoDTO } from "../../../models/CargoDTO";
 
-export default function EditarFuncionario({
+export default function EditarCargo({
   closeDialog,
   funcionarioId,
   onSuccess,

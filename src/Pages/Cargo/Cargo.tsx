@@ -13,8 +13,9 @@ import { MenuItem } from "primereact/menuitem";
 import { Dialog } from "primereact/dialog";
 import { Toast, ToastMessage } from "primereact/toast";
 import { ConfirmDialog, confirmDialog } from "primereact/confirmdialog";
-import { FuncionarioDTO } from "../../models/FuncionarioDTO";
 import IncluirCargo from "./IncluirCargo/IncluirCargo";
+import EditarCargo from "./EditarCargo/EditarCargo";
+import { CargoDTO } from "../../models/CargoDTO";
 
 export default function Cargo() {
   const [find, setFind] = useState("");
@@ -23,7 +24,7 @@ export default function Cargo() {
   const [showNovoCargo, setShowNovoCargo] = useState(false);
   const [showEditCargo, setShowEditCargo] = useState(false);
   const [showDeleteCargo, setShowDeleteCargo] = useState(false);
-  const [funcionario, setFuncionario] = useState<FuncionarioDTO[]>([]);
+  const [cargo, setCargo] = useState<CargoDTO[]>([]);
   const toast = useRef<Toast>(null);
   const navigate = useNavigate();
 
@@ -37,10 +38,10 @@ export default function Cargo() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3000/auth/funcionario")
+      .get("http://localhost:3000/auth/cargo")
       .then((result) => {
         if (result.data.Status) {
-          setFuncionario(result.data.Result);
+          setCargo(result.data.Result);
         } else {
           alert(result.data.Error);
         }
@@ -50,7 +51,7 @@ export default function Cargo() {
 
   const deleteFuncionario = async (id: number) => {
     axios
-      .delete(`http://localhost:3000/auth/delete_funcionario/` + id)
+      .delete(`http://localhost:3000/auth/delete_cargo/` + id)
       .then((result) => {
         if (result.data.Status) {
           window.location.reload();
@@ -108,24 +109,24 @@ export default function Cargo() {
             setSelectedCargo(e.value);
           }}
           tableStyle={{ minWidth: "50rem" }}
-          value={funcionario}
+          value={cargo}
         >
           <Column
             body={(data) => {
               return (
                 <span>
-                  {new Date(data.Data_admissao).toLocaleDateString("pt-BR")}
+                  {data.idCargo}
                 </span>
               );
             }}
-            header="Data de criação"
+            header="Id"
           ></Column>
           <Column
             field="role"
             header="Cargo"
             body={(data) => (
               <div>
-                <span>{data.Cargo}</span>
+                <span>{data.descricao}</span>
               </div>
             )}
           ></Column>
@@ -147,8 +148,8 @@ export default function Cargo() {
                   onClick={() => {
                     confirmDialog({
                       message: "Deseja deletar?",
-                      header: "Deletar Funcionário",
-                      accept: () => deleteFuncionario(data.idFuncionario),
+                      header: "Deletar Cargo",
+                      accept: () => deleteFuncionario(data.idCargo),
                       reject: () => setShowDeleteCargo(false),
                     });
                   }}
@@ -158,6 +159,22 @@ export default function Cargo() {
           ></Column>
         </DataTable>
       </div>
+
+      <Dialog
+        header="Editar Cargo"
+        visible={showEditCargo}
+        style={{ width: "50vw" }}
+        onHide={() => setShowEditCargo(false)}
+      >
+        <EditarCargo
+          funcionarioId={selectedCargo}
+          closeDialog={() => {
+            setShowEditCargo(false);
+          }}
+          onSuccess={showToast}
+          onError={showToast}
+        ></EditarCargo>
+      </Dialog>
       <Dialog
         header="Incluir Cargo"
         visible={showNovoCargo}
