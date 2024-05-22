@@ -167,7 +167,7 @@ export default function Cargo() {
         onHide={() => setShowEditCargo(false)}
       >
         <EditarCargo
-          funcionarioId={selectedCargo}
+          cargoId={selectedCargo}
           closeDialog={() => {
             setShowEditCargo(false);
           }}

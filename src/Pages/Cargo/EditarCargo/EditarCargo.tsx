@@ -11,12 +11,12 @@ import { CargoDTO } from "../../../models/CargoDTO";
 
 export default function EditarCargo({
   closeDialog,
-  funcionarioId,
+  cargoId,
   onSuccess,
   onError,
 }: {
   closeDialog: any;
-  funcionarioId: FuncionarioDTO;
+  cargoId: CargoDTO;
   onSuccess: Function;
   onError: Function;
 }) {
@@ -28,14 +28,9 @@ export default function EditarCargo({
   ) => {
     Edittoast.current?.show({ severity, summary, detail });
   };
-  const [cargo, setCargo] = useState<CargoDTO[]>([]);
-  const [funcionario, setFuncionario] = useState({
-    nome: "",
-    rg: "",
-    data_admissao: "",
-    salario: 0,
-    idCargo: "",
-    email: "",
+ 
+  const [cargo, setCargo] = useState({
+    descricao: "",
   });
   const sharedClasses = {
     InputText: "w-full p-2 border rounded mb-4",
@@ -44,58 +39,34 @@ export default function EditarCargo({
       "w-full bg-green-600 text-white p-3 rounded-lg mt-4 hover:bg-green-700",
   };
 
-  useEffect(() => {
-    axios
-      .get("http://localhost:3000/auth/cargo")
-      .then((result) => {
-        if (result.data.Status) {
-          setCargo(result.data.Result);
-        } else {
-          alert(result.data.Error);
-        }
-      })
-      .catch((err) => console.log(err));
-  }, []);
 
   useEffect(() => {
     axios
       .get(
-        `http://localhost:3000/auth/edit_funcionario/${funcionarioId?.idFuncionario}`
+        `http://localhost:3000/auth/edit_cargo/${cargoId?.idCargo}`
       )
       .then((result) => {
-        console.log(funcionario.data_admissao);
-        setFuncionario({
-          ...funcionario,
-          nome: result.data.Result[0].Nome,
-          rg: result.data.Result[0].Rg,
-          salario: result.data.Result[0].Salario,
-          idCargo: result.data.Result[0].idCargo,
-          email: result.data.Result[0].email,
-          data_admissao: new Date(result.data.Result[0].Data_admissao)
-            .toISOString()
-            .split("T")[0],
+        setCargo({
+          descricao: result.data.Result[0].descricao,
+
         });
       })
       .catch((err) => console.log(err));
   }, []);
 
-  const updateFuncionario = (e: any) => {
+  const updateCargo = (e: any) => {
     e.preventDefault();
     axios
       .put(
-        `http://localhost:3000/auth/edit_funcionario/${funcionarioId?.idFuncionario}`,
+        `http://localhost:3000/auth/edit_cargo/${cargoId?.idCargo}`,
         {
-          Nome: funcionario.nome,
-          Rg: funcionario.rg,
-          Data_admissao: funcionario.data_admissao,
-          Salario: funcionario.salario,
-          idCargo: parseInt(funcionario.idCargo),
-          email: funcionario.email,
+          descricao: cargo.descricao,
         }
       )
       .then((result) => {
         if (result.data.Status) {
           closeDialog();
+          window.location.reload();
         } else {
           alert(result.data.Status);
         }
@@ -105,91 +76,20 @@ export default function EditarCargo({
 
   return (
     <div className="">
-      {/* <h1>Incluir Funcionário</h1> */}
-
       <div className="flex-1 p-10">
         <div className="bg-white shadow-md rounded-lg p-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label className="block mb-2">Email</label>
+              <label className="block mb-2"></label>
               <InputText
-                value={funcionario.email}
+                value={cargo.descricao}
                 className={sharedClasses.InputText}
                 onChange={(e) =>
-                  setFuncionario({ ...funcionario, email: e.target.value })
+                  setCargo({ ...cargo, descricao: e.target.value })
                 }
-                type="email"
-                placeholder="Email"
-              />
-              <label className="block mb-2">Salário</label>
-              <InputNumber
-                value={funcionario.salario}
                 type="text"
-                mode="currency"
-                currency="BRL"
-                minFractionDigits={2}
-                maxFractionDigits={2}
-                locale="pt-BR"
-                placeholder="Salário"
-                onChange={(e) =>
-                  setFuncionario({ ...funcionario, salario: e.value! })
-                }
+                placeholder="Cargo"
               />
-            </div>
-            <div>
-              <label className="block mb-2">Nome</label>
-              <InputText
-                value={funcionario.nome}
-                type="text"
-                placeholder="Nome"
-                className={sharedClasses.InputText}
-                onChange={(e) =>
-                  setFuncionario({ ...funcionario, nome: e.target.value })
-                }
-              />
-              <label className="block mb-2">RG</label>
-              <InputText
-                value={funcionario.rg}
-                className={sharedClasses.InputText}
-                type="number"
-                placeholder="RG"
-                onChange={(e) =>
-                  setFuncionario({ ...funcionario, rg: e.target.value! })
-                }
-              />
-              <label className="block mb-2">Data de Nascimento</label>
-              <InputText
-                value={funcionario.data_admissao}
-                className={sharedClasses.InputText}
-                type="date"
-                onChange={(e) =>
-                  setFuncionario({
-                    ...funcionario,
-                    data_admissao: e.target.value!,
-                  })
-                }
-              />
-              <label className="block mb-2">Cargo</label>
-              <select
-                value={funcionario.idCargo}
-                className={sharedClasses.InputText}
-                onChange={(e) =>
-                  setFuncionario({ ...funcionario, idCargo: e.target.value })
-                }
-              >
-                <option value="">Selecione um cargo</option>{" "}
-                {cargo
-                  .filter((cargoItem) => cargoItem.descricao !== null)
-                  .map((cargoItem) => (
-                    <option key={cargoItem.idCargo} value={cargoItem.idCargo}>
-                      {cargoItem.descricao}
-                    </option>
-                  ))}
-              </select>
-              <select className={sharedClasses.InputText}>
-                <label className="block mb-2">Restaurante</label>
-                <option>Casa Itália</option>
-              </select>
             </div>
           </div>
           <div className="inclusao-button">
@@ -197,7 +97,7 @@ export default function EditarCargo({
               severity="success"
               label="Atualizar"
               onClick={(e) => {
-                updateFuncionario(e);
+                updateCargo(e);
               }}
             />
           </div>

@@ -42,6 +42,7 @@ const toast = useRef<Toast>(null);
                 if(result.data.Status){
                   show('success', 'Sucesso', 'Cargo cadastrado com sucesso');
                   closeDialog();
+                  window.location.reload();
                 }else{
                     alert(result.data.Status)
                 }
