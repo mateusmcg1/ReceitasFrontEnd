@@ -3,7 +3,7 @@ import "./inclusao.css";
 import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
 import axios from "axios";
-
+import { RestauranteDTO } from "../../../models/RestauranteDTO";
 import { CargoDTO } from "../../../models/CargoDTO";
 import { InputNumber } from "primereact/inputnumber";
 
@@ -150,10 +150,6 @@ export default function IncluirFuncionario({
                       {cargoItem.descricao}
                     </option>
                   ))}
-              </select>
-              <label className="block mb-2">Restaurante</label>
-              <select className={sharedClasses.select}>
-                <option>Casa Itália</option>
               </select>
             </div>
           </div>
