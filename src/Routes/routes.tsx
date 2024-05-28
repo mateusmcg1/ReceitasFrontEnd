@@ -5,6 +5,7 @@ import Erro from '../Pages/Erro/erro'
 import Funcionario from '../Pages/Funcionario/Funcionario'
 import { Casket } from '../Shared/Casket/Casket';
 import Cargo from '../Pages/Cargo/Cargo';
+import Restaurante from '../Pages/Restaurante/Restaurante';
 
 
 
@@ -21,6 +22,8 @@ function Rotas() {
                     <Route path='/dashboard' element={<Dashboard />} />
                     <Route path='/funcionario' element={<Funcionario />} />
                     <Route path='/cargo' element={<Cargo />} />
+                    <Route path='/restaurante' element={<Restaurante />} />
+                    
 
 
                 </Route>
