@@ -59,6 +59,7 @@ export default function IncluirFuncionario({
         password: funcionario.password
       })
       .then((result) => {if(result.data.Status){
+        window.location.reload();
         closeDialog();
       }else{
           alert(result.data.Status)

@@ -1,4 +1,4 @@
-import "./cargo.css";
+import "./categoria.css";
 import { Menu } from "primereact/menu";
 import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -13,18 +13,18 @@ import { MenuItem } from "primereact/menuitem";
 import { Dialog } from "primereact/dialog";
 import { Toast, ToastMessage } from "primereact/toast";
 import { ConfirmDialog, confirmDialog } from "primereact/confirmdialog";
-import IncluirCargo from "./IncluirCargo/IncluirCargo";
-import EditarCargo from "./EditarCargo/EditarCargo";
-import { CargoDTO } from "../../models/CargoDTO";
+import IncluirCategoria from "./IncluirCategoria/IncluirCategoria";
+import EditarCategoria from "./EditarCategoria/EditarCategoria";
+import { CategoriaDTO } from "../../models/CategoriaDTO";
 
-export default function Cargo() {
+export default function Categoria() {
   const [find, setFind] = useState("");
   const [loading, setLoading] = useState(false);
-  const [selectedCargo, setSelectedCargo] = useState<any>();
-  const [showNovoCargo, setShowNovoCargo] = useState(false);
-  const [showEditCargo, setShowEditCargo] = useState(false);
-  const [showDeleteCargo, setShowDeleteCargo] = useState(false);
-  const [cargo, setCargo] = useState<CargoDTO[]>([]);
+  const [selectedCategoria, setSelectedCategoria] = useState<any>();
+  const [showNovoCategoria, setShowNovoCategoria] = useState(false);
+  const [showEditCategoria, setShowEditCategoria] = useState(false);
+  const [showDeleteCategoria, setShowDeleteCategoria] = useState(false);
+  const [categoria, setCategoria] = useState<CategoriaDTO[]>([]);
   const toast = useRef<Toast>(null);
   const navigate = useNavigate();
 
@@ -38,10 +38,10 @@ export default function Cargo() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3000/auth/cargo")
+      .get("http://localhost:3000/chef/categoria")
       .then((result) => {
         if (result.data.Status) {
-          setCargo(result.data.Result);
+          setCategoria(result.data.Result);
         } else {
           alert(result.data.Error);
         }
@@ -49,9 +49,9 @@ export default function Cargo() {
       .catch((err) => console.log(err));
   }, []);
 
-  const deleteCargo = async (id: number) => {
+  const deleteCategoria = async (id: number) => {
     axios
-      .delete(`http://localhost:3000/auth/delete_cargo/` + id)
+      .delete(`http://localhost:3000/chef/delete_categoria/` + id)
       .then((result) => {
         if (result.data.Status) {
           window.location.reload();
@@ -66,7 +66,7 @@ export default function Cargo() {
     <div className="wallet-container">
       <Toast ref={toast} />
       <div className="wallet-main-content">
-        <h1>Cargo</h1>
+        <h1>Categoria</h1>
 
         <div className="wallet-menu">
           <div className="wallet-text">
@@ -93,9 +93,9 @@ export default function Cargo() {
             <div className="wallet-last-button">
               <Button
                 id="inclusaoCargo"
-                label="Cargo"
+                label="Categoria"
                 icon="pi pi-plus"
-                onClick={() => setShowNovoCargo(true)}
+                onClick={() => setShowNovoCategoria(true)}
               />
             </div>
           </div>
@@ -104,18 +104,18 @@ export default function Cargo() {
         <DataTable
           loading={loading}
           selectionMode="single"
-          selection={selectedCargo}
+          selection={selectedCategoria}
           onSelectionChange={(e) => {
-            setSelectedCargo(e.value);
+            setSelectedCategoria(e.value);
           }}
           tableStyle={{ minWidth: "50rem" }}
-          value={cargo}
+          value={categoria}
         >
           <Column
             body={(data) => {
               return (
                 <span>
-                  {data.idCargo}
+                  {data.idCategoria}
                 </span>
               );
             }}
@@ -123,10 +123,10 @@ export default function Cargo() {
           ></Column>
           <Column
             field="role"
-            header="Cargo"
+            header="Categoria"
             body={(data) => (
               <div>
-                <span>{data.descricao}</span>
+                <span>{data.nome}</span>
               </div>
             )}
           ></Column>
@@ -139,7 +139,7 @@ export default function Cargo() {
                   icon="pi pi-pencil"
                   className="p-button-rounded p-button-text"
                   onClick={() => {
-                    setShowEditCargo(true);
+                    setShowEditCategoria(true);
                   }}
                 />
                 <Button
@@ -149,8 +149,8 @@ export default function Cargo() {
                     confirmDialog({
                       message: "Deseja deletar?",
                       header: "Deletar Cargo",
-                      accept: () => deleteCargo(data.idCargo),
-                      reject: () => setShowDeleteCargo(false),
+                      accept: () => deleteCategoria(data.idCategoria),
+                      reject: () => setShowDeleteCategoria(false),
                     });
                   }}
                 />
@@ -161,35 +161,35 @@ export default function Cargo() {
       </div>
 
       <Dialog
-        header="Editar Cargo"
-        visible={showEditCargo}
+        header="Editar Categoria"
+        visible={showEditCategoria}
         style={{ width: "50vw" }}
-        onHide={() => setShowEditCargo(false)}
+        onHide={() => setShowEditCategoria(false)}
       >
-        <EditarCargo
-          cargoId={selectedCargo}
+        <EditarCategoria
+          categoriaId={selectedCategoria}
           closeDialog={() => {
-            setShowEditCargo(false);
+            setShowEditCategoria(false);
           }}
           onSuccess={showToast}
           onError={showToast}
-        ></EditarCargo>
+        ></EditarCategoria>
       </Dialog>
       <Dialog
-        header="Incluir Cargo"
-        visible={showNovoCargo}
+        header="Incluir Categoria"
+        visible={showNovoCategoria}
         style={{ width: "50vw" }}
         onHide={() => {
-          setShowNovoCargo(false);
+          setShowNovoCategoria(false);
         }}
       >
-        <IncluirCargo
+        <IncluirCategoria
           closeDialog={() => {
-            setShowNovoCargo(false);
+            setShowNovoCategoria(false);
           }}
           onSuccess={showToast}
           onError={showToast}
-        ></IncluirCargo>
+        ></IncluirCategoria>
       </Dialog>
       <ConfirmDialog />
     </div>

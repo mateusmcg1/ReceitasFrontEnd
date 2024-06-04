@@ -8,8 +8,14 @@ import jwtDecode from 'jwt-decode';
 import { Button } from "primereact/button";
 import { Sidebar } from 'primereact/sidebar';
 
+interface DecodedToken {
+    name: string;
+    cargo: string;
+}
+
 export function Casket({ children }: { children?: any }) {
     const [userName, setUserName] = useState('User');
+    const [cargoName, setCargoName] = useState('');
     const [activeMenuItem, setActiveMenuItem] = useState<any>();
     const navigate = useNavigate();
     const [showMenu, setShowMenu] = useState(false);
@@ -18,21 +24,22 @@ export function Casket({ children }: { children?: any }) {
         navigate(url);
         setShowMenu(false);
     }
-    // useEffect(() => {
-    //     if (sessionStorage.getItem('access_token')!) {
-    //         const decoded: any = jwtDecode(sessionStorage.getItem('access_token')!);
-    //         setUserName(`${decoded.given_name} ${decoded.family_name}`);
-    //     } else {
-    //         navigate('login')
-    //     }
-
-    // }, []);
+    useEffect(() => {
+        const token = sessionStorage.getItem('access_token');
+        if (token) {
+            const decoded = jwtDecode<DecodedToken>(token);
+            setUserName(decoded.name);
+            setCargoName(decoded.cargo);
+        } else {
+            navigate('login');
+        }
+    }, [navigate]);
 
     const location = useLocation();
 
     let items = [
         { label: 'Dashboard', icon: 'pi pi-home', command: () => { navigateMenu('dashboard') }, navigable: true },
-        { label: 'Cadastrar restaurante', icon: 'pi pi-shopping-bag', command: () => { navigateMenu('restaurante') }, navigable: true},
+        { label: 'Cadastrar restaurante', icon: 'pi pi-shopping-bag', command: () => { navigateMenu('restaurante') }, navigable: true },
         {
 
             label: 'Receitas', icon: 'pi pi-list', command: () => { }, navigable: false, items: [
@@ -53,7 +60,7 @@ export function Casket({ children }: { children?: any }) {
                 },
             ]
         },
-        { 
+        {
             label: 'Funcionário', icon: 'pi pi-users', command: () => { }, navigable: false, items: [
                 {
                     label: 'Cadastrar funcionário', icon: 'pi pi-user-plus', command: () => { navigateMenu('funcionario') }, navigable: true
@@ -65,17 +72,17 @@ export function Casket({ children }: { children?: any }) {
                     label: 'Cadastrar referência', icon: 'pi pi-user-plus', command: () => { navigateMenu('referencia') }, navigable: true
                 },
             ]
-             },
-             { 
-                label: 'Editor', icon: 'pi pi-book', command: () => { }, navigable: false, items: [
-                    {
-                        label: 'Livro', icon: 'pi pi-plus', command: () => { navigateMenu('livro') }, navigable: true
-                    },
-                    {
-                        label: 'Publicação', icon: 'pi pi-plus', command: () => { navigateMenu('publicacao') }, navigable: true
-                    },
-                ]
-                 },
+        },
+        {
+            label: 'Editor', icon: 'pi pi-book', command: () => { }, navigable: false, items: [
+                {
+                    label: 'Livro', icon: 'pi pi-plus', command: () => { navigateMenu('livro') }, navigable: true
+                },
+                {
+                    label: 'Publicação', icon: 'pi pi-plus', command: () => { navigateMenu('publicacao') }, navigable: true
+                },
+            ]
+        },
     ];
     return (
         <div className="casket-container">
@@ -87,9 +94,9 @@ export function Casket({ children }: { children?: any }) {
                         <Button icon="pi pi-bars" outlined onClick={() => setShowMenu(!showMenu)}></Button>
                     </div>
                     <ul>
-                        <Avatar label={userName.substring(0, 1)} style={{ backgroundColor: '#9c27b0', color: '#ffffff' }} />
+                        <Avatar label={cargoName.substring(0, 1).toUpperCase()} style={{ backgroundColor: '#9c27b0', color: '#ffffff' }} />
                         <li key={userName}>
-                            <span>{userName}</span>
+                            <span>{userName.toUpperCase()} - {cargoName.toUpperCase()}</span>
                         </li>
                         <li>
                             <span style={{ cursor: "pointer" }} onClick={() => {

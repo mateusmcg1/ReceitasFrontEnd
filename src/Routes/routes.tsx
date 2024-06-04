@@ -6,6 +6,8 @@ import Funcionario from '../Pages/Funcionario/Funcionario'
 import { Casket } from '../Shared/Casket/Casket';
 import Cargo from '../Pages/Cargo/Cargo';
 import Restaurante from '../Pages/Restaurante/Restaurante';
+import Categoria from '../Pages/Categoria/Categoria';
+import Referencia from '../Pages/Referencia/Referencia';
 
 
 
@@ -23,6 +25,9 @@ function Rotas() {
                     <Route path='/funcionario' element={<Funcionario />} />
                     <Route path='/cargo' element={<Cargo />} />
                     <Route path='/restaurante' element={<Restaurante />} />
+                    <Route path='/categoria' element={<Categoria />} />
+                    <Route path='/referencia' element={<Referencia />} />
+
                     
 
 

@@ -1,4 +1,4 @@
-import "./cargo.css";
+import "./referencia.css";
 import { Menu } from "primereact/menu";
 import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -11,20 +11,20 @@ import { Avatar } from "primereact/avatar";
 import { SplitButton } from "primereact/splitbutton";
 import { MenuItem } from "primereact/menuitem";
 import { Dialog } from "primereact/dialog";
+import IncluirReferencia from "./IncluirReferencia/IncluirReferencia";
 import { Toast, ToastMessage } from "primereact/toast";
 import { ConfirmDialog, confirmDialog } from "primereact/confirmdialog";
-import IncluirCargo from "./IncluirCargo/IncluirCargo";
-import EditarCargo from "./EditarCargo/EditarCargo";
-import { CargoDTO } from "../../models/CargoDTO";
+import { ReferenciaDTO } from "../../models/ReferenciaDTO";
+import EditarReferencia from "./EditarReferencia/editReferencia";
 
-export default function Cargo() {
+export default function Referencia() {
   const [find, setFind] = useState("");
   const [loading, setLoading] = useState(false);
-  const [selectedCargo, setSelectedCargo] = useState<any>();
-  const [showNovoCargo, setShowNovoCargo] = useState(false);
-  const [showEditCargo, setShowEditCargo] = useState(false);
-  const [showDeleteCargo, setShowDeleteCargo] = useState(false);
-  const [cargo, setCargo] = useState<CargoDTO[]>([]);
+  const [selectedReferencia, setSelectedReferencia] = useState<any>();
+  const [showNewReferencia, setShowNewReferencia] = useState(false);
+  const [showEditReferencia, setShowEditReferencia] = useState(false);
+  const [showDeleteReferencia, setShowDeleteReferencia] = useState(false);
+  const [referencia, setReferencia] = useState<ReferenciaDTO[]>([]);
   const toast = useRef<Toast>(null);
   const navigate = useNavigate();
 
@@ -37,21 +37,29 @@ export default function Cargo() {
   };
 
   useEffect(() => {
+    console.log(selectedReferencia)
+  }, [selectedReferencia]);
+
+  useEffect(() => {
     axios
-      .get("http://localhost:3000/auth/cargo")
+      .get("http://localhost:3000/auth/referencia")
       .then((result) => {
         if (result.data.Status) {
-          setCargo(result.data.Result);
+          setReferencia(result.data.Result);
         } else {
           alert(result.data.Error);
         }
       })
       .catch((err) => console.log(err));
   }, []);
-
-  const deleteCargo = async (id: number) => {
+  const deleteReferencia = async (
+    idFuncionario: number,
+    idRestaurante: number
+  ) => {
     axios
-      .delete(`http://localhost:3000/auth/delete_cargo/` + id)
+      .delete(
+        `http://localhost:3000/auth/delete_referencia/${idFuncionario}/${idRestaurante}`
+      )
       .then((result) => {
         if (result.data.Status) {
           window.location.reload();
@@ -66,7 +74,7 @@ export default function Cargo() {
     <div className="wallet-container">
       <Toast ref={toast} />
       <div className="wallet-main-content">
-        <h1>Cargo</h1>
+        <h1>Referencias</h1>
 
         <div className="wallet-menu">
           <div className="wallet-text">
@@ -92,10 +100,9 @@ export default function Cargo() {
 
             <div className="wallet-last-button">
               <Button
-                id="inclusaoCargo"
-                label="Cargo"
-                icon="pi pi-plus"
-                onClick={() => setShowNovoCargo(true)}
+                id="inclusao"
+                label="INCLUIR"
+                onClick={() => setShowNewReferencia(true)}
               />
             </div>
           </div>
@@ -104,29 +111,48 @@ export default function Cargo() {
         <DataTable
           loading={loading}
           selectionMode="single"
-          selection={selectedCargo}
+          selection={selectedReferencia}
           onSelectionChange={(e) => {
-            setSelectedCargo(e.value);
+            setSelectedReferencia(e.value);
           }}
           tableStyle={{ minWidth: "50rem" }}
-          value={cargo}
+          value={referencia}
         >
           <Column
             body={(data) => {
               return (
                 <span>
-                  {data.idCargo}
+                  {new Date(data.Data_Inicio).toLocaleDateString("pt-BR")}
                 </span>
               );
             }}
-            header="Id"
+            header="Data de Início"
           ></Column>
           <Column
-            field="role"
-            header="Cargo"
+            body={(data) => {
+              return (
+                <span>
+                  {new Date(data.Data_Fim).toLocaleDateString("pt-BR")}
+                </span>
+              );
+            }}
+            header="Data de fim"
+          ></Column>
+          <Column
+            field="name"
+            header="Funcionario"
             body={(data) => (
               <div>
-                <span>{data.descricao}</span>
+                <span>{data.NomeFuncionario}</span>
+              </div>
+            )}
+          ></Column>
+          <Column
+            field="restaurant"
+            header="Restaurante"
+            body={(data) => (
+              <div>
+                <span>{data.NomeRestaurante}</span>
               </div>
             )}
           ></Column>
@@ -135,22 +161,31 @@ export default function Cargo() {
             header="Ações"
             body={(data) => (
               <div>
-                <Button
-                  icon="pi pi-pencil"
-                  className="p-button-rounded p-button-text"
-                  onClick={() => {
-                    setShowEditCargo(true);
-                  }}
-                />
+                {selectedReferencia != undefined ? (
+
+                  <Button
+                    icon="pi pi-pencil"
+                    className="p-button-rounded p-button-text"
+                    onClick={() => {
+                      setShowEditReferencia(true);
+                    }}
+                  />
+                )
+                
+                : (<></>)}
                 <Button
                   icon="pi pi-trash"
                   className="p-button-rounded p-button-text"
                   onClick={() => {
                     confirmDialog({
                       message: "Deseja deletar?",
-                      header: "Deletar Cargo",
-                      accept: () => deleteCargo(data.idCargo),
-                      reject: () => setShowDeleteCargo(false),
+                      header: "Deletar Funcionário",
+                      accept: () =>
+                        deleteReferencia(
+                          data.idFuncionario,
+                          data.idRestaurante
+                        ),
+                      reject: () => setShowDeleteReferencia(false),
                     });
                   }}
                 />
@@ -159,37 +194,37 @@ export default function Cargo() {
           ></Column>
         </DataTable>
       </div>
-
       <Dialog
-        header="Editar Cargo"
-        visible={showEditCargo}
-        style={{ width: "50vw" }}
-        onHide={() => setShowEditCargo(false)}
-      >
-        <EditarCargo
-          cargoId={selectedCargo}
-          closeDialog={() => {
-            setShowEditCargo(false);
-          }}
-          onSuccess={showToast}
-          onError={showToast}
-        ></EditarCargo>
-      </Dialog>
-      <Dialog
-        header="Incluir Cargo"
-        visible={showNovoCargo}
+        header="Incluir Referência"
+        visible={showNewReferencia}
         style={{ width: "50vw" }}
         onHide={() => {
-          setShowNovoCargo(false);
+          setShowNewReferencia(false);
         }}
       >
-        <IncluirCargo
+        <IncluirReferencia
           closeDialog={() => {
-            setShowNovoCargo(false);
+            setShowNewReferencia(false);
           }}
           onSuccess={showToast}
           onError={showToast}
-        ></IncluirCargo>
+        ></IncluirReferencia>
+      </Dialog>
+      <Dialog
+        header="Editar Referência"
+        visible={showEditReferencia}
+        style={{ width: "50vw" }}
+        onHide={() => setShowEditReferencia(false)}
+      >
+        <EditarReferencia
+          funcionarioId={selectedReferencia}
+          closeDialog={() => {
+            setShowEditReferencia(false);
+          }}
+          onSuccess={showToast}
+          onError={showToast}
+          restauranteId={selectedReferencia}
+        ></EditarReferencia>
       </Dialog>
       <ConfirmDialog />
     </div>

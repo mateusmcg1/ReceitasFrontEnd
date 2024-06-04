@@ -34,16 +34,15 @@ export default function Login() {
           .then((result) => {
             if (result.data.loginStatus) {
               navigate("/dashboard");
+              sessionStorage.setItem("access_token", result?.data.idToken.jwtToken);
+              sessionStorage.setItem("refresh_token", result?.data.idToken.refreshToken);
             } else {
               show("error", "Erro", "Usuário não credenciado");
             }
           });
 
-        // sessionStorage.setItem("access_token", result?.data.idToken.jwtToken);
-        // sessionStorage.setItem("refresh_token", result?.data.idToken.refreshToken);
       } catch (err: any) {
         console.log(err);
-        //  alert('Usuário não credenciado.')
         show("error", "Erro", "Usuário não credenciado");
       }
     } else {

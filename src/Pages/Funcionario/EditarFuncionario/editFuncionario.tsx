@@ -186,10 +186,6 @@ export default function EditarFuncionario({
                     </option>
                   ))}
               </select>
-              <select className={sharedClasses.InputText}>
-                <label className="block mb-2">Restaurante</label>
-                <option>Casa Itália</option>
-              </select>
             </div>
           </div>
           <div className="inclusao-button">
