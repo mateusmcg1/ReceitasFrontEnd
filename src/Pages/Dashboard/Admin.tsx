@@ -1,28 +1,40 @@
-import './Admin.css';
-import { useEffect, useState } from 'react';
-import { Menu } from 'primereact/menu';
-import 'primeicons/primeicons.css';
-import { Link, useNavigate } from 'react-router-dom';
+import "./Admin.css";
+import { useEffect, useState } from "react";
+import { Menu } from "primereact/menu";
+import "primeicons/primeicons.css";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { TabView, TabPanel } from 'primereact/tabview';
-import { Chart } from 'primereact/chart';
-import { Calendar } from 'primereact/calendar';
-import { Period } from '../../Shared/enums/Period';
-import { Year } from '../../Shared/enums/Year';
-import { Dropdown } from 'primereact/dropdown';
+import jwtDecode from "jwt-decode";
+
+interface DecodedToken {
+    name: string;
+    cargo: string;
+}
 
 
 export default function Dashboard() {
-    return (
-        <div className="container">
-            <div className="admin-main-content">
-                <h1>Dashboard</h1>
-                <div className='grid'>
-                    <div className='col-11'>
+    const [cargoName, setCargoName] = useState("");
+    const navigate = useNavigate();
+    
+    useEffect(() => {
+      const token = sessionStorage.getItem("access_token");
+      if (token) {
+        const decoded = jwtDecode<DecodedToken>(token);
+        setCargoName(decoded.cargo);
+      } else {
+        navigate("login");
+      }
+    }, [navigate]);
 
-                    </div>
-                </div>
-            </div>
+
+  return (
+    <div className="container">
+      <div className="admin-main-content">
+        <h1>Bem vindo, {cargoName.toUpperCase()}</h1>
+        <div className="grid">
+          <div className="col-11"></div>
         </div>
-    )
+      </div>
+    </div>
+  );
 }

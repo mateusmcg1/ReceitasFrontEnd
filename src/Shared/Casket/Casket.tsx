@@ -96,7 +96,7 @@ export function Casket({ children }: { children?: any }) {
                     <ul>
                         <Avatar label={cargoName.substring(0, 1).toUpperCase()} style={{ backgroundColor: '#9c27b0', color: '#ffffff' }} />
                         <li key={userName}>
-                            <span>{userName.toUpperCase()} - {cargoName.toUpperCase()}</span>
+                            <span>{userName.toUpperCase()} ({cargoName.toUpperCase()})</span>
                         </li>
                         <li>
                             <span style={{ cursor: "pointer" }} onClick={() => {
