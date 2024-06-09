@@ -9,7 +9,7 @@ import Restaurante from '../Pages/Restaurante/Restaurante';
 import Categoria from '../Pages/Categoria/Categoria';
 import Referencia from '../Pages/Referencia/Referencia';
 import Receita from '../Pages/CriarReceita/Receita';
-
+import Composicao from '../Pages/Composicao/Composicao';
 
 
 function Rotas() {
@@ -20,6 +20,7 @@ function Rotas() {
 
                 <Route path='/' element={<Login/>} />
                 <Route path='/login' element={<Login />} />
+                <Route path='criarReceita/composicao' element={<Composicao />} />
 
                 <Route element={<Casket />}>
                     <Route path='/dashboard' element={<Dashboard />} />
