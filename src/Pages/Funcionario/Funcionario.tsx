@@ -143,7 +143,12 @@ export default function Funcionario() {
             header="Salário"
             body={(data) => (
               <div>
-                <span>{data.Salario}</span>
+                 {Number(data.Salario).toLocaleString('pt-BR', {
+                      maximumFractionDigits: 2,
+                      style: 'currency',
+                      currency: 'BRL',
+                      useGrouping: true,
+                    })}
               </div>
             )}
           ></Column>

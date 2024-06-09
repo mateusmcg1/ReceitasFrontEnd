@@ -49,9 +49,14 @@ export default function Receita() {
       .catch((err) => console.log(err));
   }, []);
 
-  const deleteReceita = async (id: number) => {
+  const deleteReceita = async (
+    nome: string,
+    idCozinheiro: number
+  ) => {
     axios
-      .delete(`http://localhost:3000/chef/delete_receita/` + id)
+      .delete(
+        `http://localhost:3000/chef/delete_receita/${nome}/${idCozinheiro}`
+      )
       .then((result) => {
         if (result.data.Status) {
           window.location.reload();
@@ -180,7 +185,7 @@ export default function Receita() {
                     confirmDialog({
                       message: "Deseja deletar?",
                       header: "Deletar Receita",
-                      accept: () => deleteReceita(data.idFuncionario),
+                      accept: () => deleteReceita(data.nome,data.idCozinheiro),
                       reject: () => setShowDeleteReceita(false),
                     });
                   }}
@@ -213,7 +218,8 @@ export default function Receita() {
         onHide={() => setShowEditReceita(false)}
       >
         <EditarReceita
-          funcionarioId={selectedReceita}
+          idCozinheiro={selectedReceita?.idCozinheiro}
+          nome={selectedReceita?.nome}
           closeDialog={() => {
             setShowEditReceita(false);
           }}

@@ -96,6 +96,7 @@ export default function EditarFuncionario({
       .then((result) => {
         if (result.data.Status) {
           closeDialog();
+          window.location.reload();
         } else {
           alert(result.data.Status);
         }
