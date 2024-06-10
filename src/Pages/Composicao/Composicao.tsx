@@ -56,7 +56,7 @@ export default function Composicao() {
   ) => {
     axios
       .delete(
-        `http://localhost:3000/chef/delete_receita/${idIngredientes}/${Receita_nome}/${idCozinheiro}`
+        `http://localhost:3000/chef/delete_composicao/${idIngredientes}/${Receita_nome}/${idCozinheiro}`
       )
       .then((result) => {
         if (result.data.Status) {

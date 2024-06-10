@@ -24,7 +24,7 @@ export default function IncluirComposicao({
     idMedida: "",
     idIngredientes: "",
     Receita_nome: "",
-    idCozinheiro: "",
+    idCozinheiro: 0,
   });
   const [medida, setMedida] = useState<MedidaDTO[]>([]);
   const [cozinheiro, setCozinheiro] = useState<FuncionarioDTO[]>([]);
@@ -77,6 +77,19 @@ export default function IncluirComposicao({
   }, []);
 
   useEffect(() => {
+    if (composicao.Receita_nome) {
+      const selectedCozinheiro = receita.find(
+        (r) => r.nome === composicao.Receita_nome
+      )?.idCozinheiro;
+
+      setComposicao((prevState) => ({
+        ...prevState,
+        idCozinheiro: selectedCozinheiro || 0,
+      }));
+    }
+  }, [composicao.Receita_nome, receita]);
+
+  useEffect(() => {
     axios
       .get("http://localhost:3000/auth/funcionario")
       .then((result) => {
@@ -96,8 +109,8 @@ export default function IncluirComposicao({
     axios
       .post("http://localhost:3000/chef/add_composicao", {
         Receita_nome: composicao.Receita_nome,
-        idMedida: composicao.idMedida,
-        idIngredientes: composicao.idIngredientes,
+        idMedida: parseInt(composicao.idMedida),
+        idIngredientes: parseInt(composicao.idIngredientes),
         idCozinheiro: composicao.idCozinheiro,
         QuantidadeIngrediente: composicao.QuantidadeIngrediente,
       })
@@ -138,21 +151,14 @@ export default function IncluirComposicao({
               <label className="block mb-2">Cozinheiro</label>
               <select
                 className={sharedClasses.select}
-                onChange={(e) =>
-                  setComposicao({ ...composicao, idCozinheiro: e.target.value })
-                }
+                disabled
+                value={composicao.idCozinheiro}
               >
-                <option value="">Selecione um cozinheiro</option>{" "}
-                {cozinheiro
-                  .filter((cItem) => cItem.Nome !== null)
-                  .map((cItem) => (
-                    <option
-                      key={cItem.idFuncionario}
-                      value={cItem.idFuncionario}
-                    >
-                      {cItem.Nome}
-                    </option>
-                  ))}
+                {cozinheiro.map((cItem) => (
+                  <option key={cItem.idFuncionario} value={cItem.idFuncionario}>
+                    {cItem.Nome}
+                  </option>
+                ))}
               </select>
             </div>
             <div>
