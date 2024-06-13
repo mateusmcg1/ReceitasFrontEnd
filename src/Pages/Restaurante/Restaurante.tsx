@@ -135,13 +135,18 @@ export default function Restaurante() {
             header="Ações"
             body={(data) => (
               <div>
-                <Button
-                  icon="pi pi-pencil"
-                  className="p-button-rounded p-button-text"
-                  onClick={() => {
-                    setShowEditRestaurante(true);
-                  }}
-                />
+                {selectedRestaurante != undefined ? (
+
+                  <Button
+                    icon="pi pi-pencil"
+                    className="p-button-rounded p-button-text"
+                    onClick={() => {
+                      setShowEditRestaurante(true);
+                    }}
+                  />
+                )
+                
+                : (<></>)}
                 <Button
                   icon="pi pi-trash"
                   className="p-button-rounded p-button-text"

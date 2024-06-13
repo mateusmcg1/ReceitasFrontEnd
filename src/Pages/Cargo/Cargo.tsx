@@ -135,13 +135,18 @@ export default function Cargo() {
             header="Ações"
             body={(data) => (
               <div>
-                <Button
-                  icon="pi pi-pencil"
-                  className="p-button-rounded p-button-text"
-                  onClick={() => {
-                    setShowEditCargo(true);
-                  }}
-                />
+                {selectedCargo != undefined ? (
+
+                  <Button
+                    icon="pi pi-pencil"
+                    className="p-button-rounded p-button-text"
+                    onClick={() => {
+                      setShowEditCargo(true);
+                    }}
+                  />
+                )
+                
+                : (<></>)}
                 <Button
                   icon="pi pi-trash"
                   className="p-button-rounded p-button-text"

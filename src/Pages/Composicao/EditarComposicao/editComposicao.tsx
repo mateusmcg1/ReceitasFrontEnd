@@ -4,35 +4,38 @@ import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
 import axios from "axios";
 import { InputNumber } from "primereact/inputnumber";
-import { CategoriaDTO } from "../../../models/CategoriaDTO";
 import { FuncionarioDTO } from "../../../models/FuncionarioDTO";
 import { InputTextarea } from "primereact/inputtextarea";
+import { MedidaDTO } from "../../../models/MedidaDTO";
+import { IngredientesDTO } from "../../../models/IngredientesDTO";
 import { ReceitaDTO } from "../../../models/ReceitaDTO";
 
-export default function EditarReceita({
+export default function IncluirComposicao({
   closeDialog,
   onSuccess,
   onError,
   idCozinheiro,
-  nome,
+  nomeReceita,
+  idIngredientes
 }: {
   closeDialog: any;
   onSuccess: Function;
   onError: Function;
   idCozinheiro: number;
-  nome: string;
+  nomeReceita: string;
+  idIngredientes: number;
 }) {
-  const [receita, setReceita] = useState({
-    nome: "",
-    Data: "",
-    IndRecInedita: 0,
-    idCozinheiro: "",
-    Categoria: "",
-    QuantidadePorcao: 0,
-    ModoPreparo: "",
+  const [composicao, setComposicao] = useState({
+    QuantidadeIngrediente: 0,
+    idMedida: "",
+    idIngredientes: "",
+    Receita_nome: "",
+    idCozinheiro: 0,
   });
-  const [categoria, setCategoria] = useState<CategoriaDTO[]>([]);
+  const [medida, setMedida] = useState<MedidaDTO[]>([]);
   const [cozinheiro, setCozinheiro] = useState<FuncionarioDTO[]>([]);
+  const [ingredientes, setIngredientes] = useState<IngredientesDTO[]>([]);
+  const [receita, setReceita] = useState<ReceitaDTO[]>([]);
   const sharedClasses = {
     InputText: "w-full p-2 border rounded mb-4",
     select: "w-full p-2 border rounded mb-4",
@@ -42,16 +45,55 @@ export default function EditarReceita({
 
   useEffect(() => {
     axios
-      .get("http://localhost:3000/chef/categoria")
+      .get("http://localhost:3000/chef/medida")
       .then((result) => {
         if (result.data.Status) {
-          setCategoria(result.data.Result);
+          setMedida(result.data.Result);
         } else {
           alert(result.data.Error);
         }
       })
       .catch((err) => console.log(err));
   }, []);
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:3000/chef/ingredientes")
+      .then((result) => {
+        if (result.data.Status) {
+          setIngredientes(result.data.Result);
+        } else {
+          alert(result.data.Error);
+        }
+      })
+      .catch((err) => console.log(err));
+  }, []);
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:3000/chef/receita")
+      .then((result) => {
+        if (result.data.Status) {
+          setReceita(result.data.Result);
+        } else {
+          alert(result.data.Error);
+        }
+      })
+      .catch((err) => console.log(err));
+  }, []);
+
+  useEffect(() => {
+    if (composicao.Receita_nome) {
+      const selectedCozinheiro = receita.find(
+        (r) => r.nome === composicao.Receita_nome
+      )?.idCozinheiro;
+
+      setComposicao((prevState) => ({
+        ...prevState,
+        idCozinheiro: selectedCozinheiro || 0,
+      }));
+    }
+  }, [composicao.Receita_nome, receita]);
 
   useEffect(() => {
     axios
@@ -70,41 +112,36 @@ export default function EditarReceita({
   }, []);
 
   useEffect(() => {
+     console.log(composicao)
     axios
-      .get(`http://localhost:3000/chef/receita/${nome}/${idCozinheiro}`)
+      .get(`http://localhost:3000/chef/composicao/${idIngredientes}/${nomeReceita}/${idCozinheiro}`)
       .then((result) => {
-        setReceita({
-          ...receita,
-          nome: result.data.Result[0].nome,
-          Data: new Date(result.data.Result[0].Data)
-            .toISOString()
-            .split("T")[0],
-          IndRecInedita: result.data.Result[0].IndRecInedita,
+        setComposicao({
+          ...composicao,
+          Receita_nome: result.data.Result[0].Receita_nome,
           idCozinheiro: result.data.Result[0].idCozinheiro,
-          Categoria: result.data.Result[0].Categoria,
-          QuantidadePorcao: result.data.Result[0].QuantidadePorcao,
-          ModoPreparo: result.data.Result[0].ModoPreparo,
+          idIngredientes: result.data.Result[0].idIngredientes,
+          idMedida: result.data.Resulta[0].idMedida,
+          QuantidadeIngrediente: result.data.Result[0].QuantidadePorcao,
         });
       })
       .catch((err) => console.log(err));
   }, []);
 
-  const updateReceita = (e: any) => {
+  const updateComposicao = (e: any) => {
     e.preventDefault();
     axios
-      .put(`http://localhost:3000/chef/edit_receita/${nome}/${idCozinheiro}`, {
-        nome: receita.nome,
-        Data: receita.Data,
-        IndRecInedita: receita.IndRecInedita,
-        idCozinheiro: parseInt(receita.idCozinheiro),
-        Categoria: parseInt(receita.Categoria),
-        QuantidadePorcao: receita.QuantidadePorcao,
-        ModoPreparo: receita.ModoPreparo,
+      .put("http://localhost:3000/chef/edit_composicao", {
+        Receita_nome: composicao.Receita_nome,
+        idMedida: parseInt(composicao.idMedida),
+        idIngredientes: parseInt(composicao.idIngredientes),
+        idCozinheiro: composicao.idCozinheiro,
+        QuantidadeIngrediente: composicao.QuantidadeIngrediente,
       })
       .then((result) => {
         if (result.data.Status) {
-          closeDialog();
           window.location.reload();
+          closeDialog();
         } else {
           alert(result.data.Status);
         }
@@ -118,104 +155,103 @@ export default function EditarReceita({
         <div className="bg-white shadow-md rounded-lg p-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label className="block mb-2">Nome</label>
-              <InputText
-                value={receita.nome}
+              <label className="block mb-2">Receita</label>
+              <select
+              value={composicao.Receita_nome}
+                className={sharedClasses.select}
                 onChange={(e) =>
-                  setReceita({ ...receita, nome: e.target.value })
+                  setComposicao({ ...composicao, Receita_nome: e.target.value })
                 }
-                type="text"
-                className={sharedClasses.InputText}
-                placeholder="Nome"
-              />
-              <label className="block mb-2">Data de criação</label>
-              <InputText
-                value={receita.Data}
-                type="date"
-                className={sharedClasses.InputText}
+              >
+                <option value="">Selecione uma receita</option>{" "}
+                {receita
+                  .filter((cItem) => cItem.nome !== null)
+                  .map((cItem) => (
+                    <option value={cItem.nome}>{cItem.nome}</option>
+                  ))}
+              </select>
+            </div>
+
+            <div>
+              <label className="block mb-2">Cozinheiro</label>
+              <select
+                className={sharedClasses.select}
+                disabled
+                value={composicao.idCozinheiro}
+              >
+                {cozinheiro.map((cItem) => (
+                  <option key={cItem.idFuncionario} value={cItem.idFuncionario}>
+                    {cItem.Nome}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label className="block mb-2">Ingrediente</label>
+              <select
+              value={composicao.idIngredientes}
+                className={sharedClasses.select}
                 onChange={(e) =>
-                  setReceita({
-                    ...receita,
-                    Data: e.target.value!,
+                  setComposicao({
+                    ...composicao,
+                    idIngredientes: e.target.value,
                   })
                 }
-              />
-              <label className="block mb-2">Índice</label>
+              >
+                <option value="">Selecione um ingrediente</option>{" "}
+                {ingredientes
+                  .filter((iItem) => iItem.Nome !== null)
+                  .map((iItem) => (
+                    <option
+                      key={iItem.idIngredientes}
+                      value={iItem.idIngredientes}
+                    >
+                      {iItem.Nome}
+                    </option>
+                  ))}
+              </select>
+            </div>
+            <div>
+              <label className="block mb-2">Quantidade</label>
               <InputNumber
-                value={receita.IndRecInedita}
                 locale="pt-BR"
-                placeholder="Ídice"
-                onChange={(e) =>
-                  setReceita({ ...receita, IndRecInedita: e.value! })
-                }
-              />
-              <label className="block mb-2">Porção</label>
-              <InputNumber
-                value={receita.QuantidadePorcao}
-                locale="pt-BR"
-                placeholder="Porção"
+                value={composicao.QuantidadeIngrediente}
                 maxFractionDigits={1}
+                placeholder="Quantidade"
                 onChange={(e) =>
-                  setReceita({ ...receita, QuantidadePorcao: e.value! })
+                  setComposicao({
+                    ...composicao,
+                    QuantidadeIngrediente: e.value!,
+                  })
                 }
               />
             </div>
             <div>
-              <label className="block mb-2">Cozinheiro</label>
+              <label className="block mb-2">Medida</label>
               <select
-                value={receita.idCozinheiro}
+              value={composicao.idMedida}
                 className={sharedClasses.select}
                 onChange={(e) =>
-                  setReceita({ ...receita, idCozinheiro: e.target.value })
+                  setComposicao({ ...composicao, idMedida: e.target.value })
                 }
               >
-                <option value="">Selecione um cozinheiro</option>{" "}
-                {cozinheiro
-                  .filter((cItem) => cItem.Nome !== null)
-                  .map((cItem) => (
-                    <option
-                      key={cItem.idFuncionario}
-                      value={cItem.idFuncionario}
-                    >
-                      {cItem.Nome}
+                <option value="">Selecione uma medida</option>{" "}
+                {medida
+                  .filter((mItem) => mItem.Descricao !== null)
+                  .map((mItem) => (
+                    <option key={mItem.idMedida} value={mItem.idMedida}>
+                      {mItem.Descricao}
                     </option>
                   ))}
               </select>
-              <label className="block mb-2">Categoria</label>
-              <select
-                value={receita.Categoria}
-                className={sharedClasses.select}
-                onChange={(e) =>
-                  setReceita({ ...receita, Categoria  : e.target.value })
-                }
-              >
-                <option value="">Selecione uma categoria</option>{" "}
-                {categoria
-                  .filter((cItem) => cItem.nome !== null)
-                  .map((cItem) => (
-                    <option key={cItem.idCategoria} value={cItem.idCategoria}>
-                      {cItem.nome}
-                    </option>
-                  ))}
-              </select>
-              <div className="card flex justify-content-center">
-                <InputTextarea
-                  value={receita.ModoPreparo}
-                  onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
-                    setReceita({ ...receita, ModoPreparo: e.target.value })
-                  }
-                  rows={5}
-                  cols={30}
-                />
-              </div>
             </div>
           </div>
           <div className="inclusao-button">
             <Button
               severity="success"
-              label="Atualizar"
+              label="Registrar"
               onClick={(e) => {
-                updateReceita(e);
+                updateComposicao(e);
               }}
             />
           </div>

@@ -72,7 +72,7 @@ export default function Composicao() {
     <div className="wallet-container">
       <Toast ref={toast} />
       <div className="wallet-main-content">
-        <h1>Composicao</h1>
+        <h1>Composição</h1>
 
         <div className="wallet-menu">
           <div className="wallet-text">
@@ -174,13 +174,18 @@ export default function Composicao() {
             header="Ações"
             body={(data) => (
               <div>
-                <Button
-                  icon="pi pi-pencil"
-                  className="p-button-rounded p-button-text"
-                  onClick={() => {
-                    setShowEditComposicao(true);
-                  }}
-                />
+                {selectedComposicao != undefined ? (
+
+                  <Button
+                    icon="pi pi-pencil"
+                    className="p-button-rounded p-button-text"
+                    onClick={() => {
+                      setShowEditComposicao(true);
+                    }}
+                  />
+                )
+                
+                : (<></>)}
                 <Button
                   icon="pi pi-trash"
                   className="p-button-rounded p-button-text"
@@ -227,7 +232,8 @@ export default function Composicao() {
       >
         <EditarComposicao
           idCozinheiro={selectedComposicao?.idCozinheiro}
-          nome={selectedComposicao?.Receita_nome}
+          nomeReceita={selectedComposicao?.Receita_nome}
+          idIngredientes={selectedComposicao?.idIngredientes}
           // idIngrediente={selectedComposicao?.idIngrediente}
           closeDialog={() => {
             setShowEditComposicao(false);

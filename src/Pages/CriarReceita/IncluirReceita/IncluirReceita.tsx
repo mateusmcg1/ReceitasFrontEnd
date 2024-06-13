@@ -166,7 +166,8 @@ export default function IncluirReceita({
                     </option>
                   ))}
               </select>
-              <div className="card flex justify-content-center">
+              <div>
+                <label className="block mb-2">Modo de preparo</label>
                 <InputTextarea
                   onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
                     setReceita({ ...receita, ModoPreparo: e.target.value })
