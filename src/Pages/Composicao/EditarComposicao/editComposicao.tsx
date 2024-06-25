@@ -112,26 +112,29 @@ export default function IncluirComposicao({
   }, []);
 
   useEffect(() => {
-     console.log(composicao)
     axios
       .get(`http://localhost:3000/chef/composicao/${idIngredientes}/${nomeReceita}/${idCozinheiro}`)
       .then((result) => {
-        setComposicao({
-          ...composicao,
-          Receita_nome: result.data.Result[0].Receita_nome,
-          idCozinheiro: result.data.Result[0].idCozinheiro,
-          idIngredientes: result.data.Result[0].idIngredientes,
-          idMedida: result.data.Resulta[0].idMedida,
-          QuantidadeIngrediente: result.data.Result[0].QuantidadePorcao,
-        });
+        if (result.data.Status) {
+          setComposicao({
+            ...composicao,
+            Receita_nome: result.data.Result[0].Receita_nome,
+            idCozinheiro: result.data.Result[0].idCozinheiro,
+            idIngredientes: result.data.Result[0].idIngredientes,
+            idMedida: result.data.Result[0].idMedida,
+            QuantidadeIngrediente: result.data.Result[0].QuantidadeIngrediente,
+          });
+        } else {
+          alert(result.data.Error);
+        }
       })
       .catch((err) => console.log(err));
-  }, []);
+  }, [idIngredientes, nomeReceita, idCozinheiro]);
 
   const updateComposicao = (e: any) => {
     e.preventDefault();
     axios
-      .put("http://localhost:3000/chef/edit_composicao", {
+      .put(`http://localhost:3000/chef/edit_composicao/${idIngredientes}/${nomeReceita}/${idCozinheiro}`, {
         Receita_nome: composicao.Receita_nome,
         idMedida: parseInt(composicao.idMedida),
         idIngredientes: parseInt(composicao.idIngredientes),
