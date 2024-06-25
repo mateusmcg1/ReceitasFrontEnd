@@ -50,7 +50,7 @@ export function Casket({ children }: { children?: any }) {
                     label: 'Avaliar', icon: 'pi pi-check', command: () => { navigateMenu('avaliarReceita') }, navigable: true
                 },
                 {
-                    label: 'Criar ingrediente', icon: 'pi pi-plus', command: () => { navigateMenu('ingrediente') }, navigable: true
+                    label: 'Criar ingrediente', icon: 'pi pi-plus', command: () => { navigateMenu('criarIngredientes') }, navigable: true
                 },
                 {
                     label: 'Criar categoria', icon: 'pi pi-plus', command: () => { navigateMenu('categoria') }, navigable: true

@@ -1,24 +1,23 @@
 import { useState, useEffect, useRef } from "react";
-import "./editarCargo.css";
+import "./editarMedida.css";
 import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
 import axios from "axios";
 import { Toast, ToastMessage } from "primereact/toast";
 import { Dropdown } from "primereact/dropdown";
-import { FuncionarioDTO } from "../../../models/FuncionarioDTO";
 import { InputNumber } from "primereact/inputnumber";
-import { CargoDTO } from "../../../models/CargoDTO";
+import { MedidaDTO } from "../../../models/MedidaDTO";
 
-export default function EditarCargo({
+export default function EditarMedida({
   closeDialog,
-  cargoId,
   onSuccess,
   onError,
+  idMedida
 }: {
   closeDialog: any;
-  cargoId: CargoDTO;
   onSuccess: Function;
   onError: Function;
+  idMedida: number;
 }) {
   const Edittoast = useRef<Toast>(null);
   const show = (
@@ -29,8 +28,8 @@ export default function EditarCargo({
     Edittoast.current?.show({ severity, summary, detail });
   };
  
-  const [cargo, setCargo] = useState({
-    descricao: "",
+  const [medida, setMedida] = useState({
+    nome: "",
   });
   const sharedClasses = {
     InputText: "w-full p-2 border rounded mb-4",
@@ -43,24 +42,24 @@ export default function EditarCargo({
   useEffect(() => {
     axios
       .get(
-        `http://localhost:3000/auth/edit_cargo/${cargoId?.idCargo}`
+        `http://localhost:3000/chef/medida/${idMedida}`
       )
       .then((result) => {
-        setCargo({
-          descricao: result.data.Result[0].descricao,
+        setMedida({
+          nome: result.data.Result[0].Descricao,
 
         });
       })
       .catch((err) => console.log(err));
   }, []);
 
-  const updateCargo = (e: any) => {
+  const updateMedida = (e: any) => {
     e.preventDefault();
     axios
       .put(
-        `http://localhost:3000/auth/edit_cargo/${cargoId?.idCargo}`,
+        `http://localhost:3000/chef/edit_medida/${idMedida}`,
         {
-          descricao: cargo.descricao,
+          descricao: medida.nome,
         }
       )
       .then((result) => {
@@ -82,13 +81,13 @@ export default function EditarCargo({
             <div>
               <label className="block mb-2"></label>
               <InputText
-                value={cargo.descricao}
+                value={medida.nome}
                 className={sharedClasses.InputText}
                 onChange={(e) =>
-                  setCargo({ ...cargo, descricao: e.target.value })
+                  setMedida({ ...medida, nome: e.target.value })
                 }
                 type="text"
-                placeholder="Cargo"
+                placeholder="Medida"
               />
             </div>
           </div>
@@ -97,7 +96,7 @@ export default function EditarCargo({
               severity="success"
               label="Atualizar"
               onClick={(e) => {
-                updateCargo(e);
+                updateMedida(e);
               }}
             />
           </div>

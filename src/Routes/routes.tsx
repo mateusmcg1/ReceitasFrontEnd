@@ -10,6 +10,9 @@ import Categoria from '../Pages/Categoria/Categoria';
 import Referencia from '../Pages/Referencia/Referencia';
 import Receita from '../Pages/CriarReceita/Receita';
 import Composicao from '../Pages/Composicao/Composicao';
+import Medida from '../Pages/Medida/Medida';
+import Ingredientes from '../Pages/CriarIngredientes/Ingredientes';
+
 
 
 function Rotas() {
@@ -30,8 +33,9 @@ function Rotas() {
                     <Route path='/categoria' element={<Categoria />} />
                     <Route path='/referencia' element={<Referencia />} />
                     <Route path='/criarReceita' element={<Receita />} />
+                    <Route path='/medida' element={<Medida />} />
+                    <Route path='/criarIngredientes' element={<Ingredientes />} />
                     
-
 
                 </Route>
 
