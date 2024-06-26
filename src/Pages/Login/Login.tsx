@@ -34,13 +34,18 @@ export default function Login() {
           .then((result) => {
             if (result.data.loginStatus) {
               navigate("/dashboard");
-              sessionStorage.setItem("access_token", result?.data.idToken.jwtToken);
-              sessionStorage.setItem("refresh_token", result?.data.idToken.refreshToken);
+              sessionStorage.setItem(
+                "access_token",
+                result?.data.idToken.jwtToken
+              );
+              sessionStorage.setItem(
+                "refresh_token",
+                result?.data.idToken.refreshToken
+              );
             } else {
               show("error", "Erro", "Usuário não credenciado");
             }
           });
-
       } catch (err: any) {
         console.log(err);
         show("error", "Erro", "Usuário não credenciado");
@@ -75,17 +80,20 @@ export default function Login() {
             <div className="login-user" style={{ width: "100%" }}>
               <label>Usuário</label>
               <InputText
+                id="user"
                 value={user}
                 onChange={(e) => setUser(e.target.value)}
               />
             </div>
             <div style={{ marginTop: "1%", width: "100%" }}>
               <label>Senha</label>
-              <Password
+              <InputText
+                id="password"
+                type="password"
                 value={senha}
                 onChange={(e) => setSenha(e.target.value)}
-                feedback={false}
-                toggleMask
+                // feedback={false}
+                // toggleMask
               />
             </div>
             <Button
