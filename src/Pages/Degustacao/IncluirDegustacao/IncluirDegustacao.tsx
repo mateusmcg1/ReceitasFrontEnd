@@ -112,7 +112,6 @@ export default function IncluirDegustacao({
       .post("http://localhost:3000/taster/add_degustacao", formData)
       .then((result) => {
         if (result.data.Status) {
-          window.location.reload();
           closeDialog();
         } else {
           alert(result.data.Status);

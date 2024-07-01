@@ -36,8 +36,8 @@ export default function Degustacao() {
     toast.current?.show([{ severity, summary, detail }]);
   };
 
-  useEffect(() => {
-    axios
+  const fetchDegustacao = async () => {
+    await axios
       .get("http://localhost:3000/taster/degustacao")
       .then((result) => {
         if (result.data.Status) {
@@ -47,16 +47,23 @@ export default function Degustacao() {
         }
       })
       .catch((err) => console.log(err));
+  };
+
+  useEffect(() => {
+    fetchDegustacao();
   }, []);
 
-  const deleteDegustacao = async (idDegustador: number , Receita_nome: string, idCozinheiro: number) => {
+  const deleteDegustacao = async (
+    idDegustador: number,
+    Receita_nome: string,
+    idCozinheiro: number
+  ) => {
     axios
       .delete(
         `http://localhost:3000/taster/delete_degustacao/${idDegustador}/${Receita_nome}/${idCozinheiro}`
       )
       .then((result) => {
         if (result.data.Status) {
-          window.location.reload();
         } else {
           alert(result.data.Status);
         }
@@ -152,15 +159,19 @@ export default function Degustacao() {
           <Column
             field="foto"
             header="Foto"
-            body={(data) => (
-              <div>
-                <img
-                  src={`http://localhost:3000/Images/${data.Imagem}`} 
-                  alt="Imagem"
-                  style={{ width: "100px", height: "auto" }}
-                />
-              </div>
-            )}
+            body={(data) =>
+              data.Imagem == null ? (
+                <></>
+              ) : (
+                <div>
+                  <img
+                    src={`http://localhost:3000/Images/${data.Imagem}`}
+                    alt="Imagem"
+                    style={{ width: "100px", height: "auto" }}
+                  />
+                </div>
+              )
+            }
           ></Column>
           <Column
             field="action"
@@ -185,8 +196,14 @@ export default function Degustacao() {
                     confirmDialog({
                       message: "Deseja deletar?",
                       header: "Deletar Receita",
-                      accept: () =>
-                        deleteDegustacao(data.idDegustador ,data.Receita_nome, data.idCozinheiro),
+                      accept: () => {
+                        deleteDegustacao(
+                          data.idDegustador,
+                          data.Receita_nome,
+                          data.idCozinheiro
+                        );
+                        fetchDegustacao();
+                      },
                       reject: () => setShowDeleteDegustacao(false),
                     });
                   }}
@@ -207,6 +224,7 @@ export default function Degustacao() {
         <IncluirDegustacao
           closeDialog={() => {
             setShowNewDegustacao(false);
+            fetchDegustacao();
           }}
           onSuccess={showToast}
           onError={showToast}

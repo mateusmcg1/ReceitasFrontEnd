@@ -107,21 +107,27 @@ export default function IncluirDegustacao({
     axios
       .get(`http://localhost:3000/taster/degustacao/${idDegustador}/${Receita_nome}/${idCozinheiro}`)
       .then((result) => {
-        setDegustacao({
-          ...degustacao,
-          Data_Degustacao: new Date(result.data.Result[0].Data_Degustacao)
+        const data = result.data.Result[0];
+        setDegustacao({...degustacao,
+          Data_Degustacao: new Date(data.Data_Degustacao)
             .toISOString()
             .split("T")[0],
-          Nota_Degustacao: result.data.Result[0].Nota_Degustacao,
-          idCozinheiro: result.data.Result[0].idCozinheiro,
-          idDegustador: result.data.Result[0].idDegustador,
-          Receita_nome: result.data.Result[0].Receita_nome,
-          Imagem: result.data.Result[0].Imagem,
+          Nota_Degustacao: data.Nota_Degustacao,
+          idCozinheiro: data.idCozinheiro,
+          idDegustador: data.idDegustador,
+          Receita_nome: data.Receita_nome,
         });
+
+        const imageUrl = `http://localhost:3000/Images/${data.Imagem}`;
+        return axios.get(imageUrl, { responseType: 'blob' });
+      })
+      .then((imageResult) => {
+        const imageBlob = imageResult.data;
+        console.log(imageBlob)
+        setFile(imageBlob);
       })
       .catch((err) => console.log(err));
   }, []);
-
   const updateDegustacao = (e: any) => {
     e.preventDefault();
     const formData = new FormData();
@@ -134,7 +140,7 @@ export default function IncluirDegustacao({
       formData.append("Imagem", file, file.name);
     }
     axios
-      .post("http://localhost:3000/taster/edit_degustacao", formData)
+      .put(`http://localhost:3000/taster/edit_degustacao/${idDegustador}/${Receita_nome}/${idCozinheiro}`, formData)
       .then((result) => {
         if (result.data.Status) {
           window.location.reload();
