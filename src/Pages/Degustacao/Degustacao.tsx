@@ -1,4 +1,4 @@
-import "./cargo.css";
+import "./degustacao.css";
 import { Menu } from "primereact/menu";
 import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -11,20 +11,20 @@ import { Avatar } from "primereact/avatar";
 import { SplitButton } from "primereact/splitbutton";
 import { MenuItem } from "primereact/menuitem";
 import { Dialog } from "primereact/dialog";
+import EditarDegustacao from "./EditarDegustacao/EditarDegustacao";
 import { Toast, ToastMessage } from "primereact/toast";
 import { ConfirmDialog, confirmDialog } from "primereact/confirmdialog";
-import IncluirCargo from "./IncluirCargo/IncluirCargo";
-import EditarCargo from "./EditarCargo/EditarCargo";
-import { CargoDTO } from "../../models/CargoDTO";
+import { DegustacaoDTO } from "../../models/DegustacaoDTO";
+import IncluirDegustacao from "./IncluirDegustacao/IncluirDegustacao";
 
-export default function Cargo() {
+export default function Degustacao() {
   const [find, setFind] = useState("");
   const [loading, setLoading] = useState(false);
-  const [selectedCargo, setSelectedCargo] = useState<any>();
-  const [showNovoCargo, setShowNovoCargo] = useState(false);
-  const [showEditCargo, setShowEditCargo] = useState(false);
-  const [showDeleteCargo, setShowDeleteCargo] = useState(false);
-  const [cargo, setCargo] = useState<CargoDTO[]>([]);
+  const [selectedDegustacao, setSelectedDegustacao] = useState<any>();
+  const [showNewDegustacao, setShowNewDegustacao] = useState(false);
+  const [showEditDegustacao, setShowEditDegustacao] = useState(false);
+  const [showDeleteDegustacao, setShowDeleteDegustacao] = useState(false);
+  const [degustacao, setDegustacao] = useState<DegustacaoDTO[]>([]);
   const toast = useRef<Toast>(null);
   const navigate = useNavigate();
 
@@ -38,10 +38,10 @@ export default function Cargo() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3000/auth/cargo")
+      .get("http://localhost:3000/taster/degustacao")
       .then((result) => {
         if (result.data.Status) {
-          setCargo(result.data.Result);
+          setDegustacao(result.data.Result);
         } else {
           alert(result.data.Error);
         }
@@ -49,9 +49,11 @@ export default function Cargo() {
       .catch((err) => console.log(err));
   }, []);
 
-  const deleteCargo = async (id: number) => {
+  const deleteDegustacao = async (idDegustador: number , Receita_nome: string, idCozinheiro: number) => {
     axios
-      .delete(`http://localhost:3000/auth/delete_cargo/` + id)
+      .delete(
+        `http://localhost:3000/taster/delete_degustacao/${idDegustador}/${Receita_nome}/${idCozinheiro}`
+      )
       .then((result) => {
         if (result.data.Status) {
           window.location.reload();
@@ -66,7 +68,7 @@ export default function Cargo() {
     <div className="wallet-container">
       <Toast ref={toast} />
       <div className="wallet-main-content">
-        <h1>Cargo</h1>
+        <h1>Avalição</h1>
 
         <div className="wallet-menu">
           <div className="wallet-text">
@@ -92,10 +94,9 @@ export default function Cargo() {
 
             <div className="wallet-last-button">
               <Button
-                id="inclusaoCargo"
-                label="Cargo"
-                icon="pi pi-plus"
-                onClick={() => setShowNovoCargo(true)}
+                id="inclusao"
+                label="INCLUIR"
+                onClick={() => setShowNewDegustacao(true)}
               />
             </div>
           </div>
@@ -104,25 +105,60 @@ export default function Cargo() {
         <DataTable
           loading={loading}
           selectionMode="single"
-          selection={selectedCargo}
+          selection={selectedDegustacao}
           onSelectionChange={(e) => {
-            setSelectedCargo(e.value);
+            setSelectedDegustacao(e.value);
           }}
           tableStyle={{ minWidth: "50rem" }}
-          value={cargo}
+          value={degustacao}
         >
           <Column
             body={(data) => {
-              return <span>{data.idCargo}</span>;
+              return (
+                <span>
+                  {new Date(data.Data_Degustacao).toLocaleDateString("pt-BR")}
+                </span>
+              );
             }}
-            header="Id"
+            header="Data de Avaliação"
           ></Column>
           <Column
-            field="role"
-            header="Cargo"
+            field="degustador"
+            header="Degustador"
             body={(data) => (
               <div>
-                <span>{data.descricao}</span>
+                <span>{data.Degustador}</span>
+              </div>
+            )}
+          ></Column>
+          <Column
+            field="receita"
+            header="Receita"
+            body={(data) => (
+              <div>
+                <span>{data.Receita_nome}</span>
+              </div>
+            )}
+          ></Column>
+          <Column
+            field="nota"
+            header="Nota"
+            body={(data) => (
+              <div>
+                <span>{data.Nota_Degustacao}</span>
+              </div>
+            )}
+          ></Column>
+          <Column
+            field="foto"
+            header="Foto"
+            body={(data) => (
+              <div>
+                <img
+                  src={`http://localhost:3000/Images/${data.Imagem}`} 
+                  alt="Imagem"
+                  style={{ width: "100px", height: "auto" }}
+                />
               </div>
             )}
           ></Column>
@@ -131,28 +167,27 @@ export default function Cargo() {
             header="Ações"
             body={(data) => (
               <div>
-                {selectedCargo != undefined ? (
+                {selectedDegustacao != undefined ? (
                   <Button
-                    id="editBtn"
                     icon="pi pi-pencil"
                     className="p-button-rounded p-button-text"
                     onClick={() => {
-                      setShowEditCargo(true);
+                      setShowEditDegustacao(true);
                     }}
                   />
                 ) : (
                   <></>
                 )}
                 <Button
-                  id="deleteBtn"
                   icon="pi pi-trash"
                   className="p-button-rounded p-button-text"
                   onClick={() => {
                     confirmDialog({
                       message: "Deseja deletar?",
-                      header: "Deletar Cargo",
-                      accept: () => deleteCargo(data.idCargo),
-                      reject: () => setShowDeleteCargo(false),
+                      header: "Deletar Receita",
+                      accept: () =>
+                        deleteDegustacao(data.idDegustador ,data.Receita_nome, data.idCozinheiro),
+                      reject: () => setShowDeleteDegustacao(false),
                     });
                   }}
                 />
@@ -161,37 +196,38 @@ export default function Cargo() {
           ></Column>
         </DataTable>
       </div>
-
       <Dialog
-        header="Editar Cargo"
-        visible={showEditCargo}
-        style={{ width: "50vw" }}
-        onHide={() => setShowEditCargo(false)}
-      >
-        <EditarCargo
-          cargoId={selectedCargo}
-          closeDialog={() => {
-            setShowEditCargo(false);
-          }}
-          onSuccess={showToast}
-          onError={showToast}
-        ></EditarCargo>
-      </Dialog>
-      <Dialog
-        header="Incluir Cargo"
-        visible={showNovoCargo}
-        style={{ width: "50vw" }}
+        header="Incluir Avaliação"
+        visible={showNewDegustacao}
+        style={{ width: "80vw" }}
         onHide={() => {
-          setShowNovoCargo(false);
+          setShowNewDegustacao(false);
         }}
       >
-        <IncluirCargo
+        <IncluirDegustacao
           closeDialog={() => {
-            setShowNovoCargo(false);
+            setShowNewDegustacao(false);
           }}
           onSuccess={showToast}
           onError={showToast}
-        ></IncluirCargo>
+        ></IncluirDegustacao>
+      </Dialog>
+      <Dialog
+        header="Editar Avaliação"
+        visible={showEditDegustacao}
+        style={{ width: "80vw" }}
+        onHide={() => setShowEditDegustacao(false)}
+      >
+        <EditarDegustacao
+          idCozinheiro={selectedDegustacao?.idCozinheiro}
+          Receita_nome={selectedDegustacao?.Receita_nome}
+          idDegustador={selectedDegustacao?.idDegustador}
+          closeDialog={() => {
+            setShowEditDegustacao(false);
+          }}
+          onSuccess={showToast}
+          onError={showToast}
+        ></EditarDegustacao>
       </Dialog>
       <ConfirmDialog />
     </div>

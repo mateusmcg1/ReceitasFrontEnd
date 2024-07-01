@@ -12,6 +12,7 @@ import Receita from '../Pages/CriarReceita/Receita';
 import Composicao from '../Pages/Composicao/Composicao';
 import Medida from '../Pages/Medida/Medida';
 import Ingredientes from '../Pages/CriarIngredientes/Ingredientes';
+import Degustacao from '../Pages/Degustacao/Degustacao';
 
 
 
@@ -35,6 +36,7 @@ function Rotas() {
                     <Route path='/criarReceita' element={<Receita />} />
                     <Route path='/medida' element={<Medida />} />
                     <Route path='/criarIngredientes' element={<Ingredientes />} />
+                    <Route path='/avaliarReceita' element={<Degustacao />} />
                     
 
                 </Route>

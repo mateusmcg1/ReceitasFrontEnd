@@ -43,21 +43,23 @@ require("chromedriver");
     
 
     // Encontrar o campo de entrada e digitar "Admin"
-    await driver.findElement(By.id("cargo")).sendKeys("Admin");
+    await driver.findElement(By.id("cargo")).sendKeys("Cozinheiro");
     await driver.sleep(5000);
-       // Fechar o diálogo (pode ajustar para efetuar uma inclusão real)
+       // Fechar o diálogo 
        await driver
        .findElement(By.css(".p-dialog .p-dialog-header-close"))
        .click();
 
-    // Encontrar e clicar no botão "FILTRAR"
+    // Encontrar e clicar no botão
     await driver.findElement(By.id("registrarCargo")).click();
     await driver.sleep(5000);
 
-    // Esperar até que os resultados sejam exibidos (adapte este seletor conforme necessário)
+
+
+    // Esperar até que os resultados sejam exibidos 
     await driver.wait(until.elementLocated(By.css(".p-datatable")), 2000);
 
-    // Capturar e imprimir os resultados (opcional)
+    // Capturar e imprimir os resultados 
     let rows = await driver.findElements(
       By.css(".p-datatable .p-datatable-tbody tr")
     );
