@@ -17,7 +17,7 @@ export default function IncluirDegustacao({
   onError,
   idCozinheiro,
   Receita_nome,
-  idDegustador
+  idDegustador,
 }: {
   closeDialog: any;
   onSuccess: Function;
@@ -105,10 +105,13 @@ export default function IncluirDegustacao({
 
   useEffect(() => {
     axios
-      .get(`http://localhost:3000/taster/degustacao/${idDegustador}/${Receita_nome}/${idCozinheiro}`)
+      .get(
+        `http://localhost:3000/taster/degustacao/${idDegustador}/${Receita_nome}/${idCozinheiro}`
+      )
       .then((result) => {
         const data = result.data.Result[0];
-        setDegustacao({...degustacao,
+        setDegustacao({
+          ...degustacao,
           Data_Degustacao: new Date(data.Data_Degustacao)
             .toISOString()
             .split("T")[0],
@@ -119,11 +122,11 @@ export default function IncluirDegustacao({
         });
 
         const imageUrl = `http://localhost:3000/Images/${data.Imagem}`;
-        return axios.get(imageUrl, { responseType: 'blob' });
+        return axios.get(imageUrl, { responseType: "blob" });
       })
       .then((imageResult) => {
         const imageBlob = imageResult.data;
-        console.log(imageBlob)
+        console.log(imageBlob);
         setFile(imageBlob);
       })
       .catch((err) => console.log(err));
@@ -140,7 +143,10 @@ export default function IncluirDegustacao({
       formData.append("Imagem", file, file.name);
     }
     axios
-      .put(`http://localhost:3000/taster/edit_degustacao/${idDegustador}/${Receita_nome}/${idCozinheiro}`, formData)
+      .put(
+        `http://localhost:3000/taster/edit_degustacao/${idDegustador}/${Receita_nome}/${idCozinheiro}`,
+        formData
+      )
       .then((result) => {
         if (result.data.Status) {
           window.location.reload();
@@ -165,9 +171,23 @@ export default function IncluirDegustacao({
         <div className="bg-white shadow-md rounded-lg p-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
+              <label className="block mb-2">Data de degustação</label>
+              <InputText
+                type="date"
+                value={degustacao.Data_Degustacao}
+                className={sharedClasses.InputText}
+                onChange={(e) =>
+                  setDegustacao({
+                    ...degustacao,
+                    Data_Degustacao: e.target.value!,
+                  })
+                }
+              />
+            </div>
+            <div>
               <label className="block mb-2">Degustador</label>
               <select
-              value={degustacao.idDegustador}
+                value={degustacao.idDegustador}
                 className={sharedClasses.select}
                 onChange={(e) =>
                   setDegustacao({ ...degustacao, idDegustador: e.target.value })
@@ -185,23 +205,11 @@ export default function IncluirDegustacao({
                     </option>
                   ))}
               </select>
-              <label className="block mb-2">Data de degustação</label>
-              <InputText
-                type="date"
-                value={degustacao.Data_Degustacao}
-                className={sharedClasses.InputText}
-                onChange={(e) =>
-                  setDegustacao({
-                    ...degustacao,
-                    Data_Degustacao: e.target.value!,
-                  })
-                }
-              />
             </div>
             <div>
               <label className="block mb-2">Receita</label>
               <select
-              value={degustacao.Receita_nome}
+                value={degustacao.Receita_nome}
                 className={sharedClasses.select}
                 onChange={(e) =>
                   setDegustacao({ ...degustacao, Receita_nome: e.target.value })
@@ -217,13 +225,14 @@ export default function IncluirDegustacao({
                   ))}
               </select>
               <FileUpload
-              style={{marginTop: "6%"}}
+                style={{ marginTop: "6%" }}
                 mode="basic"
                 name="imagem"
                 auto
                 accept="image/*"
                 customUpload
                 uploadHandler={onFileChange}
+                chooseLabel="Selecione a foto"
               />
             </div>
             <div>
@@ -247,6 +256,8 @@ export default function IncluirDegustacao({
                 placeholder="Nota"
                 value={degustacao.Nota_Degustacao}
                 maxFractionDigits={1}
+                min={0}
+                max={10}
                 onChange={(e) =>
                   setDegustacao({ ...degustacao, Nota_Degustacao: e.value! })
                 }

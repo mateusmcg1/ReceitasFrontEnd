@@ -133,6 +133,19 @@ export default function IncluirDegustacao({
         <div className="bg-white shadow-md rounded-lg p-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
+              <label className="block mb-2">Data de degustação</label>
+              <InputText
+                type="date"
+                className={sharedClasses.InputText}
+                onChange={(e) =>
+                  setDegustacao({
+                    ...degustacao,
+                    Data_Degustacao: e.target.value!,
+                  })
+                }
+              />
+            </div>
+            <div>
               <label className="block mb-2">Degustador</label>
               <select
                 className={sharedClasses.select}
@@ -152,17 +165,6 @@ export default function IncluirDegustacao({
                     </option>
                   ))}
               </select>
-              <label className="block mb-2">Data de degustação</label>
-              <InputText
-                type="date"
-                className={sharedClasses.InputText}
-                onChange={(e) =>
-                  setDegustacao({
-                    ...degustacao,
-                    Data_Degustacao: e.target.value!,
-                  })
-                }
-              />
             </div>
             <div>
               <label className="block mb-2">Receita</label>
@@ -182,13 +184,14 @@ export default function IncluirDegustacao({
                   ))}
               </select>
               <FileUpload
-              style={{marginTop: "6%"}}
+                style={{ marginTop: "6%" }}
                 mode="basic"
                 name="imagem"
                 auto
                 accept="image/*"
                 customUpload
                 uploadHandler={onFileChange}
+                chooseLabel="Selecione a foto"
               />
             </div>
             <div>
@@ -211,6 +214,8 @@ export default function IncluirDegustacao({
                 locale="pt-BR"
                 placeholder="Nota"
                 maxFractionDigits={1}
+                min={0}
+                max={10}
                 onChange={(e) =>
                   setDegustacao({ ...degustacao, Nota_Degustacao: e.value! })
                 }

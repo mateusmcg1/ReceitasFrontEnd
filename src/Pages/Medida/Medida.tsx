@@ -49,14 +49,9 @@ export default function Medida() {
       .catch((err) => console.log(err));
   }, []);
 
-  const deleteMedida = async (
-    nome: string,
-    idMedida: number
-  ) => {
+  const deleteMedida = async (nome: string, idMedida: number) => {
     axios
-      .delete(
-        `http://localhost:3000/chef/delete_medida/${idMedida}`
-      )
+      .delete(`http://localhost:3000/chef/delete_medida/${idMedida}`)
       .then((result) => {
         if (result.data.Status) {
           window.location.reload();
@@ -138,13 +133,17 @@ export default function Medida() {
             header="Ações"
             body={(data) => (
               <div>
-                <Button
-                  icon="pi pi-pencil"
-                  className="p-button-rounded p-button-text"
-                  onClick={() => {
-                    setShowEditMedida(true);
-                  }}
-                />
+                {selectedMedida != undefined ? (
+                  <Button
+                    icon="pi pi-pencil"
+                    className="p-button-rounded p-button-text"
+                    onClick={() => {
+                      setShowEditMedida(true);
+                    }}
+                  />
+                ) : (
+                  <></>
+                )}
                 <Button
                   icon="pi pi-trash"
                   className="p-button-rounded p-button-text"
@@ -152,7 +151,7 @@ export default function Medida() {
                     confirmDialog({
                       message: "Deseja deletar?",
                       header: "Deletar Receita",
-                      accept: () => deleteMedida(data.nome,data.idMedida),
+                      accept: () => deleteMedida(data.nome, data.idMedida),
                       reject: () => setShowDeleteMedida(false),
                     });
                   }}

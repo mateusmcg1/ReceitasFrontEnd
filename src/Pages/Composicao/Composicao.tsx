@@ -211,7 +211,7 @@ export default function Composicao() {
       <Dialog
         header="Incluir Composicao"
         visible={showNewComposicao}
-        style={{ width: "60vw" }}
+        style={{ width: "50vw" }}
         onHide={() => {
           setShowNewComposicao(false);
         }}

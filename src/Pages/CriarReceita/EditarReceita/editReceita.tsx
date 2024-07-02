@@ -186,7 +186,7 @@ export default function EditarReceita({
                 value={receita.Categoria}
                 className={sharedClasses.select}
                 onChange={(e) =>
-                  setReceita({ ...receita, Categoria  : e.target.value })
+                  setReceita({ ...receita, Categoria: e.target.value })
                 }
               >
                 <option value="">Selecione uma categoria</option>{" "}
@@ -198,6 +198,8 @@ export default function EditarReceita({
                     </option>
                   ))}
               </select>
+              <label className="block mb-2">Modo de preparo</label>
+
               <div className="card flex justify-content-center">
                 <InputTextarea
                   value={receita.ModoPreparo}

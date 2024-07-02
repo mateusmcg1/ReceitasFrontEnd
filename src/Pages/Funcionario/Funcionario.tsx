@@ -55,11 +55,19 @@ export default function Funcionario() {
       .then((result) => {
         if (result.data.Status) {
           window.location.reload();
+          showToast("success", "Sucesso", "Funcionário deletado com sucesso!");
         } else {
-          alert(result.data.Status);
+          showToast(
+            "error",
+            "Erro",
+            "Delete as participações desse funcionário"
+          );
         }
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        showToast("error", "Erro", "Erro ao deletar ingrediente.");
+        console.log(err);
+      });
   };
 
   return (
@@ -143,12 +151,12 @@ export default function Funcionario() {
             header="Salário"
             body={(data) => (
               <div>
-                 {Number(data.Salario).toLocaleString('pt-BR', {
-                      maximumFractionDigits: 2,
-                      style: 'currency',
-                      currency: 'BRL',
-                      useGrouping: true,
-                    })}
+                {Number(data.Salario).toLocaleString("pt-BR", {
+                  maximumFractionDigits: 2,
+                  style: "currency",
+                  currency: "BRL",
+                  useGrouping: true,
+                })}
               </div>
             )}
           ></Column>
@@ -167,7 +175,6 @@ export default function Funcionario() {
             body={(data) => (
               <div>
                 {selectedFuncionario != undefined ? (
-
                   <Button
                     icon="pi pi-pencil"
                     className="p-button-rounded p-button-text"
@@ -175,9 +182,9 @@ export default function Funcionario() {
                       setShowEditFuncionario(true);
                     }}
                   />
-                )
-                
-                : (<></>)}
+                ) : (
+                  <></>
+                )}
                 <Button
                   icon="pi pi-trash"
                   className="p-button-rounded p-button-text"

@@ -13,12 +13,21 @@ interface DecodedToken {
     cargo: string;
 }
 
+interface MenuItem {
+    label: string;
+    icon: string;
+    command: () => void;
+    navigable: boolean;
+    items?: MenuItem[];
+  }
+
 export function Casket({ children }: { children?: any }) {
     const [userName, setUserName] = useState('User');
     const [cargoName, setCargoName] = useState('');
-    const [activeMenuItem, setActiveMenuItem] = useState<any>();
     const navigate = useNavigate();
     const [showMenu, setShowMenu] = useState(false);
+    const [activeMenuItem, setActiveMenuItem] = useState<MenuItem | null>(null);
+    const [items, setItems] = useState<MenuItem[]>([]);
 
     const navigateMenu = (url: string) => {
         navigate(url);
@@ -29,61 +38,67 @@ export function Casket({ children }: { children?: any }) {
         if (token) {
             const decoded = jwtDecode<DecodedToken>(token);
             setUserName(decoded.name);
-            setCargoName(decoded.cargo);
+            setCargoName(decoded.cargo.toLowerCase());
         } else {
-            navigate('login');
+            navigate('/');
         }
     }, [navigate]);
 
     const location = useLocation();
-
-    let items = [
-        { label: 'Dashboard', icon: 'pi pi-home', command: () => { navigateMenu('dashboard') }, navigable: true },
-        { label: 'Cadastrar restaurante', icon: 'pi pi-shopping-bag', command: () => { navigateMenu('restaurante') }, navigable: true },
-        {
-
-            label: 'Receitas', icon: 'pi pi-list', command: () => { }, navigable: false, items: [
+    useEffect(() => {
+        const getMenuItemsByRole = (role: string): MenuItem[] => {
+          switch (role) {
+            case 'admin':
+              return [
+                { label: 'Dashboard', icon: 'pi pi-home', command: () => { navigateMenu('dashboard') }, navigable: true },
+                { label: 'Cadastrar restaurante', icon: 'pi pi-shopping-bag', command: () => { navigateMenu('restaurante') }, navigable: true },
                 {
-                    label: 'Criar', icon: 'pi pi-plus', command: () => { navigateMenu('criarReceita') }, navigable: true
+                  label: 'Receitas', icon: 'pi pi-list', command: () => { }, navigable: false, items: [
+                    { label: 'Criar', icon: 'pi pi-plus', command: () => { navigateMenu('criarReceita') }, navigable: true },
+                    { label: 'Avaliar', icon: 'pi pi-check', command: () => { navigateMenu('avaliarReceita') }, navigable: true },
+                    { label: 'Criar ingrediente', icon: 'pi pi-plus', command: () => { navigateMenu('criarIngredientes') }, navigable: true },
+                    { label: 'Criar categoria', icon: 'pi pi-plus', command: () => { navigateMenu('categoria') }, navigable: true },
+                    { label: 'Criar medida', icon: 'pi pi-plus', command: () => { navigateMenu('medida') }, navigable: true },
+                  ]
                 },
                 {
-                    label: 'Avaliar', icon: 'pi pi-check', command: () => { navigateMenu('avaliarReceita') }, navigable: true
+                  label: 'Funcionário', icon: 'pi pi-users', command: () => { }, navigable: false, items: [
+                    { label: 'Cadastrar funcionário', icon: 'pi pi-user-plus', command: () => { navigateMenu('funcionario') }, navigable: true },
+                    { label: 'Cadastrar cargo', icon: 'pi pi-user-plus', command: () => { navigateMenu('cargo') }, navigable: true },
+                    { label: 'Cadastrar referência', icon: 'pi pi-user-plus', command: () => { navigateMenu('referencia') }, navigable: true },
+                  ]
                 },
                 {
-                    label: 'Criar ingrediente', icon: 'pi pi-plus', command: () => { navigateMenu('criarIngredientes') }, navigable: true
+                  label: 'Editor', icon: 'pi pi-book', command: () => { }, navigable: false, items: [
+                    { label: 'Livro', icon: 'pi pi-plus', command: () => { navigateMenu('livro') }, navigable: true },
+                    { label: 'Publicação', icon: 'pi pi-plus', command: () => { navigateMenu('publicacao') }, navigable: true },
+                  ]
                 },
+              ];
+            case 'cozinheiro':
+              return [
+                { label: 'Dashboard', icon: 'pi pi-home', command: () => { navigateMenu('dashboard') }, navigable: true },
                 {
-                    label: 'Criar categoria', icon: 'pi pi-plus', command: () => { navigateMenu('categoria') }, navigable: true
+                  label: 'Receitas', icon: 'pi pi-list', command: () => { }, navigable: false, items: [
+                    { label: 'Criar', icon: 'pi pi-plus', command: () => { navigateMenu('criarReceita') }, navigable: true },
+                    { label: 'Criar ingrediente', icon: 'pi pi-plus', command: () => { navigateMenu('criarIngredientes') }, navigable: true },
+                    { label: 'Criar categoria', icon: 'pi pi-plus', command: () => { navigateMenu('categoria') }, navigable: true },
+                    { label: 'Criar medida', icon: 'pi pi-plus', command: () => { navigateMenu('medida') }, navigable: true },
+                  ]
                 },
-                {
-                    label: 'Criar medida', icon: 'pi pi-plus', command: () => { navigateMenu('medida') }, navigable: true
-                },
-            ]
-        },
-        {
-            label: 'Funcionário', icon: 'pi pi-users', command: () => { }, navigable: false, items: [
-                {
-                    label: 'Cadastrar funcionário', icon: 'pi pi-user-plus', command: () => { navigateMenu('funcionario') }, navigable: true
-                },
-                {
-                    label: 'Cadastrar cargo', icon: 'pi pi-user-plus', command: () => { navigateMenu('cargo') }, navigable: true
-                },
-                {
-                    label: 'Cadastrar referência', icon: 'pi pi-user-plus', command: () => { navigateMenu('referencia') }, navigable: true
-                },
-            ]
-        },
-        {
-            label: 'Editor', icon: 'pi pi-book', command: () => { }, navigable: false, items: [
-                {
-                    label: 'Livro', icon: 'pi pi-plus', command: () => { navigateMenu('livro') }, navigable: true
-                },
-                {
-                    label: 'Publicação', icon: 'pi pi-plus', command: () => { navigateMenu('publicacao') }, navigable: true
-                },
-            ]
-        },
-    ];
+              ];
+            case 'degustador':
+              return [
+                { label: 'Dashboard', icon: 'pi pi-home', command: () => { navigateMenu('dashboard') }, navigable: true },
+                { label: 'Avaliar', icon: 'pi pi-check', command: () => { navigateMenu('avaliarReceita') }, navigable: true },
+              ];
+            default:
+              return [];
+          }
+        };
+    
+        setItems(getMenuItemsByRole(cargoName));
+      }, [cargoName]);
     return (
         <div className="casket-container">
 
@@ -100,7 +115,7 @@ export function Casket({ children }: { children?: any }) {
                         </li>
                         <li>
                             <span style={{ cursor: "pointer" }} onClick={() => {
-                                navigate('login');
+                                navigate('/');
                                 sessionStorage.removeItem('access_token');
                                 sessionStorage.removeItem('refresh_token');
                             }
@@ -113,6 +128,10 @@ export function Casket({ children }: { children?: any }) {
             <div className="column-order">
 
                 <Sidebar visible={showMenu} onHide={() => { setShowMenu(false) }} style={{ backgroundColor: '#2b2b2b' }}>
+                <div className="logo">
+            <img width={250} height={250} src="/img/pelegoLogo.svg"></img>
+            {/* <SVGLogo fill="#2B2B2B" width={250} height={250} /> */}
+          </div>
                     <div style={{ width: '100%', backgroundColor: '#2b2b2b' }}>
                         <div style={{ height: '100px' }}></div>
                         {items.map((menuItem, index) => {

@@ -186,20 +186,6 @@ export default function IncluirComposicao({
               </select>
             </div>
             <div>
-              <label className="block mb-2">Quantidade</label>
-              <InputNumber
-                locale="pt-BR"
-                maxFractionDigits={1}
-                placeholder="Quantidade"
-                onChange={(e) =>
-                  setComposicao({
-                    ...composicao,
-                    QuantidadeIngrediente: e.value!,
-                  })
-                }
-              />
-            </div>
-            <div>
               <label className="block mb-2">Medida</label>
               <select
                 className={sharedClasses.select}
@@ -216,6 +202,20 @@ export default function IncluirComposicao({
                     </option>
                   ))}
               </select>
+            </div>
+            <div>
+              <label className="block mb-2">Quantidade</label>
+              <InputNumber
+                locale="pt-BR"
+                maxFractionDigits={1}
+                placeholder="Quantidade"
+                onChange={(e) =>
+                  setComposicao({
+                    ...composicao,
+                    QuantidadeIngrediente: e.value!,
+                  })
+                }
+              />
             </div>
           </div>
           <div className="inclusao-button">

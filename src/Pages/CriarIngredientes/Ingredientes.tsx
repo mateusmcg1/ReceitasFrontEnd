@@ -20,7 +20,8 @@ import { IngredientesDTO } from "../../models/IngredientesDTO";
 export default function Ingredientes() {
   const [find, setFind] = useState("");
   const [loading, setLoading] = useState(false);
-  const [selectedIngredientes, setSelectedIngredientes] = useState<IngredientesDTO | null>(null);
+  const [selectedIngredientes, setSelectedIngredientes] =
+    useState<IngredientesDTO | null>(null);
   const [showNewIngredientes, setShowNewIngredientes] = useState(false);
   const [showEditIngredientes, setShowEditIngredientes] = useState(false);
   const [showDeleteIngredientes, setShowDeleteIngredientes] = useState(false);
@@ -28,7 +29,11 @@ export default function Ingredientes() {
   const toast = useRef<Toast>(null);
   const navigate = useNavigate();
 
-  const showToast = (severity: ToastMessage["severity"], summary: string, detail: string) => {
+  const showToast = (
+    severity: ToastMessage["severity"],
+    summary: string,
+    detail: string
+  ) => {
     toast.current?.show([{ severity, summary, detail }]);
   };
 
@@ -47,13 +52,19 @@ export default function Ingredientes() {
 
   const deleteIngredientes = async (idIngredientes: number) => {
     axios
-      .delete(`http://localhost:3000/chef/delete_ingredientes/${idIngredientes}`)
+      .delete(
+        `http://localhost:3000/chef/delete_ingredientes/${idIngredientes}`
+      )
       .then((result) => {
         if (result.data.Status) {
-          setIngredientes(ingredientes.filter((ingrediente) => ingrediente.idIngredientes !== idIngredientes));
+          setIngredientes(
+            ingredientes.filter(
+              (ingrediente) => ingrediente.idIngredientes !== idIngredientes
+            )
+          );
           showToast("success", "Sucesso", "Ingrediente deletado com sucesso!");
         } else {
-          showToast("error", "Erro", result.data.Error);
+          showToast("error", "Erro", "Ingrediente sendo utilizado");
         }
       })
       .catch((err) => {
@@ -100,7 +111,6 @@ export default function Ingredientes() {
           </div>
         </div>
 
-
         <DataTable
           loading={loading}
           selectionMode="single"
@@ -111,7 +121,7 @@ export default function Ingredientes() {
           tableStyle={{ minWidth: "50rem" }}
           value={ingredientes}
         >
-           <Column
+          <Column
             field="nome"
             header="Nome"
             body={(data) => (
@@ -120,7 +130,7 @@ export default function Ingredientes() {
               </div>
             )}
           ></Column>
-           <Column
+          <Column
             field="descricao"
             header="Descrição"
             body={(data) => (
@@ -134,11 +144,17 @@ export default function Ingredientes() {
             header="Ações"
             body={(data) => (
               <div>
-                <Button
-                  icon="pi pi-pencil"
-                  className="p-button-rounded p-button-text"
-                  onClick={() => setShowEditIngredientes(true)}
-                />
+                {selectedIngredientes != undefined ? (
+                  <Button
+                    icon="pi pi-pencil"
+                    className="p-button-rounded p-button-text"
+                    onClick={() => {
+                      setShowEditIngredientes(true);
+                    }}
+                  />
+                ) : (
+                  <></>
+                )}
                 <Button
                   icon="pi pi-trash"
                   className="p-button-rounded p-button-text"
@@ -176,13 +192,13 @@ export default function Ingredientes() {
         onHide={() => setShowEditIngredientes(false)}
       >
         <EditarIngrediente
-        ingrediente={selectedIngredientes}
-        closeDialog={() => setShowEditIngredientes(false)}
-        onSuccess={showToast}
-        onError={showToast}
+          ingrediente={selectedIngredientes}
+          closeDialog={() => setShowEditIngredientes(false)}
+          onSuccess={showToast}
+          onError={showToast}
         />
       </Dialog>
-    <ConfirmDialog />
+      <ConfirmDialog />
     </div>
   );
 }

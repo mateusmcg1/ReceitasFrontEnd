@@ -49,10 +49,7 @@ export default function Receita() {
       .catch((err) => console.log(err));
   }, []);
 
-  const deleteReceita = async (
-    nome: string,
-    idCozinheiro: number
-  ) => {
+  const deleteReceita = async (nome: string, idCozinheiro: number) => {
     axios
       .delete(
         `http://localhost:3000/chef/delete_receita/${nome}/${idCozinheiro}`
@@ -60,11 +57,15 @@ export default function Receita() {
       .then((result) => {
         if (result.data.Status) {
           window.location.reload();
+          showToast("success", "Sucesso", "Receita deletada com sucesso!");
         } else {
-          alert(result.data.Status);
+          showToast("error", "Erro", "Delete a composição dessa receita");
         }
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        showToast("error", "Erro", "Erro ao deletar ingrediente.");
+        console.log(err);
+      });
   };
 
   return (
@@ -106,7 +107,7 @@ export default function Receita() {
               <Button
                 id="composicao"
                 label="Composição"
-                onClick={() => navigate('composicao')}
+                onClick={() => navigate("composicao")}
               />
             </div>
           </div>
@@ -172,7 +173,6 @@ export default function Receita() {
             body={(data) => (
               <div>
                 {selectedReceita != undefined ? (
-
                   <Button
                     icon="pi pi-pencil"
                     className="p-button-rounded p-button-text"
@@ -180,9 +180,9 @@ export default function Receita() {
                       setShowEditReceita(true);
                     }}
                   />
-                )
-                
-                : (<></>)}
+                ) : (
+                  <></>
+                )}
                 <Button
                   icon="pi pi-trash"
                   className="p-button-rounded p-button-text"
@@ -190,7 +190,7 @@ export default function Receita() {
                     confirmDialog({
                       message: "Deseja deletar?",
                       header: "Deletar Receita",
-                      accept: () => deleteReceita(data.nome,data.idCozinheiro),
+                      accept: () => deleteReceita(data.nome, data.idCozinheiro),
                       reject: () => setShowDeleteReceita(false),
                     });
                   }}
