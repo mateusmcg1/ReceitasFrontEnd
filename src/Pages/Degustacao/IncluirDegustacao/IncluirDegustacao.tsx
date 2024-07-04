@@ -8,7 +8,7 @@ import { CategoriaDTO } from "../../../models/CategoriaDTO";
 import { FuncionarioDTO } from "../../../models/FuncionarioDTO";
 import { InputTextarea } from "primereact/inputtextarea";
 import { ReceitaDTO } from "../../../models/ReceitaDTO";
-import { Toast } from "primereact/toast";
+import { Toast, ToastMessage } from "primereact/toast";
 import { FileUpload } from "primereact/fileupload";
 
 export default function IncluirDegustacao({
@@ -38,6 +38,15 @@ export default function IncluirDegustacao({
       "w-full bg-green-600 text-white p-3 rounded-lg mt-4 hover:bg-green-700",
   };
   const [file, setFile] = useState<File | null>(null);
+  const toast = useRef<Toast>(null);
+
+  const showToast = (
+    severity: ToastMessage["severity"],
+    summary: string,
+    detail: string
+  ) => {
+    toast.current?.show([{ severity, summary, detail }]);
+  };
 
   useEffect(() => {
     axios
@@ -114,7 +123,7 @@ export default function IncluirDegustacao({
         if (result.data.Status) {
           closeDialog();
         } else {
-          alert(result.data.Status);
+          showToast("error", "Erro", "Avaliação já existe!");
         }
       })
       .catch((err) => console.log(err));

@@ -4,7 +4,6 @@ import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
 import axios from "axios";
 import { Toast, ToastMessage } from "primereact/toast";
-import { Dropdown } from "primereact/dropdown";
 import { useNavigate } from "react-router-dom";
 
 export default function IncluirCategoria({
@@ -17,7 +16,6 @@ export default function IncluirCategoria({
   onError: Function;
 }) {
   const [categoria, setCategoria] = useState("");
-  let navigate = useNavigate();
   const sharedClasses = {
     InputText: "w-full p-2 border rounded mb-4",
     select: "w-full p-2 border rounded mb-4",

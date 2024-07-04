@@ -59,11 +59,11 @@ export default function Receita() {
           window.location.reload();
           showToast("success", "Sucesso", "Receita deletada com sucesso!");
         } else {
-          showToast("error", "Erro", "Delete a composição dessa receita");
+          showToast("error", "Erro", "Delete a composição ou avaliação dessa receita");
         }
       })
       .catch((err) => {
-        showToast("error", "Erro", "Erro ao deletar ingrediente.");
+        showToast("error", "Erro", "Erro ao deletar receita.");
         console.log(err);
       });
   };

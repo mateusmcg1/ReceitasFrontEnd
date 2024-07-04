@@ -21,7 +21,7 @@ require("chromedriver");
     // Inserir o nome de usuário
     await driver
       .findElement(By.id("user"))
-      .sendKeys("mateusmartinscg@gmail.com");
+      .sendKeys("mateusmartinscg@hotmail.com");
 
     // Esperar até que o campo de entrada de senha esteja visível e interagível
     await driver.wait(until.elementLocated(By.id("password")), 10000);
